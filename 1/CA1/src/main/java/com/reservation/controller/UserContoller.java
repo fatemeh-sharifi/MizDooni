@@ -24,7 +24,7 @@ public class UserController {
         user.setUsername((String) jsonData.get("username"));
         user.setPassword((String) jsonData.get("password"));
         user.setEmail((String) jsonData.get("email"));
-        // You need to implement Address parsing
+
 
         // Adding user
         try {
