@@ -10,10 +10,10 @@ public class Restaurant {
     private String startTime;
     private String endTime;
     private String description;
-    private String address;
+    private AddressRestaurant address;
     private List<Table> tables;
 
-    public Restaurant(String name, String managerUsername, String type, String startTime, String endTime, String description, String address) {
+    public Restaurant(String name, String managerUsername, String type, String startTime, String endTime, String description, AddressRestaurant address) {
         this.name = name;
         this.managerUsername = managerUsername;
         this.type = type;
@@ -89,7 +89,7 @@ public class Restaurant {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(AddressRestaurant address) {
         this.address = address;
     }
 
