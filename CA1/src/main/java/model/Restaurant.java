@@ -85,7 +85,7 @@ public class Restaurant {
         this.description = description;
     }
 
-    public String getAddress() {
+    public AddressRestaurant getAddress() {
         return address;
     }
 
