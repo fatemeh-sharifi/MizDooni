@@ -17,7 +17,7 @@ public class commandHndlr {
         add("showAvailableTables");
         add("addReview");
     }};
-    public void main(String[] args) throws InterruptedException {
+    public void start() throws InterruptedException {
         System.out.println("welcome!");
         while(true){
             Scanner myObj = new Scanner(System.in);
@@ -25,46 +25,59 @@ public class commandHndlr {
             String request = myObj.nextLine();
             String[] req = request.split(" ", 2);
             if(this.availableReq.contains(req[0]) && req.length==2){
-                if(req[0] == "addUser"){
-
-                }
-                else if(req[0] == "addRestaurant"){
-
-                }
-                else if(req[0] == "addTable"){
-
-                }
-                else if(req[0] == "reserveTable"){
-
-                }
-                else if(req[0] == "cancelReservation"){
-
-                }
-                else if(req[0] == "showReservationHistory"){
-
-                }
-                else if(req[0] == "searchRestaurantsByName"){
-
-                }
-                else if (req[0] == "searchRestaurantsByType"){
-
-                }
-                else if(req[0] == "showAvailableTables"){
-
-                }
-                else if(req[0] == "addReview"){
-
-                }
+                handleReq(req[0],req[1]);
             }
             else if(req[0] == "q"){
                 break;
             }
             else{
                 System.out.println("request does not exists! try again!");
-                Thread.sleep(2000);
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
+                clearScreen();
             }
         }
     }
+
+    private void clearScreen() throws InterruptedException {
+        Thread.sleep(2000);
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    private void handleReq(String req , String args){
+        switch(req) {
+            case "addUser":
+                // Handle addUser command
+                break;
+            case "addRestaurant":
+                // Handle addRestaurant command
+                break;
+            case "addTable":
+                // Handle addTable command
+                break;
+            case "reserveTable":
+                // Handle reserveTable command
+                break;
+            case "cancelReservation":
+                // Handle cancelReservation command
+                break;
+            case "showReservationHistory":
+                // Handle showReservationHistory command
+                break;
+            case "searchRestaurantsByName":
+                // Handle searchRestaurantsByName command
+                break;
+            case "searchRestaurantsByType":
+                // Handle searchRestaurantsByType command
+                break;
+            case "showAvailableTables":
+                // Handle showAvailableTables command
+                break;
+            case "addReview":
+                // Handle addReview command
+                break;
+            default:
+                System.out.println("Request does not exist!\n");
+        }
+    }
+
 }
