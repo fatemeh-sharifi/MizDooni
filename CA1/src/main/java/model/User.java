@@ -7,11 +7,12 @@ public class User {
     private String email;
     private String password;
     private List<Reservation> reservations;
-
-    public User(String username, String email, String password) {
+    private AddressUser address;
+    public User(String username, String email, String password, AddressUser address) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.address = address;
     }
 
     // Getters and setters for attributes
@@ -46,6 +47,14 @@ public class User {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public void setAddress(AddressUser address) {
+        this.address = address;
+    }
+
+    public AddressUser getAddress() {
+        return address;
     }
 
 }
