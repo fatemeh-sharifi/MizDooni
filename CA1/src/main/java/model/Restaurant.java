@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Restaurant {
     private String name;
     private String managerUsername;
@@ -8,6 +11,7 @@ public class Restaurant {
     private String endTime;
     private String description;
     private String address;
+    private List<Table> tables;
 
     public Restaurant(String name, String managerUsername, String type, String startTime, String endTime, String description, String address) {
         this.name = name;
@@ -17,9 +21,21 @@ public class Restaurant {
         this.endTime = endTime;
         this.description = description;
         this.address = address;
+        this.tables = new ArrayList<>();
     }
 
     // Getters and setters for attributes
+
+    // Methods to add and remove tables
+    public void addTable(Table table) {
+        tables.add(table);
+    }
+
+    public void removeTable(Table table) {
+        tables.remove(table);
+    }
+
+    // Getters and setters for other attributes
 
     public String getName() {
         return name;
@@ -75,5 +91,13 @@ public class Restaurant {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<Table> getTables() {
+        return tables;
+    }
+
+    public void setTables(List<Table> tables) {
+        this.tables = tables;
     }
 }
