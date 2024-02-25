@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class userController {
     private MizDooni mizDooni = MizDooni.getInstance();
-    public void parseArgAdd(String args){
+    public void parseArgAdd(String args) throws Exception{
         try {
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(args);
@@ -30,23 +30,23 @@ public class userController {
                             mizDooni.addUser(user);
                         }
                         else {
-                            System.out.println("the address must contain city and country!\n");
+                            throw new Exception("the address must contain city and country!\n");
                         }
                     }
                     else{
-                        System.out.println("the email must be in order of abc@example.com!");
+                        throw new Exception("the email must be in order of abc@example.com!\n");
                     }
 
                 }
                 else{
-                    System.out.println("the username must not contain special character!\n");
+                    throw new Exception("the username must not contain special character!\n");
                 }
             }
             else{
-                System.out.println("the role must be manager or client!\n");
+                throw new Exception("the role must be manager or client!\n");
             }
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new Exception(e.getMessage());
         }
     }
 
@@ -60,11 +60,11 @@ public class userController {
     }
 
     private boolean isRoleTrue(String role){
-        if (role != "client" && role != "manger") {
-            return false;
+        if (role.equals("client")  || role.equals("manager") ) {
+            return true;
         }
         else{
-            return true;
+            return false;
         }
     }
 

@@ -21,8 +21,21 @@ public class MizDooni {
         return instance;
     }
 
-    public void addUser(User user){
+    public void addUser(User user) throws Exception{
+        if (doesUserExists(user.getUsername(),user.getEmail())){
+            users.add(user);
+        }
+        else{
+            throw new Exception("Username or Email Exists!\n");
+        }
+    }
 
+    private boolean doesUserExists(String username,String email){
+        for (User user : users)
+            if (user.getUsername().equals(username) || user.getEmail().equals(email))
+                return false;
+
+        return true;
     }
 
 

@@ -1,5 +1,7 @@
 package controller;
 import controller.userController;
+import org.json.simple.JSONObject;
+
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -26,13 +28,20 @@ public class commandHndlr {
             String request = myObj.nextLine();
             String[] req = request.split(" ", 2);
             if(this.availableReq.contains(req[0]) && req.length==2){
-                handleReq(req[0],req[1]);
+                try {
+                    String res = handleReq(req[0],req[1]);
+                    System.out.println(res);
+                    clearScreen();
+                }catch (Exception e){
+                   System.out.println(generateErrorJson(e.getMessage()));
+                }
+
             }
             else if(req[0] == "q"){
                 break;
             }
             else{
-                System.out.println("request does not exists! try again!");
+                System.out.println("request does not exists! try again!\n");
                 clearScreen();
             }
         }
@@ -44,11 +53,11 @@ public class commandHndlr {
         System.out.flush();
     }
 
-    private void handleReq(String req , String args){
+    private String handleReq(String req , String args) throws Exception{
         switch(req) {
             case "addUser":
-                // Handle addUser command
-                break;
+                usercntrl.parseArgAdd(args);
+                return generateSuccessJson("User added successfully.\n");
             case "addRestaurant":
                 // Handle addRestaurant command
                 break;
@@ -77,8 +86,23 @@ public class commandHndlr {
                 // Handle addReview command
                 break;
             default:
-                System.out.println("Request does not exist!\n");
+                throw new Exception("Request does not exist!\n");
         }
+        return "";
+    }
+
+    private static String generateSuccessJson(String message) {
+        JSONObject response = new JSONObject();
+        response.put("data", message);
+        response.put("success", true);
+        return response.toJSONString();
+    }
+
+    private static String generateErrorJson(String errorMessage) {
+        JSONObject response = new JSONObject();
+        response.put("data", errorMessage);
+        response.put("success", false);
+        return response.toJSONString();
     }
 
 }
