@@ -6,9 +6,9 @@ import org.json.simple.parser.JSONParser;
 
 import java.util.HashMap;
 import java.util.Map;
-
 public class UserManagement {
     private static final Map<String, User> users = new HashMap<>();
+    private static final Map<String, String> managers = new HashMap<>(); // Map to store manager usernames
 
     public static String addUser(String jsonData) {
         try {
@@ -51,11 +51,20 @@ public class UserManagement {
             User newUser = new User(username, email, password, address);
             users.put(username, newUser);
 
+            // If the user is a manager, add their username to the managers map
+            if (role.equals("manager")) {
+                managers.put(username, role);
+            }
+
             return generateSuccessJson("User added successfully.");
         } catch (Exception e) {
             return generateErrorJson("An error occurred while processing the request.");
         }
     }
+
+//    public static Map<String, String> getManagers() {
+//        return managers;
+//    }
 
     private static String generateSuccessJson(String message) {
         JSONObject response = new JSONObject();
