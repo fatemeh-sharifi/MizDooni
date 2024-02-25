@@ -1,5 +1,5 @@
 package controller;
-
+import controller.userController;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -17,6 +17,7 @@ public class commandHndlr {
         add("showAvailableTables");
         add("addReview");
     }};
+    private userController usercntrl = new userController();
     public void start() throws InterruptedException {
         System.out.println("welcome!");
         while(true){

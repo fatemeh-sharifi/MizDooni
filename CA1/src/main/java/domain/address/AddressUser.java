@@ -8,7 +8,7 @@ public class AddressUser {
     private String country;
     private String city;
 
-    public AddressUser(String country, String city, String street) {
+    public AddressUser(String country, String city) {
         this.country = country;
         this.city = city;
     }
