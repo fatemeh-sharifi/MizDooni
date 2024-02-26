@@ -19,6 +19,7 @@ public class commandHndlr {
         add("addReview");
     }};
     private UserController usercntrl = new UserController();
+    private RestaurantController restaurantController = new RestaurantController();
     public void start() throws InterruptedException {
         System.out.println("welcome!");
         while(true){
@@ -58,8 +59,8 @@ public class commandHndlr {
                 usercntrl.parseArgAdd(args);
                 return generateSuccessJson("User added successfully.\n");
             case "addRestaurant":
-                // Handle addRestaurant command
-                break;
+                restaurantController.parseArgAdd(args);
+                return generateSuccessJson("Restaurant added successfully.\n");
             case "addTable":
                 // Handle addTable command
                 break;

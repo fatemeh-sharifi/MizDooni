@@ -11,15 +11,17 @@ import lombok.Setter;
 @Setter
 public class User {
     private String username;
+    String role;
     private String email;
     private String password;
     private List<Reservation> reservations;
     private AddressUser address;
-    public User(String username, String email, String password, AddressUser address) {
+    public User(String username, String email, String password, String role, AddressUser address) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.address = address;
+        this.role = role;
     }
 
 }

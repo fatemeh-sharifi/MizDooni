@@ -26,6 +26,10 @@ public class MizDooni {
     public void addUser(User user) throws Exception{
         users.add(user);
     }
+
+    public void addRestaurant(Restaurant restaurant){
+        restaurants.add(restaurant);
+    }
     public boolean isUserExists(String username) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
@@ -41,6 +45,26 @@ public class MizDooni {
             }
         }
         return false; // Email not found
+    }
+
+    public boolean isRestaurantNameExists(String name){
+        for(Restaurant restaurant : restaurants){
+            if(restaurant.getName().equals(name)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isManager(String username){
+        for(User user : users){
+            if(user.getUsername().equals(username)){
+                if(user.getRole().equals("manager")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 //    private boolean doesUserExists(String username,String email){
 //        for (User user : users)

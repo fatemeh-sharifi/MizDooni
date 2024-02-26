@@ -20,7 +20,7 @@ public class UserController {
         String country = (String) addressObject.get("country");
         String city = (String) addressObject.get("city");
         AddressUser addr = new AddressUser(country, city);
-        User user = new User((String) jsonObject.get("username"), (String) jsonObject.get("email"), (String) jsonObject.get("password"), addr);
+        User user = new User((String) jsonObject.get("username"), (String) jsonObject.get("email"), (String) jsonObject.get("password"), (String) jsonObject.get("role"), addr);
         mizDooni.addUser(user);
     }
 
