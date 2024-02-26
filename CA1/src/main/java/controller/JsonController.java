@@ -1,21 +1,18 @@
 package controller;
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.reservation.Reservation;
 import domain.restaurant.Restaurant;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.util.List;
 
-
 public class JsonController {
-
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static String generateSearchByNameJson(List<Restaurant> restaurants) throws Exception{
+    public static String generateSearchByNameJson(List<Restaurant> restaurants) throws Exception {
         ArrayNode restaurantArray = objectMapper.createArrayNode();
         for (Restaurant restaurant : restaurants) {
             ObjectNode restaurantObject = objectMapper.createObjectNode();
@@ -39,31 +36,31 @@ public class JsonController {
         return objectMapper.writeValueAsString(responseObject);
     }
 
-    public static String generateSuccessJson(String message) throws Exception{
+    public static String generateSuccessJson(String message) throws Exception {
         ObjectNode response = objectMapper.createObjectNode();
         response.put("success", true);
         response.put("data", message);
         return objectMapper.writeValueAsString(response);
     }
 
-    public String generateSuccessJsonAvailableTables(JSONArray availableTablesArray) throws Exception {
+    public static String generateSuccessJsonAvailableTables(ObjectNode availableTablesArray) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode response = objectMapper.createObjectNode();
         ObjectNode data = objectMapper.createObjectNode();
-//        JSONObject data = new JSONObject();
-        String d = String.valueOf(availableTablesArray).replaceAll("\\\\", "");
-        data.put("availableTables", d);
+        data.set("availableTables", availableTablesArray);
         response.put("success", true);
-        response.put("data", data);
-        String r = String.valueOf(response).replaceAll("\\\\", "");
-        return r;
-//        return objectMapper.writeValueAsString(response);
-    }
-    public static String generateSuccessJsonReserveTable(int reservationNumber) throws Exception{
-        ObjectNode response = objectMapper.createObjectNode();
-        response.put("success", true);
-        response.put("data", "reservationNumber: " +  reservationNumber);
+        response.set("data", data);
         return objectMapper.writeValueAsString(response);
     }
+
+
+    public static String generateSuccessJsonReserveTable(int reservationNumber) throws Exception {
+        ObjectNode response = objectMapper.createObjectNode();
+        response.put("success", true);
+        response.put("data", "reservationNumber: " + reservationNumber);
+        return objectMapper.writeValueAsString(response);
+    }
+
     public static String generateErrorJson(String errorMessage) throws Exception {
         ObjectNode response = objectMapper.createObjectNode();
         response.put("success", false);

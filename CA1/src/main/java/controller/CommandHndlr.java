@@ -68,8 +68,8 @@ public class CommandHndlr {
                 List<Restaurant> restaurantsByType = restaurantController.parseSearchByTypeArgs(args);
                 return jsonController.generateSearchByNameJson(restaurantsByType);
             case SHOW_AVAILABLE_TABLES:
-                JSONArray availableTables = restaurantController.showAvailableTables(args);
-                return jsonController.generateSuccessJsonAvailableTables(availableTables);
+//                ObjectNode availableTables = restaurantController.showAvailableTables(args);
+                return jsonController.generateSuccessJsonAvailableTables(restaurantController.showAvailableTables(args));
             case ADD_REVIEW:
                 feedbackController.parseArgAdd(args);
                 return jsonController.generateSuccessJson("Review added successfully.");
