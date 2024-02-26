@@ -2,6 +2,6 @@ package domain.exception;
 
 public class throwRestaurantNameExistsException {
     public throwRestaurantNameExistsException() throws Exception {
-        throw new Exception("The restaurant name Exists.");
+        throw new Exception("The restaurant name Exists.\n");
     }
 }
