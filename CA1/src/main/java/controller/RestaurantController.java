@@ -238,8 +238,10 @@ public class RestaurantController {
         int reservationNumber = mizDooni.getReservationNumber();
         Reservation reservation = new Reservation(username, restaurantName, tableNumber, reservationNumber, datetime);
         restaurant.addReservation(reservation);
+        User user = mizDooni.getUserByUsername(username);
+        user.addReservation(reservation);
         mizDooni.setReservationNumber(reservationNumber + 1);
-        return mizDooni.getReservationNumber();
+        return mizDooni.getReservationNumber() - 1;
     }
 
     private boolean isTableReserved(String restaurantName, int tableNumber, LocalDateTime datetime) {
@@ -263,7 +265,41 @@ public class RestaurantController {
         return false; // Table is not reserved at the specified datetime
     }
 
-    
+
+    public void cancelReservation(String args) throws Exception {
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) parser.parse(args);
+        String username = (String) jsonObject.get("username");
+        int reservationNumber = ((Long) jsonObject.get("reservationNumber")).intValue();
+
+        // Find the user
+        User user = mizDooni.getUserByUsername(username);
+        if (user == null) {
+            new throwUsernameNotExistsException();
+        }
+
+        // Find the reservation
+        Reservation reservationToRemove = null;
+        for (Reservation reservation : user.getReservations()) {
+            if (reservation.getReservationNumber() == reservationNumber) {
+                reservationToRemove = reservation;
+                break;
+            }
+        }
+
+        if (reservationToRemove == null) {
+            throw new Exception("Reservation not found for the user.");
+        }
+
+        // Check if reservation time is in the past
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        if (reservationToRemove.getDatetime().isBefore(currentDateTime)) {
+            throw new Exception("Cannot cancel reservation for past datetime.");
+        }
+
+        // Remove the reservation
+        user.getReservations().remove(reservationToRemove);
+    }
 
 
 

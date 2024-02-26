@@ -76,8 +76,8 @@ public class commandHndlr {
                 int reservationNumber = restaurantController.parseArgReserveTable(args);
                 return jsonController.generateSuccessJsonReserveTable(reservationNumber);
             case "cancelReservation":
-                // Handle cancelReservation command
-                break;
+                restaurantController.cancelReservation(args);
+                return jsonController.generateSuccessJson("Reservation cancelled successfully.");
             case "showReservationHistory":
                 List<Reservation> res = usercntrl.parseHistoryArgs(args);
                 return jsonController.generateHistoryJson(res);

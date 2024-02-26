@@ -3,3 +3,5 @@ addRestaurant {"name": "restaurant1", "managerUsername": "user1", "type": "Irani
 addTable {"tableNumber": 1, "restaurantName": "restaurant1", "managerUseranme": "user1", "seatsNumber": 4}
 addUser {"role": "client", "username": "user2", "password": "1234", "email": "user2@gmail.com", "address": {"country": "Iran", "city": "Tehran"}}
 reserveTable {"username": "user1", "restaurantName": "restaurant1", "tableNumber": 1, "datetime": "2024-02-27 21:00"}
+cancelReservation {"username": "user1", "reservationNumber": 1}
+showReservationHistory {"username": "user1"}

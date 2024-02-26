@@ -1,5 +1,6 @@
 package domain.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import domain.address.AddressUser;
@@ -22,6 +23,9 @@ public class User {
         this.password = password;
         this.address = address;
         this.role = role;
+        this.reservations = new ArrayList<>();
     }
-
+    public void addReservation(Reservation reservation){
+        reservations.add(reservation);
+    }
 }

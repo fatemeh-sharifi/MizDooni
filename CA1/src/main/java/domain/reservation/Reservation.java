@@ -21,5 +21,4 @@ public class Reservation {
         this.datetime = datetime;
         this.reservationNumber = reservationNumber;
     }
-
 }
