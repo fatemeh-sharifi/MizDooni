@@ -27,6 +27,7 @@ public class commandHndlr {
     private UserController usercntrl = new UserController();
     private RestaurantController restaurantController = new RestaurantController();
     private JsonController jsonController = new JsonController();
+    private FeedbackController feedbackController = new FeedbackController();
     public void start() throws Exception{
         System.out.println("welcome!");
         while(true){
@@ -90,10 +91,10 @@ public class commandHndlr {
                 // Handle showAvailableTables command
                 break;
             case "addReview":
-                // Handle addReview command
-                break;
+                feedbackController.parseArgAdd(args);
+                return jsonController.generateSuccessJson("Review added successfully.");
             default:
-                throw new Exception("Request does not exist!\n");
+                throw new Exception("Request does not exist!");
         }
         return "";
     }

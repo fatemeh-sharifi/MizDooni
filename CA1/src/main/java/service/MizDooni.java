@@ -113,6 +113,10 @@ public class MizDooni {
         }
         return res;
     }
+
+    public void addFeedback(Feedback feedback){
+        this.feedbacks.add(feedback);
+    }
 //    private boolean doesUserExists(String username,String email){
 //        for (User user : users)
 //            if (user.getUsername().equals(username) || user.getEmail().equals(email))
