@@ -1,11 +1,13 @@
 package controller;
 import domain.exception.*;
+import domain.reservation.Reservation;
 import domain.restaurant.Restaurant;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import domain.address.AddressRestaurant;
 import service.MizDooni;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class RestaurantController {
@@ -69,6 +71,13 @@ public class RestaurantController {
         mizDooni.addRestaurant(restaurant);
     }
 
+    public List<Reservation> parseSearchByNameArgs(String args) throws Exception{
+        JSONObject jsonObject = (JSONObject) new JSONParser().parse(args);
+        String name = (String) jsonObject.get("name");
+        doesUsernameExists(username);
+        return mizDooni.getUserHistory(username);
+    }
+
     private void validateTime(String startTime,String endTime) throws Exception {
         if (!availableTimes.contains(startTime) || !availableTimes.contains(endTime)) {
             new throwWrongTimeException();
@@ -103,6 +112,12 @@ public class RestaurantController {
     private void validateType(String type) throws Exception {
         if (!availableType.contains(type)) {
             new throwWrongTypeException();
+        }
+    }
+
+    private void doesRestaurantExists(String name) throws Exception {
+        if(!mizDooni.isRestaurantNameExists(name)){
+            new throwRestaurantNameExistsException();
         }
     }
 

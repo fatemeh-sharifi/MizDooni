@@ -1,9 +1,12 @@
 package controller;
+import domain.reservation.Reservation;
 import org.json.simple.JSONObject;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import org.json.simple.JSONArray;
 
 public class commandHndlr {
     private Set<String> availableReq = new HashSet<String>() {{
@@ -71,8 +74,8 @@ public class commandHndlr {
                 // Handle cancelReservation command
                 break;
             case "showReservationHistory":
-                // Handle showReservationHistory command
-                break;
+                List<Reservation> res = usercntrl.parseHistoryArgs(args);
+                return generateHistoryJson(res);
             case "searchRestaurantsByName":
                 // Handle searchRestaurantsByName command
                 break;
@@ -105,4 +108,21 @@ public class commandHndlr {
         return response.toJSONString();
     }
 
+    private static String generateHistoryJson(List<Reservation> reservationHistory) {
+        JSONArray reservationArray = new JSONArray();
+
+        // Iterate over the list of reservations and add each reservation as a JSON object to the array
+        for (Reservation reservation : reservationHistory) {
+            JSONObject reservationObject = new JSONObject();
+            reservationObject.put("reservationNumber", reservation.getReservationNumber());
+            reservationObject.put("restaurantName", reservation.getRestaurantName());
+            reservationObject.put("tableNumber", reservation.getTableNumber());
+            reservationObject.put("datetime", reservation.getDatetime());
+            reservationArray.add(reservationObject);
+        }
+        JSONObject response = new JSONObject();
+        response.put("data", reservationArray);
+        response.put("success", true);
+        return response.toJSONString();
+    }
 }

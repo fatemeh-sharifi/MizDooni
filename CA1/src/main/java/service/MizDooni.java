@@ -1,7 +1,9 @@
 package service;
 import java.util.ArrayList;
+import java.util.List;
 
 import domain.address.AddressRestaurant;
+import domain.reservation.Reservation;
 import lombok.Getter;
 import lombok.Setter;
 import domain.user.User;
@@ -65,6 +67,20 @@ public class MizDooni {
             }
         }
         return false;
+    }
+
+    private User getUserByUsername(String username){
+        User res = null;
+        for(User user : users){
+            if(user.getUsername().equals(username))
+                res =  user;
+        }
+        return res;
+    }
+
+    public List<Reservation> getUserHistory(String username){
+        User user = getUserByUsername(username);
+        return user.getReservations();
     }
 //    private boolean doesUserExists(String username,String email){
 //        for (User user : users)
