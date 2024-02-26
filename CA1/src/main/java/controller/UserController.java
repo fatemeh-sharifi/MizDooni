@@ -24,6 +24,7 @@ public class UserController {
         mizDooni.addUser(user);
     }
 
+
     private void validateRole(String role) throws Exception {
         if (!isValidRole(role)) {
             new throwRoleException();

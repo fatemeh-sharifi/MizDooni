@@ -1,5 +1,7 @@
 package service;
 import java.util.ArrayList;
+
+import domain.address.AddressRestaurant;
 import lombok.Getter;
 import lombok.Setter;
 import domain.user.User;
@@ -38,5 +40,26 @@ public class MizDooni {
         return true;
     }
 
+    public void addTable(){
+        addSampleRestaurant();
+    }
+    public Restaurant getRestaurantByName(String restaurantName) {
+        for (Restaurant restaurant : restaurants) {
+            if (restaurant.getName().equals(restaurantName)) {
+                return restaurant;
+            }
+        }
+        return null; // Restaurant not found
+    }
 
+    public void addRestaurantTEST(Restaurant restaurant) {
+        restaurants.add(restaurant);
+    }
+
+    public String addSampleRestaurant() {
+        AddressRestaurant address = new AddressRestaurant("Iran", "Tehran", "North Kargar");
+        Restaurant restaurant = new Restaurant("restaurant1", "user2", "Iranian", "08:00", "23:00", "Open seven days a week", address);
+        addRestaurantTEST(restaurant);
+        return("DONE");
+    }
 }
