@@ -73,8 +73,8 @@ public class commandHndlr {
                 restaurantController.parseAddTable(args);
                 return jsonController.generateSuccessJson("Table added successfully.");
             case "reserveTable":
-                // Handle reserveTable command
-                break;
+                int reservationNumber = restaurantController.parseArgReserveTable(args);
+                return jsonController.generateSuccessJsonReserveTable(reservationNumber);
             case "cancelReservation":
                 // Handle cancelReservation command
                 break;

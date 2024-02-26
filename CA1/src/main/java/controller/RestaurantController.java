@@ -3,10 +3,15 @@ import domain.exception.*;
 import domain.table.*;
 import domain.reservation.Reservation;
 import domain.restaurant.Restaurant;
+import domain.user.User;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import domain.address.AddressRestaurant;
 import service.MizDooni;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,6 +179,92 @@ public class RestaurantController {
             new throwInvalidSeatsNumberException();
         }
     }
+    public int parseArgReserveTable(String args) throws Exception {
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) parser.parse(args);
+        String username = (String) jsonObject.get("username");
+        String restaurantName = (String) jsonObject.get("restaurantName");
+        int tableNumber = ((Long) jsonObject.get("tableNumber")).intValue();
+        String datetimeString = (String) jsonObject.get("datetime");
+
+        // Validate user existence and role
+        if (!mizDooni.isUserExists(username)) {
+            new throwUsernameNotExistsException();
+        } else {
+            User user = mizDooni.getUserByUsername(username);
+            if (!user.getRole().equals("manager")) {
+                throw new Exception("Only managers are allowed to make reservations.");
+            }
+        }
+
+        // Validate datetime format
+        LocalDateTime datetime;
+        try {
+            datetime = LocalDateTime.parse(datetimeString, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        } catch (DateTimeParseException e) {
+            throw new Exception("Invalid datetime format. Please use yyyy-MM-dd HH:mm format.");
+        }
+
+        // Check if the datetime is in the future
+        if (datetime.isBefore(LocalDateTime.now())) {
+            throw new Exception("Reservation datetime should be in the future.");
+        }
+
+        // Check if the restaurant exists
+        if (!mizDooni.isRestaurantNameExists(restaurantName)) {
+            new throwRestaurantNameNotExistsException();
+        }
+
+        // Check if the table exists in the restaurant
+        Restaurant restaurant = mizDooni.getRestaurantByName(restaurantName);
+        List<Table> tables = restaurant.getTables();
+        boolean tableExists = false;
+        for (Table table : tables) {
+            if (table.getTableNumber() == tableNumber) {
+                tableExists = true;
+                break;
+            }
+        }
+        if (!tableExists) {
+            throw new Exception("Table not found in the restaurant.");
+        }
+
+        // Check if the table is available at the specified datetime
+        if (isTableReserved(restaurantName, tableNumber, datetime)) {
+            throw new Exception("Table is already reserved at the specified datetime.");
+        }
+
+        // Add reservation
+        int reservationNumber = mizDooni.getReservationNumber();
+        Reservation reservation = new Reservation(username, restaurantName, tableNumber, reservationNumber, datetime);
+        restaurant.addReservation(reservation);
+        mizDooni.setReservationNumber(reservationNumber + 1);
+        return mizDooni.getReservationNumber();
+    }
+
+    private boolean isTableReserved(String restaurantName, int tableNumber, LocalDateTime datetime) {
+        Restaurant restaurant = mizDooni.getRestaurantByName(restaurantName);
+        if (restaurant == null || restaurant.getReservations() == null) {
+            return false; // Restaurant not found or reservations list is null
+        }
+
+        List<Reservation> reservations = restaurant.getReservations();
+        if (reservations.isEmpty()) {
+            return false; // No reservations for this restaurant
+        }
+
+        // Check if the table is reserved at the specified datetime
+        for (Reservation reservation : reservations) {
+            if (reservation.getTableNumber() == tableNumber && reservation.getDatetime().equals(datetime)) {
+                return true; // Table is reserved at the specified datetime
+            }
+        }
+
+        return false; // Table is not reserved at the specified datetime
+    }
+
+    
+
 
 
 }

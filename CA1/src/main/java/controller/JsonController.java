@@ -43,6 +43,12 @@ public class JsonController {
         return objectMapper.writeValueAsString(response);
     }
 
+    public static String generateSuccessJsonReserveTable(int reservationNumber) throws Exception{
+        ObjectNode response = objectMapper.createObjectNode();
+        response.put("success", true);
+        response.put("data", "reservationNumber: " +  reservationNumber);
+        return objectMapper.writeValueAsString(response);
+    }
     public static String generateErrorJson(String errorMessage) throws Exception {
         ObjectNode response = objectMapper.createObjectNode();
         response.put("success", false);

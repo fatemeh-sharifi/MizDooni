@@ -84,7 +84,7 @@ public class MizDooni {
         return false;
     }
 
-    private User getUserByUsername(String username){
+    public User getUserByUsername(String username){
         User res = null;
         for(User user : users){
             if(user.getUsername().equals(username))
@@ -130,7 +130,6 @@ public class MizDooni {
         }
         return null; // Restaurant not found
     }
-
 
 
 }
