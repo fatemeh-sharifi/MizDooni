@@ -1,4 +1,4 @@
-package domain.Exception;
+package domain.exception;
 
 public class throwUsernameException {
     public throwUsernameException() throws Exception {
