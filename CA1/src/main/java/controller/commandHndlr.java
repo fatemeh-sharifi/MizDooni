@@ -3,6 +3,8 @@ import domain.reservation.Reservation;
 import domain.restaurant.Restaurant;
 import org.json.simple.JSONObject;
 
+
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -24,7 +26,8 @@ public class commandHndlr {
     }};
     private UserController usercntrl = new UserController();
     private RestaurantController restaurantController = new RestaurantController();
-    public void start() throws InterruptedException {
+    private JsonController jsonController = new JsonController();
+    public void start() throws Exception{
         System.out.println("welcome!");
         while(true){
             Scanner myObj = new Scanner(System.in);
@@ -37,7 +40,7 @@ public class commandHndlr {
                     System.out.println(res);
                     clearScreen();
                 }catch (Exception e){
-                   System.out.println(generateErrorJson(e.getMessage()));
+                   System.out.println(jsonController.generateErrorJson(e.getMessage()));
                 }
 
             }
@@ -61,10 +64,10 @@ public class commandHndlr {
         switch(req) {
             case "addUser":
                 usercntrl.parseArgAdd(args);
-                return generateSuccessJson("User added successfully.\n");
+                return jsonController.generateSuccessJson("User added successfully.");
             case "addRestaurant":
                 restaurantController.parseArgAdd(args);
-                return generateSuccessJson("Restaurant added successfully.\n");
+                return jsonController.generateSuccessJson("Restaurant added successfully.");
             case "addTable":
                 // Handle addTable command
                 break;
@@ -76,11 +79,10 @@ public class commandHndlr {
                 break;
             case "showReservationHistory":
                 List<Reservation> res = usercntrl.parseHistoryArgs(args);
-                return generateHistoryJson(res);
+                return jsonController.generateHistoryJson(res);
             case "searchRestaurantsByName":
-                Restaurant restaurant = restaurantController.parseSearchByNameArgs(args);
-                // Handle searchRestaurantsByName command
-                break;
+                List<Restaurant> restaurant = restaurantController.parseSearchByNameArgs(args);
+                return jsonController.generateSearchByNameJson(restaurant);
             case "searchRestaurantsByType":
                 // Handle searchRestaurantsByType command
                 break;
@@ -96,59 +98,59 @@ public class commandHndlr {
         return "";
     }
 
-    private static String generateSuccessJson(String message) {
-        JSONObject response = new JSONObject();
-        response.put("data", message);
-        response.put("success", true);
-        return response.toJSONString();
-    }
+//    private static String generateSuccessJson(String message) {
+//        JSONObject response = new JSONObject();
+//        response.put("data", message);
+//        response.put("success", true);
+//        return response.toJSONString();
+//    }
+//
+//    private static String generateErrorJson(String errorMessage) {
+//        JSONObject response = new JSONObject();
+//        response.put("data", errorMessage);
+//        response.put("success", false);
+//        return response.toJSONString();
+//    }
 
-    private static String generateErrorJson(String errorMessage) {
-        JSONObject response = new JSONObject();
-        response.put("data", errorMessage);
-        response.put("success", false);
-        return response.toJSONString();
-    }
+//    private static String generateHistoryJson(List<Reservation> reservationHistory) {
+//        JSONArray reservationArray = new JSONArray();
+//
+//        // Iterate over the list of reservations and add each reservation as a JSON object to the array
+//        for (Reservation reservation : reservationHistory) {
+//            JSONObject reservationObject = new JSONObject();
+//            reservationObject.put("reservationNumber", reservation.getReservationNumber());
+//            reservationObject.put("restaurantName", reservation.getRestaurantName());
+//            reservationObject.put("tableNumber", reservation.getTableNumber());
+//            reservationObject.put("datetime", reservation.getDatetime());
+//            reservationArray.add(reservationObject);
+//        }
+//        JSONObject json = new JSONObject();
+//        json.put("reservationHistory", reservationArray);
+//        JSONObject response = new JSONObject();
+//        response.put("data", json);
+//        response.put("success", true);
+//        return response.toJSONString();
+//    }
 
-    private static String generateHistoryJson(List<Reservation> reservationHistory) {
-        JSONArray reservationArray = new JSONArray();
-
-        // Iterate over the list of reservations and add each reservation as a JSON object to the array
-        for (Reservation reservation : reservationHistory) {
-            JSONObject reservationObject = new JSONObject();
-            reservationObject.put("reservationNumber", reservation.getReservationNumber());
-            reservationObject.put("restaurantName", reservation.getRestaurantName());
-            reservationObject.put("tableNumber", reservation.getTableNumber());
-            reservationObject.put("datetime", reservation.getDatetime());
-            reservationArray.add(reservationObject);
-        }
-        JSONObject json = new JSONObject();
-        json.put("reservationHistory", reservationArray);
-        JSONObject response = new JSONObject();
-        response.put("data", json);
-        response.put("success", true);
-        return response.toJSONString();
-    }
-
-    private static String generateSearchByNameJson(Restaurant restaurant){
-        JSONArray restaurantArray = new JSONArray();
-        JSONObject restaurantObject = new JSONObject();
-        restaurantObject.put("name", restaurant.getName());
-        restaurantObject.put("type", restaurant.getType());
-        restaurantObject.put("startTime", restaurant.getStartTime());
-        restaurantObject.put("endTime", restaurant.getEndTime());
-        restaurantObject.put("description", restaurant.getDescription());
-        JSONObject addressObject = new JSONObject();
-        addressObject.put("country", restaurant.getAddress().getCountry());
-        addressObject.put("city", restaurant.getAddress().getCity());
-        addressObject.put("street", restaurant.getAddress().getStreet());
-        restaurantObject.put("address", addressObject);
-        restaurantArray.add(restaurantObject);
-        JSONObject json = new JSONObject();
-        json.put("restaurants", restaurantArray);
-        JSONObject response = new JSONObject();
-        response.put("data", json);
-        response.put("success", true);
-        return response.toJSONString();
-    }
+//    private static String generateSearchByNameJson(List<Restaurant> restaurant){
+//        JSONArray restaurantArray = new JSONArray();
+//        JSONObject restaurantObject = new JSONObject();
+//        restaurantObject.put("name", restaurant.getName());
+//        restaurantObject.put("type", restaurant.getType());
+//        restaurantObject.put("startTime", restaurant.getStartTime());
+//        restaurantObject.put("endTime", restaurant.getEndTime());
+//        restaurantObject.put("description", restaurant.getDescription());
+//        JSONObject addressObject = new JSONObject();
+//        addressObject.put("country", restaurant.getAddress().getCountry());
+//        addressObject.put("city", restaurant.getAddress().getCity());
+//        addressObject.put("street", restaurant.getAddress().getStreet());
+//        restaurantObject.put("address", addressObject);
+//        restaurantArray.add(restaurantObject);
+//        JSONObject json = new JSONObject();
+//        json.put("restaurants", restaurantArray);
+//        JSONObject response = new JSONObject();
+//        response.put("data", json);
+//        response.put("success", true);
+//        return response.toJSONString();
+//    }
 }

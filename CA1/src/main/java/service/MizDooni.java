@@ -60,6 +60,15 @@ public class MizDooni {
         return false;
     }
 
+    public boolean isRestaurantNameAvailable(String name){
+        for(Restaurant restaurant : restaurants){
+            if(restaurant.getName().contains(name)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isManager(String username){
         for(User user : users){
             if(user.getUsername().equals(username)){
@@ -85,15 +94,15 @@ public class MizDooni {
         return user.getReservations();
     }
 
-//    public Restaurant getRestaurantByName(String name){
-//        Restaurant res = null;
-//        for(Restaurant restaurant : restaurants){
-//            if (restaurant.getName().equals(name)){
-//                res = restaurant;
-//            }
-//        }
-//        return res;
-//    }
+    public List<Restaurant> getRestaurantsByName(String name){
+        List<Restaurant> res = new ArrayList<>();
+        for(Restaurant restaurant : restaurants){
+            if (restaurant.getName().contains(name)){
+                res.add(restaurant);
+            }
+        }
+        return res;
+    }
 //    private boolean doesUserExists(String username,String email){
 //        for (User user : users)
 //            if (user.getUsername().equals(username) || user.getEmail().equals(email))
