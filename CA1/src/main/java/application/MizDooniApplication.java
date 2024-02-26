@@ -1,11 +1,12 @@
 package application;
-import controller.commandHndlr;
+
+import controller.CommandHndlr;
 import service.MizDooni;
 
 public class MizDooniApplication {
     public static void main(String[] args) throws Exception {
         MizDooni.getInstance();
-        commandHndlr cmd = new commandHndlr();
+        CommandHndlr cmd = new CommandHndlr();
         cmd.start();
     }
 }
