@@ -55,39 +55,19 @@ public class UserController {
     }
 
     private boolean isValidAddress(JSONObject addressObject){
-        if(addressObject.containsKey("country") && addressObject.containsKey("city")) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return addressObject.containsKey("country") && addressObject.containsKey("city");
     }
 
     private boolean isValidRole(String role){
-        if (role.equals("client")  || role.equals("manager") ) {
-            return true;
-        }
-        else{
-            return false;
-        }
+        return role.equals("client") || role.equals("manager");
     }
 
     private boolean isValidUsername(String username){
-        if(Pattern.matches("^[._a-zA-Z0-9]+$", username)){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return Pattern.matches("^[._a-zA-Z0-9]+$", username);
     }
 
     private boolean isValidEmail(String email){
-        if(Pattern.matches("^[A-Za-z0-9+_.-]+@[A-Za-z]+.com$",email)){
-            return true;
-        }
-        else {
-            return false;
-        }
+        return Pattern.matches("^[A-Za-z0-9+_.-]+@[A-Za-z]+.com$", email);
     }
 
 }
