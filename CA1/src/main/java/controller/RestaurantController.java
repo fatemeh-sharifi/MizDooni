@@ -78,6 +78,17 @@ public class RestaurantController {
         return mizDooni.getRestaurantsByName(name);
     }
 
+    public List<Restaurant> parseSearchByTypeArgs(String args) throws Exception{
+        JSONObject jsonObject = (JSONObject) new JSONParser().parse(args);
+        String type = (String) jsonObject.get("type");
+        validateType(type);
+        List<Restaurant> restaurants = mizDooni.getRestaurantsByType(type);
+        if(restaurants.isEmpty()){
+            new throwTypeNotExistsException();
+        }
+        return restaurants;
+    }
+
     private void validateTime(String startTime,String endTime) throws Exception {
         if (!availableTimes.contains(startTime) || !availableTimes.contains(endTime)) {
             new throwWrongTimeException();

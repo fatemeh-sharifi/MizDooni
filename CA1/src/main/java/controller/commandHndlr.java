@@ -81,11 +81,11 @@ public class commandHndlr {
                 List<Reservation> res = usercntrl.parseHistoryArgs(args);
                 return jsonController.generateHistoryJson(res);
             case "searchRestaurantsByName":
-                List<Restaurant> restaurant = restaurantController.parseSearchByNameArgs(args);
-                return jsonController.generateSearchByNameJson(restaurant);
+                List<Restaurant> restaurants = restaurantController.parseSearchByNameArgs(args);
+                return jsonController.generateSearchByNameJson(restaurants);
             case "searchRestaurantsByType":
-                // Handle searchRestaurantsByType command
-                break;
+                List<Restaurant> restaurantsType = restaurantController.parseSearchByTypeArgs(args);
+                return jsonController.generateSearchByNameJson(restaurantsType);
             case "showAvailableTables":
                 // Handle showAvailableTables command
                 break;
