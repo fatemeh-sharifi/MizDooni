@@ -89,13 +89,14 @@ public class commandHndlr {
                 return jsonController.generateSearchByNameJson(restaurantsType);
             case "showAvailableTables":
                 // Handle showAvailableTables command
-                break;
+                JSONArray response = restaurantController.showAvailableTables(args);
+                return jsonController.generateSuccessJsonAvailableTables(response);
             case "addReview":
                 feedbackController.parseArgAdd(args);
                 return jsonController.generateSuccessJson("Review added successfully.");
             default:
                 throw new Exception("Request does not exist!");
         }
-        return "";
+//        return "";
     }
 }

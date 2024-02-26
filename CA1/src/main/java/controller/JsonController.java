@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.reservation.Reservation;
 import domain.restaurant.Restaurant;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.util.List;
 
 
@@ -43,6 +46,18 @@ public class JsonController {
         return objectMapper.writeValueAsString(response);
     }
 
+    public String generateSuccessJsonAvailableTables(JSONArray availableTablesArray) throws Exception {
+        ObjectNode response = objectMapper.createObjectNode();
+        ObjectNode data = objectMapper.createObjectNode();
+//        JSONObject data = new JSONObject();
+        String d = String.valueOf(availableTablesArray).replaceAll("\\\\", "");
+        data.put("availableTables", d);
+        response.put("success", true);
+        response.put("data", data);
+        String r = String.valueOf(response).replaceAll("\\\\", "");
+        return r;
+//        return objectMapper.writeValueAsString(response);
+    }
     public static String generateSuccessJsonReserveTable(int reservationNumber) throws Exception{
         ObjectNode response = objectMapper.createObjectNode();
         response.put("success", true);

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Reservation {
-    private String userName;
+    private String username;
     private String restaurantName;
     private int tableNumber;
     private LocalDateTime datetime;
@@ -15,7 +15,7 @@ public class Reservation {
     private int reservationNumber;
 
     public Reservation(String userName, String restaurantName, int tableNumber,int reservationNumber, LocalDateTime datetime) {
-        this.userName = userName;
+        this.username = userName;
         this.restaurantName = restaurantName;
         this.tableNumber = tableNumber;
         this.datetime = datetime;

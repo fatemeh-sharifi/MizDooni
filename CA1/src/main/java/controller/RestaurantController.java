@@ -1,20 +1,26 @@
 package controller;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.exception.*;
 import domain.table.*;
 import domain.reservation.Reservation;
 import domain.restaurant.Restaurant;
 import domain.user.User;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import domain.address.AddressRestaurant;
 import service.MizDooni;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.TreeSet;
+import java.util.LinkedHashMap;
 
 public class RestaurantController {
     private MizDooni mizDooni = MizDooni.getInstance();
@@ -299,8 +305,95 @@ public class RestaurantController {
 
         // Remove the reservation
         user.getReservations().remove(reservationToRemove);
+        // Iterate over all restaurants
+        for (Restaurant restaurant : mizDooni.getRestaurants()) {
+            // Get the list of reservations for the restaurant
+            List<Reservation> reservations = restaurant.getReservations();
+
+            // Find the reservation with the specified username and reservation number
+            reservationToRemove = null;
+            for (Reservation reservation : reservations) {
+                if (reservation.getUsername().equals(username) && reservation.getReservationNumber() == reservationNumber) {
+                    reservationToRemove = reservation;
+                    break;
+                }
+            }
+
+            // If the reservation was found, remove it and exit the loop
+            if (reservationToRemove != null) {
+                reservations.remove(reservationToRemove);
+                return;
+            }
+        }
+
+            // If the reservation was not found in any restaurant, throw an exception
+            throw new Exception("Reservation not found.");
     }
 
+    public JSONArray showAvailableTables(String args) throws Exception {
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) parser.parse(args);
+        String restaurantName = (String) jsonObject.get("restaurantName");
+
+        // Retrieve the restaurant
+        Restaurant restaurant = mizDooni.getRestaurantByName(restaurantName);
+
+        // Construct the response JSON array
+        JSONArray availableTablesArray = new JSONArray();
+
+        // Parse the start and end times of the restaurant
+        LocalTime startTime = LocalTime.parse(restaurant.getStartTime());
+        LocalTime endTime = LocalTime.parse(restaurant.getEndTime());
+
+        // Get today's date
+        LocalDate today = LocalDate.now();
+
+        // Get tomorrow's date
+        LocalDate tomorrow = today.plusDays(1);
+
+        // Format today and tomorrow as strings in the format "yyyy-MM-dd"
+        String todayString = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String tomorrowString = tomorrow.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        // Iterate over the tables of the restaurant
+        for (Table table : restaurant.getTables()) {
+            ObjectMapper objectMapper = new ObjectMapper();
+//            JSONObject tableInfo = new JSONObject();
+            ObjectNode tableInfo = objectMapper.createObjectNode();
+            tableInfo.put("tableNumber", table.getTableNumber());
+            tableInfo.put("seatsNumber", table.getSeatsNumber());
+
+            JSONArray availableTimesArray = new JSONArray();
+
+            // Iterate over available times within the restaurant's working hours
+            for (LocalTime time = startTime; !time.isAfter(endTime); time = time.plusHours(1)) {
+                // Create LocalDateTime for today and tomorrow using the time
+                LocalDateTime todayDateTime = LocalDateTime.of(today, time);
+                LocalDateTime tomorrowDateTime = LocalDateTime.of(tomorrow, time);
+
+                // Check if the datetime is within the restaurant's working hours
+                if (!isTableReserved(restaurantName, table.getTableNumber(), todayDateTime)
+                        && !todayDateTime.toLocalTime().isBefore(startTime)
+                        && !todayDateTime.toLocalTime().isAfter(endTime)) {
+                    availableTimesArray.add(todayString + " " + time);
+                }
+                if (!isTableReserved(restaurantName, table.getTableNumber(), tomorrowDateTime)
+                        && !tomorrowDateTime.toLocalTime().isBefore(startTime)
+                        && !tomorrowDateTime.toLocalTime().isAfter(endTime)) {
+                    availableTimesArray.add(tomorrowString + " " + time);
+                }
+            }
+
+            // Add the array of available times to the tableInfo
+            tableInfo.put("availableTimes", String.valueOf(availableTimesArray));
+
+            // Create a JSONObject from the LinkedHashMap and add it to the JSONArray
+//            JSONObject tableJson = new JSONObject(tableInfo);
+            availableTablesArray.add(tableInfo);
+        }
+
+        return availableTablesArray;
+    }
 
 
 }
