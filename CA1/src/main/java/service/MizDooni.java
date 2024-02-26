@@ -24,21 +24,30 @@ public class MizDooni {
     }
 
     public void addUser(User user) throws Exception{
-        if (doesUserExists(user.getUsername(),user.getEmail())){
-            users.add(user);
-        }
-        else{
-            throw new Exception("Username or Email Exists!\n");
-        }
+        users.add(user);
     }
-
-    private boolean doesUserExists(String username,String email){
-        for (User user : users)
-            if (user.getUsername().equals(username) || user.getEmail().equals(email))
-                return false;
-
-        return true;
+    public boolean isUserExists(String username) {
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false; // Username not found
     }
+    public boolean isEmailExists(String email) {
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                return true;
+            }
+        }
+        return false; // Email not found
+    }
+//    private boolean doesUserExists(String username,String email){
+//        for (User user : users)
+//            if (user.getUsername().equals(username) || user.getEmail().equals(email))
+//                return false;
+//        return true;
+//    }
 
     public void addTable(){
         addSampleRestaurant();

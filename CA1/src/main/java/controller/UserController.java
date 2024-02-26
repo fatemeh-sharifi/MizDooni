@@ -11,16 +11,16 @@ public class UserController {
     public void parseArgAdd(String args) throws Exception {
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(args);
         validateRole((String) jsonObject.get("role"));
-        validateUsername((String) jsonObject.get("username"));
+        String username = (String) jsonObject.get("username");
+        validateUsername(username);
         String email = (String) jsonObject.get("email");
         validateEmail(email);
         JSONObject addressObject = (JSONObject) jsonObject.get("address");
         validateAddress(addressObject);
-
         String country = (String) addressObject.get("country");
         String city = (String) addressObject.get("city");
         AddressUser addr = new AddressUser(country, city);
-        User user = new User((String) jsonObject.get("username"), email, (String) jsonObject.get("password"), addr);
+        User user = new User((String) jsonObject.get("username"), (String) jsonObject.get("email"), (String) jsonObject.get("password"), addr);
         mizDooni.addUser(user);
     }
 
@@ -35,14 +35,19 @@ public class UserController {
         if (!isValidUsername(username)) {
             new throwUsernameException();
         }
+        if (mizDooni.isUserExists(username)) {
+            new throwUsernameAlreadyExistsException();
+        }
     }
 
     private void validateEmail(String email) throws Exception {
         if (!isValidEmail(email)) {
             new throwEmailException();
         }
+        if (mizDooni.isEmailExists(email)) {
+            new throwEmailAlreadyExistsException();
+        }
     }
-
     private void validateAddress(JSONObject addressObject) throws Exception {
         if (!isValidAddress(addressObject)) {
             new throwAddressException();
@@ -84,4 +89,5 @@ public class UserController {
             return false;
         }
     }
+
 }
