@@ -13,6 +13,8 @@ import domain.feedback.Feedback;
 @Getter
 @Setter
 public class MizDooni {
+
+    private int reservationNumber = 1;
     private ArrayList<User> users = new ArrayList<>();
     private ArrayList<Restaurant> restaurants= new ArrayList<>();
     private ArrayList<Feedback> feedbacks = new ArrayList<>();
@@ -82,6 +84,16 @@ public class MizDooni {
         User user = getUserByUsername(username);
         return user.getReservations();
     }
+
+//    public Restaurant getRestaurantByName(String name){
+//        Restaurant res = null;
+//        for(Restaurant restaurant : restaurants){
+//            if (restaurant.getName().equals(name)){
+//                res = restaurant;
+//            }
+//        }
+//        return res;
+//    }
 //    private boolean doesUserExists(String username,String email){
 //        for (User user : users)
 //            if (user.getUsername().equals(username) || user.getEmail().equals(email))

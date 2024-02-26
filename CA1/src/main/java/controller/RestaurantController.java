@@ -71,11 +71,11 @@ public class RestaurantController {
         mizDooni.addRestaurant(restaurant);
     }
 
-    public List<Reservation> parseSearchByNameArgs(String args) throws Exception{
+    public Restaurant parseSearchByNameArgs(String args) throws Exception{
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(args);
         String name = (String) jsonObject.get("name");
-        doesUsernameExists(username);
-        return mizDooni.getUserHistory(username);
+        doesRestaurantExists(name);
+        return mizDooni.getRestaurantByName(name);
     }
 
     private void validateTime(String startTime,String endTime) throws Exception {
@@ -117,7 +117,7 @@ public class RestaurantController {
 
     private void doesRestaurantExists(String name) throws Exception {
         if(!mizDooni.isRestaurantNameExists(name)){
-            new throwRestaurantNameExistsException();
+            new throwRestaurantNameNotExistsException();
         }
     }
 

@@ -12,11 +12,14 @@ public class Reservation {
     private int tableNumber;
     private LocalDateTime datetime;
 
-    public Reservation(String userName, String restaurantName, int tableNumber, LocalDateTime datetime) {
+    private int reservationNumber;
+
+    public Reservation(String userName, String restaurantName, int tableNumber,int reservationNumber, LocalDateTime datetime) {
         this.userName = userName;
         this.restaurantName = restaurantName;
         this.tableNumber = tableNumber;
         this.datetime = datetime;
+        this.reservationNumber = reservationNumber;
     }
 
 }
