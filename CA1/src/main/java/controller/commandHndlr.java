@@ -1,5 +1,4 @@
 package controller;
-import controller.userController;
 import org.json.simple.JSONObject;
 
 import java.util.HashSet;
@@ -19,7 +18,7 @@ public class commandHndlr {
         add("showAvailableTables");
         add("addReview");
     }};
-    private userController usercntrl = new userController();
+    private UserController usercntrl = new UserController();
     public void start() throws InterruptedException {
         System.out.println("welcome!");
         while(true){
