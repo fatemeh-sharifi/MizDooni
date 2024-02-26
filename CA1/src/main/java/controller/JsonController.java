@@ -7,6 +7,8 @@ import domain.reservation.Reservation;
 import domain.restaurant.Restaurant;
 import org.json.simple.JSONArray;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class JsonController {
@@ -69,13 +71,16 @@ public class JsonController {
     }
 
     public static String generateHistoryJson(List<Reservation> reservationHistory) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
         ArrayNode reservationArray = objectMapper.createArrayNode();
         for (Reservation reservation : reservationHistory) {
             ObjectNode reservationObject = objectMapper.createObjectNode();
             reservationObject.put("reservationNumber", reservation.getReservationNumber());
             reservationObject.put("restaurantName", reservation.getRestaurantName());
             reservationObject.put("tableNumber", reservation.getTableNumber());
-            reservationObject.put("datetime", reservation.getDatetime().toString());
+            LocalDateTime datetime = reservation.getDatetime();
+            String formattedDatetime = datetime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            reservationObject.put("datetime", formattedDatetime);
             reservationArray.add(reservationObject);
         }
         ObjectNode dataObject = objectMapper.createObjectNode();

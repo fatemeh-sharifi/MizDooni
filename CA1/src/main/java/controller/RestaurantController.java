@@ -9,7 +9,6 @@ import domain.reservation.Reservation;
 import domain.restaurant.Restaurant;
 import domain.table.Table;
 import domain.user.User;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import service.MizDooni;
@@ -201,12 +200,10 @@ public class RestaurantController {
             new throwTableNotFoundException();
         }
 
-        // Check if the table is available at the specified datetime
         if (isTableReserved(restaurantName, tableNumber, datetime)) {
             new TableAlreadyReservedException();
         }
 
-        // Add reservation
         int reservationNumber = mizDooni.getReservationNumber();
         Reservation reservation = new Reservation(username, restaurantName, tableNumber, reservationNumber, datetime);
         restaurant.addReservation(reservation);
@@ -230,22 +227,21 @@ public class RestaurantController {
     private boolean isTableReserved(String restaurantName, int tableNumber, LocalDateTime datetime) {
         Restaurant restaurant = mizDooni.getRestaurantByName(restaurantName);
         if (restaurant == null || restaurant.getReservations() == null) {
-            return false; // Restaurant not found or reservations list is null
+            return false;
         }
 
         List<Reservation> reservations = restaurant.getReservations();
         if (reservations.isEmpty()) {
-            return false; // No reservations for this restaurant
+            return false;
         }
 
-        // Check if the table is reserved at the specified datetime
         for (Reservation reservation : reservations) {
             if (reservation.getTableNumber() == tableNumber && reservation.getDatetime().equals(datetime)) {
-                return true; // Table is reserved at the specified datetime
+                return true;
             }
         }
 
-        return false; // Table is not reserved at the specified datetime
+        return false;
     }
 
     public void cancelReservation(String args) throws Exception {
@@ -253,13 +249,11 @@ public class RestaurantController {
         String username = (String) jsonObject.get("username");
         int reservationNumber = ((Long) jsonObject.get("reservationNumber")).intValue();
 
-        // Find the user
         User user = mizDooni.getUserByUsername(username);
         if (user == null) {
             new throwUsernameNotExistsException();
         }
 
-        // Find the reservation
         Reservation reservationToRemove = null;
         for (Reservation reservation : user.getReservations()) {
             if (reservation.getReservationNumber() == reservationNumber) {
@@ -272,17 +266,13 @@ public class RestaurantController {
             new throwReservationNotFoundException();
         }
 
-        // Check if reservation time is in the past
         LocalDateTime currentDateTime = LocalDateTime.now();
         if (reservationToRemove.getDatetime().isBefore(currentDateTime)) {
             new throwPastDateTimeException();
         }
 
-        // Remove the reservation
         user.getReservations().remove(reservationToRemove);
-        // Iterate over all restaurants
         for (Restaurant restaurant : mizDooni.getRestaurants()) {
-            // Get the list of reservations for the restaurant
             List<Reservation> reservations = restaurant.getReservations();
 
             reservationToRemove = null;
@@ -308,21 +298,17 @@ public class RestaurantController {
         ObjectNode response = objectMapper.createObjectNode();
         ArrayNode availableTablesArray = response.putArray("availableTables");
 
-        // Parse the arguments to get restaurant name
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(args);
         String restaurantName = (String) jsonObject.get("restaurantName");
         Restaurant restaurant = mizDooni.getRestaurantByName(restaurantName);
 
-        // Get today's and tomorrow's dates
         LocalDate today = LocalDate.now();
         LocalDate tomorrow = today.plusDays(1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        // Parse the start and end times of the restaurant
         LocalTime startTime = LocalTime.parse(restaurant.getStartTime());
         LocalTime endTime = LocalTime.parse(restaurant.getEndTime());
 
-        // Iterate over the tables of the restaurant
         for (Table table : restaurant.getTables()) {
             ObjectNode tableInfo = objectMapper.createObjectNode();
             tableInfo.put("tableNumber", table.getTableNumber());
@@ -330,12 +316,10 @@ public class RestaurantController {
 
             ArrayNode availableTimesArray = objectMapper.createArrayNode();
 
-            // Iterate over available times within the restaurant's working hours
             for (LocalTime time = startTime; !time.isAfter(endTime); time = time.plusHours(1)) {
                 LocalDateTime todayDateTime = LocalDateTime.of(today, time);
                 LocalDateTime tomorrowDateTime = LocalDateTime.of(tomorrow, time);
 
-                // Check if the datetime is within the restaurant's working hours
                 if (!isTableReserved(restaurantName, table.getTableNumber(), todayDateTime)
                         && !todayDateTime.toLocalTime().isBefore(startTime)
                         && !todayDateTime.toLocalTime().isAfter(endTime)) {
