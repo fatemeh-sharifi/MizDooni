@@ -2,8 +2,8 @@ package service;
 import java.util.ArrayList;
 import java.util.List;
 
-import domain.address.AddressRestaurant;
 import domain.reservation.Reservation;
+import domain.table.Table;
 import lombok.Getter;
 import lombok.Setter;
 import domain.user.User;
@@ -41,6 +41,10 @@ public class MizDooni {
             }
         }
         return false; // Username not found
+    }
+
+    public void addTable(Restaurant restaurant, Table table){
+        restaurant.addTable(table);
     }
     public boolean isEmailExists(String email) {
         for (User user : users) {
@@ -117,16 +121,7 @@ public class MizDooni {
     public void addFeedback(Feedback feedback){
         this.feedbacks.add(feedback);
     }
-//    private boolean doesUserExists(String username,String email){
-//        for (User user : users)
-//            if (user.getUsername().equals(username) || user.getEmail().equals(email))
-//                return false;
-//        return true;
-//    }
 
-    public void addTable(){
-        addSampleRestaurant();
-    }
     public Restaurant getRestaurantByName(String restaurantName) {
         for (Restaurant restaurant : restaurants) {
             if (restaurant.getName().equals(restaurantName)) {
@@ -136,14 +131,6 @@ public class MizDooni {
         return null; // Restaurant not found
     }
 
-    public void addRestaurantTEST(Restaurant restaurant) {
-        restaurants.add(restaurant);
-    }
 
-    public String addSampleRestaurant() {
-        AddressRestaurant address = new AddressRestaurant("Iran", "Tehran", "North Kargar");
-        Restaurant restaurant = new Restaurant("restaurant1", "user2", "Iranian", "08:00", "23:00", "Open seven days a week", address);
-        addRestaurantTEST(restaurant);
-        return("DONE");
-    }
+
 }

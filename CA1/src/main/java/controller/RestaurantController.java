@@ -1,5 +1,6 @@
 package controller;
 import domain.exception.*;
+import domain.table.*;
 import domain.reservation.Reservation;
 import domain.restaurant.Restaurant;
 import org.json.simple.JSONObject;
@@ -131,5 +132,48 @@ public class RestaurantController {
             new throwRestaurantNameNotExistsException();
         }
     }
+
+    public void parseAddTable(String args) throws Exception {
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) parser.parse(args);
+        String restaurantName = (String) jsonObject.get("restaurantName");
+        int tableNumber = ((Long) jsonObject.get("tableNumber")).intValue();
+        int seatsNumber = ((Long) jsonObject.get("seatsNumber")).intValue();
+        String managerUsername = (String) jsonObject.get("managerUsername");
+        validateTable(restaurantName, tableNumber, seatsNumber, managerUsername);
+        Restaurant restaurant = mizDooni.getRestaurantByName(restaurantName);
+        Table table = new Table(tableNumber, restaurantName, managerUsername, seatsNumber);
+        mizDooni.addTable(restaurant, table);
+    }
+
+    private void validateTable(String restaurantName, int tableNumber, int seatsNumber, String managerUsername) throws Exception {
+        Restaurant restaurant = mizDooni.getRestaurantByName(restaurantName);
+        doesRestaurantExists(restaurant.getName());
+        validateTableNum(restaurant.getTables(), tableNumber);
+        //validateManager(managerUsername);
+        validateSeatsNumber(seatsNumber);
+    }
+    private boolean isValidTableNum (List<Table> tables, int tableNumber){
+        for(Table table: tables){
+            if(table.getTableNumber() == tableNumber) {
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private void validateTableNum(List<Table> tables, int tableNumber) throws Exception {
+        if(!isValidTableNum(tables, tableNumber)){
+            new throwTableNumAlreadyExistsException();
+        }
+
+    }
+
+    private void validateSeatsNumber(int seatsNumber) throws Exception {
+        if (seatsNumber <= 0 || seatsNumber != (int) seatsNumber) {
+            new throwInvalidSeatsNumberException();
+        }
+    }
+
 
 }

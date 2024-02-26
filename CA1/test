@@ -1,0 +1,3 @@
+addUser {"role": "manager", "username": "user1", "password": "1234", "email": "user1@gmail.com", "address": {"country": "Iran", "city": "Tehran"}}
+addRestaurant {"name": "restaurant1", "managerUsername": "user1", "type": "Iranian", "startTime": "08:00", "endTime": "23:00", "description": "Open seven days a week", "address": {"country": "Iran", "city": "Tehran", "street": "North Kargar"}}
+addTable {"tableNumber": 1, "restaurantName": "restaurant1", "managerUseranme": "user1", "seatsNumber": 4}
