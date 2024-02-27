@@ -337,11 +337,13 @@ public class RestaurantController {
                             && !todayDateTime.toLocalTime().isBefore(startTime)
                         && !todayDateTime.toLocalTime().isAfter(endTime)) {
                         availableTimesArray.add(today.format(formatter) + " " + time);
+                        System.out.println(today.format(formatter) + " " + time);
                     }
                 if (!isTableReserved(restaurantName, table.getTableNumber(), tomorrowDateTime)
                             && !tomorrowDateTime.toLocalTime().isBefore(startTime)
                         && !tomorrowDateTime.toLocalTime().isAfter(endTime)) {
                         availableTimesArray.add(tomorrow.format(formatter) + " " + time);
+                        System.out.println(today.format(formatter) + " " + time);
                     }
                 }
 
