@@ -1,4 +1,5 @@
 package controller;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.command.Command;
 import domain.reservation.Reservation;
 import domain.restaurant.Restaurant;
@@ -68,8 +69,8 @@ public class CommandHndlr {
                 List<Restaurant> restaurantsByType = restaurantController.parseSearchByTypeArgs(args);
                 return jsonController.generateSearchByNameJson(restaurantsByType);
             case SHOW_AVAILABLE_TABLES:
-//                ObjectNode availableTables = restaurantController.showAvailableTables(args);
-                return jsonController.generateSuccessJsonAvailableTables(restaurantController.showAvailableTables(args));
+                ObjectNode availableTables = restaurantController.showAvailableTables(args);
+                return jsonController.generateSuccessJsonAvailableTables(availableTables);
             case ADD_REVIEW:
                 feedbackController.parseArgAdd(args);
                 return jsonController.generateSuccessJson("Review added successfully.");

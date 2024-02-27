@@ -318,7 +318,10 @@ public class RestaurantController {
         LocalTime startTime = LocalTime.parse(restaurant.getStartTime());
         LocalTime endTime = LocalTime.parse(restaurant.getEndTime());
 
+
         for (Table table : restaurant.getTables()) {
+
+
             ObjectNode tableInfo = objectMapper.createObjectNode();
             tableInfo.put("tableNumber", table.getTableNumber());
             tableInfo.put("seatsNumber", table.getSeatsNumber());
@@ -326,28 +329,30 @@ public class RestaurantController {
             ArrayNode availableTimesArray = objectMapper.createArrayNode();
 
             for (LocalTime time = startTime; !time.isAfter(endTime); time = time.plusHours(1)) {
+
                 LocalDateTime todayDateTime = LocalDateTime.of(today, time);
                 LocalDateTime tomorrowDateTime = LocalDateTime.of(tomorrow, time);
 
                 if (!isTableReserved(restaurantName, table.getTableNumber(), todayDateTime)
-                        && !todayDateTime.toLocalTime().isBefore(startTime)
+                            && !todayDateTime.toLocalTime().isBefore(startTime)
                         && !todayDateTime.toLocalTime().isAfter(endTime)) {
-                    availableTimesArray.add(today.format(formatter) + " " + time);
-                }
+                        availableTimesArray.add(today.format(formatter) + " " + time);
+                    }
                 if (!isTableReserved(restaurantName, table.getTableNumber(), tomorrowDateTime)
-                        && !tomorrowDateTime.toLocalTime().isBefore(startTime)
+                            && !tomorrowDateTime.toLocalTime().isBefore(startTime)
                         && !tomorrowDateTime.toLocalTime().isAfter(endTime)) {
-                    availableTimesArray.add(tomorrow.format(formatter) + " " + time);
+                        availableTimesArray.add(tomorrow.format(formatter) + " " + time);
+                    }
                 }
+
+                tableInfo.set("availableTimes", availableTimesArray);
+
+
+                availableTablesArray.add(tableInfo);
             }
 
-            tableInfo.set("availableTimes", availableTimesArray);
-            availableTablesArray.add(tableInfo);
+            return response;
         }
-
-        return response;
-    }
-
 
 
 }
