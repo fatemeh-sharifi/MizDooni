@@ -27,11 +27,18 @@ public class FeedbackController {
         validateRates(foodRate, serviceRate, ambianceRate, overallRate);
 
         String comment = (String) jsonObject.get("comment");
+        validateCommentNotEmpty(comment);
         Feedback feedback = new Feedback(username, restaurantName, foodRate, serviceRate,
                 ambianceRate, overallRate, comment, LocalDateTime.now());
+
         mizDooni.addFeedback(feedback);
     }
 
+    private void validateCommentNotEmpty(String comment) throws Exception {
+        if (comment == null || comment.trim ().isEmpty ()) {
+            new throwMissingCommentException ();
+        }
+    }
     private double getDouble(JSONObject jsonObject, String key) throws Exception {
         Number rate = (Number) jsonObject.get(key);
         if (rate == null) {

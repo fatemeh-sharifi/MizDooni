@@ -68,7 +68,7 @@ public class ReservationTest {
 
     @AfterEach
     public void tearDown() {
-        mizDooni.getUsers().clear(); 
+        mizDooni.getUsers().clear();
         mizDooni.getRestaurants().clear();
         mizDooni.getFeedbacks().clear();
         mizDooni.setReservationNumber(1);
