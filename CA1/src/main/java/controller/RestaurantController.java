@@ -328,7 +328,7 @@ public class RestaurantController {
 
             ArrayNode availableTimesArray = objectMapper.createArrayNode();
 
-            for (LocalTime time = startTime; !time.isAfter(endTime); time = time.plusHours(1)) {
+            for (LocalTime time = startTime; !time.equals (endTime.plusHours (1)); time = time.plusHours(1)) {
 
                 LocalDateTime todayDateTime = LocalDateTime.of(today, time);
                 LocalDateTime tomorrowDateTime = LocalDateTime.of(tomorrow, time);
@@ -337,18 +337,15 @@ public class RestaurantController {
                             && !todayDateTime.toLocalTime().isBefore(startTime)
                         && !todayDateTime.toLocalTime().isAfter(endTime)) {
                         availableTimesArray.add(today.format(formatter) + " " + time);
-                        System.out.println(today.format(formatter) + " " + time);
                     }
                 if (!isTableReserved(restaurantName, table.getTableNumber(), tomorrowDateTime)
                             && !tomorrowDateTime.toLocalTime().isBefore(startTime)
                         && !tomorrowDateTime.toLocalTime().isAfter(endTime)) {
                         availableTimesArray.add(tomorrow.format(formatter) + " " + time);
-                        System.out.println(today.format(formatter) + " " + time);
                     }
                 }
 
                 tableInfo.set("availableTimes", availableTimesArray);
-
 
                 availableTablesArray.add(tableInfo);
             }
