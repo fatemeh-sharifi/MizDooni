@@ -76,13 +76,12 @@ public class MizDooni {
     public boolean isManager(String username){
         for(User user : users){
             if(user.getUsername().equals(username)){
-                if(user.getRole().equals("manager")) {
-                    return true;
-                }
+                return user.getRole().equals("manager");
             }
         }
         return false;
     }
+
 
     public User getUserByUsername(String username){
         User res = null;

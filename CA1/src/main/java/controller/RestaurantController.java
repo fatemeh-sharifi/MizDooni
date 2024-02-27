@@ -167,27 +167,36 @@ public class RestaurantController {
         String restaurantName = (String) jsonObject.get("restaurantName");
         int tableNumber = ((Long) jsonObject.get("tableNumber")).intValue();
         String datetimeString = (String) jsonObject.get("datetime");
-
+        if (!mizDooni.isRestaurantNameExists(restaurantName)) {
+            new throwRestaurantNameNotExistsException();
+        }
         if (!mizDooni.isUserExists(username)) {
             new throwUsernameNotExistsException();
         } else {
             User user = mizDooni.getUserByUsername(username);
-            if (!user.getRole().equals("manager")) {
+            if (user.getRole().equals("manager")) {
                 new throwNotAllowedReservationException();
             }
         }
-
         LocalDateTime datetime = parseDateTime(datetimeString);
+        // Check if the minutes and seconds are zero
+        if (datetime.getMinute() != 0 || datetime.getSecond() != 0) {
+            new throwWrongTimeException();
+        }
+        Restaurant restaurant = mizDooni.getRestaurantByName(restaurantName);
+        LocalTime startTime = LocalTime.parse(restaurant.getStartTime());
+        LocalTime endTime = LocalTime.parse(restaurant.getEndTime());
+        LocalTime reservationTime = datetime.toLocalTime();
+        if (reservationTime.isBefore(startTime) || reservationTime.isAfter(endTime)) {
+            new throwOutOfWorkingHour();
+        }
 
         if (datetime.isBefore(LocalDateTime.now())) {
             new throwPastDateTimeException();
         }
 
-        if (!mizDooni.isRestaurantNameExists(restaurantName)) {
-            new throwRestaurantNameNotExistsException();
-        }
 
-        Restaurant restaurant = mizDooni.getRestaurantByName(restaurantName);
+        //Restaurant restaurant = mizDooni.getRestaurantByName(restaurantName);
         List<Table> tables = restaurant.getTables();
         boolean tableExists = false;
         for (Table table : tables) {
@@ -201,7 +210,7 @@ public class RestaurantController {
         }
 
         if (isTableReserved(restaurantName, tableNumber, datetime)) {
-            new TableAlreadyReservedException();
+            new throwTableAlreadyReservedException();
         }
 
         int reservationNumber = mizDooni.getReservationNumber();
