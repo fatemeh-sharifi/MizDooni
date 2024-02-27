@@ -20,10 +20,6 @@ public enum Command {
         this.command = command;
     }
 
-    public String getCommand() {
-        return command;
-    }
-
     public static Command fromString(String text) {
         return Arrays.stream(values())
                 .filter(command -> command.command.equalsIgnoreCase(text))

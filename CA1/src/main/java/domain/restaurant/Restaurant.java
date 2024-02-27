@@ -37,10 +37,7 @@ public class Restaurant {
     public void addTable(Table table) {
         tables.add(table);
     }
-
-    public void removeTable(Table table) {
-        tables.remove(table);
-    }
+    
 
     public void addReservation(Reservation reservation) {
         reservations.add(reservation);
