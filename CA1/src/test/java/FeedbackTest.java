@@ -1,7 +1,6 @@
 import controller.FeedbackController;
 import controller.RestaurantController;
 import controller.UserController;
-import domain.exception.*;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -9,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.MizDooni;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FeedbackTest {
 
@@ -92,6 +91,8 @@ public class FeedbackTest {
 
         String args = jsonObject.toJSONString();
         Assertions.assertDoesNotThrow(() -> feedbackController.parseArgAdd(args));
+        Assertions.assertEquals (1, mizDooni.getFeedbacks ().size ());
+
     }
 
     @Test

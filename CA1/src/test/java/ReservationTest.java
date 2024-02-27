@@ -1,7 +1,6 @@
 import controller.RestaurantController;
 import controller.UserController;
 import org.json.simple.JSONObject;
-import org.junit.Before;
 import org.junit.jupiter.api.*;
 import service.MizDooni;
 
@@ -73,6 +72,7 @@ public class ReservationTest {
         mizDooni.getFeedbacks().clear();
         mizDooni.setReservationNumber(1);
     }
+    
     @Test
     public void testUsernameNotFound () {
         String args = "{\"username\": \"nonexistentuser\", \"restaurantName\": \"restaurant1\", \"tableNumber\": 1, \"datetime\": \"2024-02-26 12:00\"}";
