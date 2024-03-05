@@ -130,4 +130,28 @@ public class MizDooni {
         return null; // Restaurant not found
     }
 
+    public Feedback getFeedbackByName(String username, String restaurantName){
+        for(Feedback feedback: feedbacks){
+            if(feedback.getRestaurantName()== restaurantName && feedback.getUsername()==username){
+                return feedback;
+            }
+        }
+        return null;
+    }
+
+    public void updateFeedback(Feedback feedback){
+        this.removeFeedback(feedback.getUsername(),feedback.getRestaurantName());
+        this.feedbacks.add(feedback);
+    }
+
+    private void removeFeedback(String username, String restaurantName){
+        for(int i =0; i < feedbacks.size();i++){
+            if(feedbacks.get(i).getRestaurantName()== restaurantName && feedbacks.get(i).getUsername()==username){
+                feedbacks.remove(i);
+                break;
+            }
+        }
+    }
+
+
 }

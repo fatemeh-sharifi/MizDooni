@@ -32,7 +32,7 @@ public class RestaurantController {
         }
     }
 
-    public void parseArgAdd ( String args ) throws Exception {
+    public void addRestaurant ( String args ) throws Exception {
         JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
         String name = ( String ) jsonObject.get ( "name" );
         validateRestaurantName ( name );
