@@ -32,50 +32,50 @@ public class RestaurantController {
         }
     }
 
-    public void addRestaurant ( String args ) throws Exception {
-        JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
-        String name = ( String ) jsonObject.get ( "name" );
-        validateRestaurantName ( name );
+//    public void addRestaurant ( String args ) throws Exception {
+//        JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
+//        String name = ( String ) jsonObject.get ( "name" );
+//        validateRestaurantName ( name );
+//
+//        String manager = ( String ) jsonObject.get ( "managerUsername" );
+//        validateManager ( manager );
+//
+//        String type = ( String ) jsonObject.get ( "type" );
+//        validateType ( type );
+//
+//        String description = ( String ) jsonObject.get ( "description" );
+//
+//        String startTime = ( String ) jsonObject.get ( "startTime" );
+//        String endTime = ( String ) jsonObject.get ( "endTime" );
+//        validateTime ( startTime , endTime );
+//
+//        JSONObject addressObject = ( JSONObject ) jsonObject.get ( "address" );
+//        validateAddress ( addressObject );
+//
+//        AddressRestaurant address = new AddressRestaurant ( ( String ) addressObject.get ( "country" ) ,
+//                ( String ) addressObject.get ( "city" ) , ( String ) addressObject.get ( "street" ) );
+//
+//        Restaurant restaurant = new Restaurant ( name , manager , type , startTime , endTime , description , address );
+//        mizDooni.addRestaurant ( restaurant );
+//    }
 
-        String manager = ( String ) jsonObject.get ( "managerUsername" );
-        validateManager ( manager );
+//    public List < Restaurant > parseSearchByNameArgs ( String args ) throws Exception {
+//        JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
+//        String name = ( String ) jsonObject.get ( "name" );
+//        doesRestaurantExists ( name );
+//        return mizDooni.getRestaurantsByName ( name );
+//    }
 
-        String type = ( String ) jsonObject.get ( "type" );
-        validateType ( type );
-
-        String description = ( String ) jsonObject.get ( "description" );
-
-        String startTime = ( String ) jsonObject.get ( "startTime" );
-        String endTime = ( String ) jsonObject.get ( "endTime" );
-        validateTime ( startTime , endTime );
-
-        JSONObject addressObject = ( JSONObject ) jsonObject.get ( "address" );
-        validateAddress ( addressObject );
-
-        AddressRestaurant address = new AddressRestaurant ( ( String ) addressObject.get ( "country" ) ,
-                ( String ) addressObject.get ( "city" ) , ( String ) addressObject.get ( "street" ) );
-
-        Restaurant restaurant = new Restaurant ( name , manager , type , startTime , endTime , description , address );
-        mizDooni.addRestaurant ( restaurant );
-    }
-
-    public List < Restaurant > parseSearchByNameArgs ( String args ) throws Exception {
-        JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
-        String name = ( String ) jsonObject.get ( "name" );
-        doesRestaurantExists ( name );
-        return mizDooni.getRestaurantsByName ( name );
-    }
-
-    public List < Restaurant > parseSearchByTypeArgs ( String args ) throws Exception {
-        JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
-        String type = ( String ) jsonObject.get ( "type" );
-        validateType ( type );
-        List < Restaurant > restaurants = mizDooni.getRestaurantsByType ( type );
-        if ( restaurants.isEmpty ( ) ) {
-            new throwTypeNotExistsException ( );
-        }
-        return restaurants;
-    }
+//    public List < Restaurant > parseSearchByTypeArgs ( String args ) throws Exception {
+//        JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
+//        String type = ( String ) jsonObject.get ( "type" );
+//        validateType ( type );
+//        List < Restaurant > restaurants = mizDooni.getRestaurantsByType ( type );
+//        if ( restaurants.isEmpty ( ) ) {
+//            new throwTypeNotExistsException ( );
+//        }
+//        return restaurants;
+//    }
 
     private void validateTime ( String startTime , String endTime ) throws Exception {
         if ( ! AVAILABLE_TIMES.contains ( startTime ) || ! AVAILABLE_TIMES.contains ( endTime ) ) {
@@ -89,37 +89,37 @@ public class RestaurantController {
         }
     }
 
-    private void validateManager ( String username ) throws Exception {
-        if ( ! mizDooni.isUserExists ( username ) ) {
-            new throwUsernameNotExistsException ( );
-        }
-        if ( ! mizDooni.isManager ( username ) ) {
-            new throwWrongManagerRoleException ( );
-        }
-    }
+//    private void validateManager ( String username ) throws Exception {
+//        if ( ! mizDooni.isUserExists ( username ) ) {
+//            new throwUsernameNotExistsException ( );
+//        }
+//        if ( ! mizDooni.isManager ( username ) ) {
+//            new throwWrongManagerRoleException ( );
+//        }
+//    }
 
-    private void validateAddress ( JSONObject addressObject ) throws Exception {
-        if ( ! isValidAddress ( addressObject ) ) {
-            new throwRestaurantAddressException ( );
-        }
-    }
+//    private void validateAddress ( JSONObject addressObject ) throws Exception {
+//        if ( ! isValidAddress ( addressObject ) ) {
+//            new throwRestaurantAddressException ( );
+//        }
+//    }
 
-    private boolean isValidAddress ( JSONObject addressObject ) {
-        return addressObject != null && addressObject.containsKey ( "country" ) && addressObject.containsKey ( "city" )
-                && addressObject.containsKey ( "street" );
-    }
+//    private boolean isValidAddress ( JSONObject addressObject ) {
+//        return addressObject != null && addressObject.containsKey ( "country" ) && addressObject.containsKey ( "city" )
+//                && addressObject.containsKey ( "street" );
+//    }
 
-    private void validateType ( String type ) throws Exception {
-        if ( ! AVAILABLE_TYPES.contains ( type ) ) {
-            new throwWrongTypeException ( );
-        }
-    }
+//    private void validateType ( String type ) throws Exception {
+//        if ( ! AVAILABLE_TYPES.contains ( type ) ) {
+//            new throwWrongTypeException ( );
+//        }
+//    }
 
-    private void doesRestaurantExists ( String name ) throws Exception {
-        if ( ! mizDooni.isRestaurantNameAvailable ( name ) ) {
-            new throwRestaurantNameNotExistsException ( );
-        }
-    }
+//    private void doesRestaurantExists ( String name ) throws Exception {
+//        if ( ! mizDooni.isRestaurantNameAvailable ( name ) ) {
+//            new throwRestaurantNameNotExistsException ( );
+//        }
+//    }
 
     public void parseAddTable ( String args ) throws Exception {
         JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );

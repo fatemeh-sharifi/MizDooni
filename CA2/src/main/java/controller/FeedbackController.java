@@ -21,7 +21,7 @@ public class FeedbackController {
             mizDooni.updateFeedback(feedback);
         }
     }
-    
+
     public boolean doesFeedbackExists(String username, String restaurantName){
         if(mizDooni.getFeedbackByName(username,restaurantName) != null){
             return true;

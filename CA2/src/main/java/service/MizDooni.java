@@ -19,6 +19,7 @@ public class MizDooni {
     private ArrayList<Restaurant> restaurants= new ArrayList<>();
     private ArrayList<Feedback> feedbacks = new ArrayList<>();
     private static MizDooni instance;
+    private User loggedInUser = null;
 
     public static MizDooni getInstance() {
         if (instance == null) {
@@ -153,5 +154,33 @@ public class MizDooni {
         }
     }
 
+    public boolean isLoggedIn(){
+        if (loggedInUser != null){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
+    public User doesAccountExists(String username, String password){
+        for(User user: users){
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)){
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public String login(User user){
+        this.loggedInUser = user;
+        String URL ;
+        if(isManager(user.getUsername())){
+            URL = "manager_home.jsp";
+        }
+        else{
+            URL = "client_home.jsp";
+        }
+        return URL;
+    }
 }

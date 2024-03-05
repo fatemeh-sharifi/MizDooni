@@ -12,7 +12,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="CA2" target="19" />
+      <module name="CA2" target="12" />
     </bytecodeTargetLevel>
   </component>
 </project>
