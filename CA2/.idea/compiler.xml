@@ -7,8 +7,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="CA2" />
         <module name="CA1" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="CA2" target="19" />
+    </bytecodeTargetLevel>
   </component>
 </project>
