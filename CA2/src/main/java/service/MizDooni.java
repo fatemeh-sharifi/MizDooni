@@ -9,6 +9,10 @@ import lombok.Setter;
 import model.user.User;
 import model.restaurant.Restaurant;
 import model.feedback.Feedback;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
+import java.io.IOException;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 @Getter
 @Setter
@@ -20,12 +24,37 @@ public class MizDooni {
     private ArrayList<Feedback> feedbacks = new ArrayList<>();
     private static MizDooni instance;
     private User loggedInUser = null;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final String USERS_FILE_PATH = "src/main/resources/user.json";
+    private static final String RESTAURANTS_FILE_PATH = "src/main/resources/restaurants.json";
 
     public static MizDooni getInstance() {
         if (instance == null) {
             instance = new MizDooni();
         }
         return instance;
+    }
+
+    public void loadUsersFromJson() {
+        try {
+            File usersFile = new File(USERS_FILE_PATH);
+            if (usersFile.exists()) {
+                users = (ArrayList<User>) objectMapper.readValue(usersFile, new TypeReference<List<User>>() {});
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadRestaurantsFromJson() {
+        try {
+            File restaurantsFile = new File(RESTAURANTS_FILE_PATH);
+            if (restaurantsFile.exists()) {
+                restaurants = (ArrayList<Restaurant>) objectMapper.readValue(restaurantsFile, new TypeReference<List<Restaurant>>() {});
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addUser(User user) throws Exception{
@@ -223,4 +252,6 @@ public class MizDooni {
 
         return html;
     }
+
+
 }

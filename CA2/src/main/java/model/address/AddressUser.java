@@ -7,7 +7,8 @@ import lombok.Setter;
 public class AddressUser {
     private String country;
     private String city;
-
+    public AddressUser() {
+    }
     public AddressUser(String country, String city) {
         this.country = country;
         this.city = city;

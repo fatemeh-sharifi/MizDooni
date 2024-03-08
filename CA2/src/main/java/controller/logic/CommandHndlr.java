@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import model.command.Command;
 import model.reservation.Reservation;
 import model.restaurant.Restaurant;
+import service.MizDooni;
 
 import java.util.List;
 import java.util.Scanner;
@@ -12,10 +13,13 @@ public class CommandHndlr {
     private final UserController userController = new UserController ( );
     private final RestaurantController restaurantController = new RestaurantController ( );
     private final JsonController jsonController = new JsonController ( );
-//    private final FeedbackController feedbackController = new FeedbackController ( );
+    private final FeedbackController feedbackController = new FeedbackController ( );
 
+    private MizDooni mizDooni = MizDooni.getInstance ( );
     public void start ( ) throws Exception {
         System.out.println ( "Welcome!" );
+        mizDooni.loadUsersFromJson();
+        mizDooni.loadRestaurantsFromJson();
         Scanner scanner = new Scanner ( System.in );
         while ( true ) {
             System.out.println ( "Enter a command (type 'q' to exit):" );

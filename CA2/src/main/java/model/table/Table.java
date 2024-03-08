@@ -11,7 +11,9 @@ public class Table {
     private int seatsNumber;
     // THIS IS FOR RESERVATION TIME
     private int[] timeSlots;
-
+    // Default constructor
+    public Table() {
+    }
     public Table(int tableNumber, String restaurantName, String managerUsername, int seatsNumber) {
         this.tableNumber = tableNumber;
         this.restaurantName = restaurantName;

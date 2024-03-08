@@ -11,7 +11,7 @@ public class FeedbackController {
     private MizDooni mizDooni = MizDooni.getInstance ( );
     private static FeedbackController instance;
 
-    private FeedbackController() {
+    public FeedbackController() {
 
     }
 
