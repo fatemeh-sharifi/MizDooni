@@ -183,4 +183,33 @@ public class MizDooni {
         }
         return URL;
     }
+
+    public boolean doesUserHaveReserve(String username, String restaurantName){
+        for(Restaurant restaurant: restaurants){
+            if(restaurant.getName().equals(restaurantName) && restaurant.doesReserveExists(username)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isFeedbackTimeCorrect(String username , String restaurantName){
+        for(Restaurant restaurant : restaurants){
+            if(restaurant.getName().equals(restaurantName) && restaurant.doesReserveExists(username) && restaurant.isTimeOk(username)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public List<Feedback> getFeedbacksByName(String username, String restaurantName){
+        List<Feedback> res = new ArrayList<>();
+        for(Feedback feedback : feedbacks){
+            if (feedback.getUsername().equals(username) && feedback.getRestaurantName().equals(restaurantName)){
+                res.add(feedback);
+            }
+        }
+        return res;
+    }
 }

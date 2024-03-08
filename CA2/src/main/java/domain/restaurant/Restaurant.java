@@ -1,5 +1,6 @@
 package domain.restaurant;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,11 @@ public class Restaurant {
     private List<Table> tables;
     private List<Reservation> reservations;
 
+    private double serviceAvg;
+    private double foodAvg;
+    private double ambianceAvg;
+    
+
     public Restaurant(String name, String managerUsername, String type, String startTime, String endTime, String description, AddressRestaurant address) {
         this.name = name;
         this.managerUsername = managerUsername;
@@ -41,5 +47,23 @@ public class Restaurant {
 
     public void addReservation(Reservation reservation) {
         reservations.add(reservation);
+    }
+
+    public boolean doesReserveExists(String username){
+        for(Reservation reservation : reservations){
+            if(reservation.getUsername().equals(username)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isTimeOk(String username){
+        for(Reservation reservation : reservations){
+            if(reservation.getUsername().equals(username) && reservation.getDatetime().isBefore(LocalDateTime.now())){
+                return true;
+            }
+        }
+        return false;
     }
 }
