@@ -26,4 +26,17 @@ public class Feedback {
         this.comment = comment;
         this.dateTime = dateTime;
     }
+
+    public String toHtml(){
+        return "<tr>" +
+                "        <td>"+ username + "</td>" +
+                "        <td>"+comment+"</td>" +
+                "        <td>"+dateTime+"</td>" +
+                "        <td>"+foodRate+"</td>" +
+                "        <td>"+serviceRate+"</td>" +
+                "        <td>"+ambianceRate+"</td>" +
+                "        <td>"+ overallRate+"</td>" +
+                "    </tr>";
+    }
 }
+

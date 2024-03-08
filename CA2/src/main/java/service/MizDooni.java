@@ -212,4 +212,15 @@ public class MizDooni {
         }
         return res;
     }
+
+    public String createFeedbackHTML(String username , String restaurantName){
+        String html = "";
+        for (Feedback feedback: feedbacks){
+            if (feedback.getUsername().equals(username) && feedback.getRestaurantName().equals(restaurantName)){
+                html += feedback.toHtml();
+            }
+        }
+
+        return html;
+    }
 }

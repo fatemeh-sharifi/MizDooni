@@ -1,3 +1,8 @@
+<%@page import="service.MizDooni"%>
+<%
+    MizDooni mizDooni = MizDooni.getInstance();
+    String loggedIn = mizDooni.getLoggedInUser().getUsername();
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +10,7 @@
     <title>Restaurant</title>
 </head>
 <body>
-<p id="username">username: ali <a href="/">Home</a> <a href="/logout" style="color: red">Log Out</a></p>
+<p id="username">username: <%= loggedIn%> <a href="/">Home</a> <a href="/logout" style="color: red">Log Out</a></p>
 <br>
 <h2>Restaurant Info:</h2>
 <ul>
@@ -88,15 +93,7 @@
         <th>Ambiance Rate</th>
         <th>Overall Rate</th>
     </tr>
-    <tr>
-        <td>user1</td>
-        <td>Food was not bad</td>
-        <td>2022-07-25</td>
-        <td>4.5</td>
-        <td>3</td>
-        <td>4.5</td>
-        <td>4</td>
-    </tr>
+    <%= mizDooni.createFeedbackHTML(loggedIn,request.getParameter("restaurantName"))%>
 </table>
 <br><br>
 

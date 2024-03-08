@@ -26,7 +26,7 @@ public class Restaurant {
     private double serviceAvg;
     private double foodAvg;
     private double ambianceAvg;
-    
+
 
     public Restaurant(String name, String managerUsername, String type, String startTime, String endTime, String description, AddressRestaurant address) {
         this.name = name;
