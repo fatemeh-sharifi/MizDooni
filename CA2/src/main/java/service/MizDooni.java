@@ -203,16 +203,6 @@ public class MizDooni {
         return false;
     }
 
-    public List<Feedback> getFeedbacksByName(String username, String restaurantName){
-        List<Feedback> res = new ArrayList<>();
-        for(Feedback feedback : feedbacks){
-            if (feedback.getUsername().equals(username) && feedback.getRestaurantName().equals(restaurantName)){
-                res.add(feedback);
-            }
-        }
-        return res;
-    }
-
     public String createFeedbackHTML(String username , String restaurantName){
         String html = "";
         for (Feedback feedback: feedbacks){
@@ -222,5 +212,15 @@ public class MizDooni {
         }
 
         return html;
+    }
+
+    public void updateRestaurantRatings(String restaurantName, double foodRate,
+                                        double serviceRate, double ambianceRate,double overallRate){
+        Restaurant restaurant = this.getRestaurantByName(restaurantName);
+        double foodAvg = (foodRate + restaurant.getFoodAvg())/feedbacks.size();
+        double serviceAvg = (serviceRate + restaurant.getServiceAvg())/feedbacks.size();
+        double ambianceAvg = (ambianceRate + restaurant.getAmbianceAvg())/feedbacks.size();
+        double overallAvg = (ambianceRate + restaurant.getOverallAvg())/feedbacks.size();
+        restaurant.updateRatingsAvg(foodAvg,serviceAvg,ambianceAvg,overallAvg);
     }
 }

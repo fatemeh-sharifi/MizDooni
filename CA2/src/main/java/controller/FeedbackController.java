@@ -2,14 +2,10 @@ package controller;
 
 import domain.exception.*;
 import domain.feedback.Feedback;
-import domain.reservation.Reservation;
-import domain.restaurant.Restaurant;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import service.MizDooni;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 public class FeedbackController {
     private MizDooni mizDooni = MizDooni.getInstance ( );
@@ -36,6 +32,8 @@ public class FeedbackController {
         else{
             mizDooni.updateFeedback(feedback);
         }
+        mizDooni.updateRestaurantRatings(restaurantName,foodRate , serviceRate ,
+                ambianceRate , overallRate);
     }
 
     private boolean doesFeedbackExists(String username, String restaurantName){
@@ -54,9 +52,5 @@ public class FeedbackController {
         if(!mizDooni.isFeedbackTimeCorrect(username,restaurantName)){
             new throwTimeFeedbackException();
         }
-    }
-
-    public List<Feedback> getFeedbacks(String username, String restaurantName){
-        return mizDooni.getFeedbacksByName(username,restaurantName);
     }
 }

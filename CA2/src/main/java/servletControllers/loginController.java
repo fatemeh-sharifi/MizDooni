@@ -15,8 +15,8 @@ public class loginController extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if(StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
-            String buyPageName = "/login.jsp";
-            request.setAttribute("emptyField", "true");
+            String buyPageName = "/error.jsp";
+            request.setAttribute("error", "all fields must be completed.");
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(buyPageName);
             requestDispatcher.forward(request, response);
         } else {
@@ -26,8 +26,8 @@ public class loginController extends HttpServlet {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(newPage);
                 requestDispatcher.forward(request, response);
             }catch(Exception e){
-                String buyPageName = "/login.jsp";
-                request.setAttribute("wrongData", "true");
+                String buyPageName = "/error.jsp";
+                request.setAttribute("error", "username or password is not correct!");
                 RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(buyPageName);
                 requestDispatcher.forward(request, response);
             }
