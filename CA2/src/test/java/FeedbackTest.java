@@ -1,6 +1,6 @@
-import controller.FeedbackController;
-import controller.RestaurantController;
-import controller.UserController;
+import controller.logic.FeedbackController;
+import controller.logic.RestaurantController;
+import controller.logic.UserController;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;

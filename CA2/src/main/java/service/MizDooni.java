@@ -2,13 +2,13 @@ package service;
 import java.util.ArrayList;
 import java.util.List;
 
-import domain.reservation.Reservation;
-import domain.table.Table;
+import model.reservation.Reservation;
+import model.table.Table;
 import lombok.Getter;
 import lombok.Setter;
-import domain.user.User;
-import domain.restaurant.Restaurant;
-import domain.feedback.Feedback;
+import model.user.User;
+import model.restaurant.Restaurant;
+import model.feedback.Feedback;
 
 @Getter
 @Setter

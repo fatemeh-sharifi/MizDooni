@@ -6,7 +6,7 @@ reserveTable {"username": "user1", "restaurantName": "restaurant1", "tableNumber
 cancelReservation {"username": "user1", "reservationNumber": 1}
 reserveTable {"username": "user1", "restaurantName": "restaurant1", "tableNumber": 1, "datetime": "2024-02-27 21:00"}
 showReservationHistory {"username": "user1"}
-searchRestaurantsByName {"name": "restaurant1"}
+searchRestaurantsByName {"name": "rest1"}
 searchRestaurantsByType {"type": "Iranian"}
 showAvailableTables {"restaurantName": "restaurant1"}
 addReview {"username": "user1", "restaurantName": "restaurant1", "foodRate": 4.5, "serviceRate": 3, "ambianceRate": 4.5, "overallRate": 4, "comment": "Not bad!"}

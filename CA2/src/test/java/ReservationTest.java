@@ -1,5 +1,5 @@
-import controller.RestaurantController;
-import controller.UserController;
+import controller.logic.RestaurantController;
+import controller.logic.UserController;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.*;
 import service.MizDooni;
