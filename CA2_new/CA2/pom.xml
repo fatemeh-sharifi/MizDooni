@@ -41,6 +41,11 @@
       <version>5.0.0</version>
       <scope>provided</scope>
     </dependency>
+      <dependency>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpcore</artifactId>
+          <version>4.4.14</version>
+      </dependency>
   </dependencies>
   <build>
     <finalName>CA2</finalName>

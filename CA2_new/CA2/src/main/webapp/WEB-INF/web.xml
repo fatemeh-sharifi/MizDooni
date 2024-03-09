@@ -2,8 +2,16 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+  <display-name>Mizdooni</display-name>
   <listener>
     <listener-class>servlet.InitializationListenerServlet</listener-class>
   </listener>
+  <servlet>
+    <servlet-name>servlet.RestaurantsServlet</servlet-name>
+    <servlet-class>servlet.RestaurantsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>servlet.RestaurantsServlet</servlet-name>
+    <url-pattern>/restaurants</url-pattern>
+  </servlet-mapping>
 </web-app>
