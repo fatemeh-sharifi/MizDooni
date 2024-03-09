@@ -20,7 +20,6 @@ public class RestaurantsServlet extends HttpServlet {
 
         request.setAttribute("restaurants", restaurants);
 
-        System.out.println(restaurants.size());
         request.getRequestDispatcher("/views/restaurants.jsp").forward(request, response);
     }
 }

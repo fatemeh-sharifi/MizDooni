@@ -11,7 +11,7 @@ import java.util.ArrayList;
 @Getter
 @Setter
 public class Restaurant {
-    private String id;
+    private int id;
     private String name;
     private String managerUsername;
     private String type;
@@ -44,6 +44,7 @@ public class Restaurant {
         this.reservations = new ArrayList<>();
 
     }
+
 }
 
 

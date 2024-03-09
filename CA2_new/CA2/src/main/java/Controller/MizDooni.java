@@ -117,8 +117,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,7 +126,7 @@ import java.util.List;
 @Setter
 public class MizDooni {
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String USERS_FILE_PATH = "json/users.json"; // Assuming files are in the project root
+    private static final String USERS_FILE_PATH = "json/users.json";
     private static final String RESTAURANTS_FILE_PATH = "json/restaurants.json";
     private static java.nio.file.Files Files;
 
@@ -135,6 +135,7 @@ public class MizDooni {
     private List<Feedback> feedbacks = new ArrayList<>();
     private User loggedInUser = null;
 
+    private int lastRestaurantId;
     private static MizDooni instance;
 
     private MizDooni() {
@@ -160,6 +161,11 @@ public class MizDooni {
     public void loadRestaurantsFromJson() {
         try {
             restaurants = loadFromJsonFile(RESTAURANTS_FILE_PATH, new TypeReference<List<Restaurant>>() {});
+            for (Restaurant restaurant : restaurants) {
+                // Increment the last assigned ID and set it for the restaurant
+                lastRestaurantId++;
+                restaurant.setId(lastRestaurantId);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -173,105 +179,5 @@ public class MizDooni {
             return objectMapper.readValue(inputStream, typeReference);
         }
     }
-    private InputStream getFileFromResourceAsStream(String fileName) {
 
-        // The class loader that loaded the class
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(fileName);
-
-        // the stream holding the file content
-        if (inputStream == null) {
-            throw new IllegalArgumentException("file not found! " + fileName);
-        } else {
-            return inputStream;
-        }
-
-    }
-
-    // print input stream
-    private static void printInputStream(InputStream is) {
-
-        try (InputStreamReader streamReader =
-                     new InputStreamReader(is, StandardCharsets.UTF_8);
-             BufferedReader reader = new BufferedReader(streamReader)) {
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-//    private <T> List<T> loadFromJsonFile(String filePath, Class<T> clazz) throws IOException {
-//        File file = new File(filePath); // Check for file existence
-//        InputStream is = getFileFromResourceAsStream(filePath);
-////        printInputStream(is);
-//        if (!file.exists()) {
-//            throw new FileNotFoundException("File not found: " + filePath);
-//        }
-//
-//        try (InputStream inputStream = Files.newInputStream(file.toPath())) {
-//            List<T> items = objectMapper.readValue(inputStream, new TypeReference<List<T>>() {});
-//            return items;
-//        }
-//    }
-//
-//    public void loadUsersFromJson() {
-//        try {
-//            List<User> loadedUsers = loadFromJsonFile(USERS_FILE_PATH, User.class);
-//            users.addAll(loadedUsers);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    private InputStream getFileFromResourceAsStream(String fileName) {
-//        ClassLoader classLoader = getClass().getClassLoader();
-//        InputStream inputStream = classLoader.getResourceAsStream(fileName);
-//        return inputStream;
-//    }
-
-    //    private <T> List<T> loadFromJsonFile(String filePath, Class<T> clazz) throws IOException {
-//        File file = new File(filePath); // Check for file existence
-//        InputStream is = getFileFromResourceAsStream(filePath);
-//        printInputStream(is);
-//        if (!file.exists()) {
-//            throw new FileNotFoundException("File not found: " + filePath);
-//        }
-//
-//        try (java.io.InputStream inputStream = java.nio.file.Files.newInputStream(file.toPath())) {
-//            return objectMapper.readValue(inputStream, new TypeReference<List<T>>() {
-//            });
-//        }
-//    }
-
-
-//    public void loadUsersFromJson() {
-//        try {
-//            List<User> loadedUsers = loadFromJsonFile(USERS_FILE_PATH, User.class);
-//            users.addAll(loadedUsers);
-//            // Print the loaded users (Optional)
-//        } catch (IOException e) {
-//            System.err.println("Error loading users: " + e.getMessage());
-//            e.printStackTrace();
-//        }
-//    }
-
-//    public void loadRestaurantsFromJson() {
-//        try {
-//            List<Restaurant> loadedRestaurants = loadFromJsonFile(RESTAURANTS_FILE_PATH, Restaurant.class);
-//            restaurants.addAll(loadedRestaurants);
-//
-//            // Print the loaded restaurants (Optional)
-//        } catch (IOException e) {
-//            System.err.println("Error loading restaurants: " + e.getMessage());
-//            e.printStackTrace();
-//        }
-//    }
-
-    // Other methods for user and restaurant management (unchanged)
 }
