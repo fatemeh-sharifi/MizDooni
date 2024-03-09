@@ -43,7 +43,10 @@ public class Restaurant {
         this.address = address;
         this.tables = new ArrayList<>();
         this.reservations = new ArrayList<>();
-
+        this.serviceAvg = 0;
+        this.foodAvg=0;
+        this.ambianceAvg = 0;
+        this.overallAvg = 0;
     }
 
     public void addTable(Table table) {
@@ -71,5 +74,12 @@ public class Restaurant {
             }
         }
         return false;
+    }
+
+    public void updateRatingsAvg(double food,double service, double ambiance , double overall){
+        this.overallAvg = overall;
+        this.foodAvg = food;
+        this.serviceAvg = service;
+        this.ambianceAvg = ambiance;
     }
 }

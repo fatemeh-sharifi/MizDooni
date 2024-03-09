@@ -30,10 +30,8 @@
 
     <body style="text-align:center">
     <%
-        if (MizDooni.getInstance().isLoggedIn() && MizDooni.getInstance().isManager(MizDooni.getInstance().getLoggedInUser().getUsername())) {
-            response.sendRedirect("manager_home.jsp");
-        } else if(MizDooni.getInstance().isLoggedIn() && !MizDooni.getInstance().isManager(MizDooni.getInstance().getLoggedInUser().getUsername())) {
-            response.sendRedirect("client_home.jsp");
+        if (MizDooni.getInstance().isLoggedIn() ){
+            response.sendRedirect("/");
         }
         else{
     %>
@@ -46,15 +44,9 @@
             <input name="password" type="password" />
             <br>
             <button type="submit">Login!</button>
-            <%if(request.getParameter("wrongData") != null) {%>
-            <h5>username or password is not correct!</h5>
-            <%
-                }
-            %>
         </form>
     <%
         }
     %>
-
     </body>
 </html>
