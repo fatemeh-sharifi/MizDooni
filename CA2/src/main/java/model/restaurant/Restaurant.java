@@ -26,6 +26,7 @@ public class Restaurant {
     private double serviceAvg;
     private double foodAvg;
     private double ambianceAvg;
+    private double overallAvg;
 
     // Default constructor
     public Restaurant() {

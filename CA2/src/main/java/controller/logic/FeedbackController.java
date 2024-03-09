@@ -32,6 +32,7 @@ public class FeedbackController {
         else{
             mizDooni.updateFeedback(feedback);
         }
+        mizDooni.updateRestaurantRatings(restaurantName,foodRate,serviceRate,ambianceRate,overallRate);
     }
 
     private boolean doesFeedbackExists(String username, String restaurantName){
@@ -52,11 +53,11 @@ public class FeedbackController {
         }
     }
 
-    public List<Feedback> getFeedbacks(String username, String restaurantName){
-        return mizDooni.getFeedbacksByName(username,restaurantName);
-    }
+//    public List<Feedback> getFeedbacks(String username, String restaurantName){
+//        return mizDooni.getFeedbacksByName(username,restaurantName);
+//    }
 
-    public void parseArgAdd(String args) {
-        //ADD LATER
-    }
+//    public void parseArgAdd(String args) {
+//        //ADD LATER
+//    }
 }
