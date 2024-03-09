@@ -40,47 +40,7 @@
 //        return instance;
 //    }
 //
-//    private <T> List<T> loadFromJsonFile(String filePath, Class<T> clazz) throws IOException {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        InputStream inputStream = getClass().getResourceAsStream(filePath);
-//        if (inputStream != null) {
-//            return objectMapper.readValue(inputStream, new TypeReference<List<T>>() {});
-//        } else {
-//            throw new FileNotFoundException("File not found: " + filePath);
-//        }
-//    }
-//
-//
-//    public void loadUsersFromJson() {
-//        try {
-//            List<User> loadedUsers = loadFromJsonFile(USERS_FILE_PATH, User.class);
-//            users.addAll(loadedUsers);
-//
-//            // Print the loaded users
-//            System.out.println("Loaded Users:");
-//            for (User user : loadedUsers) {
-//                System.out.println(user);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public void loadRestaurantsFromJson() {
-//        try {
-//            List<Restaurant> loadedRestaurants = loadFromJsonFile(RESTAURANTS_FILE_PATH, Restaurant.class);
-//            restaurants.addAll(loadedRestaurants);
-//
-//            // Print the loaded restaurants
-//            System.out.println("Loaded Restaurants:");
-//            for (Restaurant restaurant : loadedRestaurants) {
-//                System.out.println(restaurant);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
+
 //
 //    public void addUser(User user) {
 //        users.add(user);
@@ -179,5 +139,6 @@ public class MizDooni {
             return objectMapper.readValue(inputStream, typeReference);
         }
     }
+
 
 }

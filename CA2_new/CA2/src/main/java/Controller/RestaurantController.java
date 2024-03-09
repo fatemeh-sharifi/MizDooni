@@ -13,9 +13,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Collections;
+import java.util.Comparator;
 public class RestaurantController {
     private MizDooni mizDooni = MizDooni.getInstance ( );
+    List <Restaurant> restaurants = mizDooni.getRestaurants();
     private static final List < String > AVAILABLE_TIMES = new ArrayList <> ( );
     private static final List < String > AVAILABLE_TYPES = List.of ( "Iranian" , "Asian" , "Arabian" , "Italian" , "Fast Food" );
 
@@ -25,6 +27,45 @@ public class RestaurantController {
         }
     }
 
+    public List<Restaurant> getRestaurantsByName(String name){
+        List<Restaurant> res = new ArrayList<>();
+        for(Restaurant restaurant : restaurants){
+            if (restaurant.getName().contains(name)){
+                res.add(restaurant);
+            }
+        }
+        return res;
+    }
+
+    public List<Restaurant> getRestaurantsByType(String type){
+        List<Restaurant> res = new ArrayList<>();
+        for(Restaurant restaurant : restaurants){
+            if (restaurant.getType().equals(type)){
+                res.add(restaurant);
+            }
+        }
+        return res;
+    }
+    public List<Restaurant> searchRestaurantsByName(String name){
+        return getRestaurantsByName(name);
+    }
+
+    public List<Restaurant> searchRestaurantsByType(String type){
+        return getRestaurantsByType(type);
+    }
+
+    public List<Restaurant> getRestaurantsByCity(String city){
+        List<Restaurant> res = new ArrayList<>();
+        for(Restaurant restaurant : restaurants){
+            if (restaurant.getAddress().getCity().equals(city)){
+                res.add(restaurant);
+            }
+        }
+        return res;
+    }
+    public List<Restaurant> searchRestaurantsByCity(String city){
+        return getRestaurantsByCity(city);
+    }
 //    public void addRestaurant ( String args ) throws Exception {
 //        JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
 //        String name = ( String ) jsonObject.get ( "name" );
@@ -251,6 +292,24 @@ public class RestaurantController {
         return null;
     }
 
+    public List<Restaurant> getRestaurants() {
+        return restaurants;
+    }
+
+    public List<Restaurant> sortRestaurantsByScore() {
+        // Sort the list of restaurants based on overall score
+        Collections.sort(restaurants, new Comparator<Restaurant>() {
+            @Override
+            public int compare(Restaurant restaurant1, Restaurant restaurant2) {
+                // Compare based on overall score
+                double overallScore1 = (restaurant1.getServiceAvg() + restaurant1.getFoodAvg() + restaurant1.getAmbianceAvg()) / 3.0;
+                double overallScore2 = (restaurant2.getServiceAvg() + restaurant2.getFoodAvg() + restaurant2.getAmbianceAvg()) / 3.0;
+                return Double.compare(overallScore2, overallScore1); // Descending order
+            }
+        });
+
+        return restaurants;
+    }
 //    private boolean isTableReserved ( String restaurantName , int tableNumber , LocalDateTime datetime ) {
 //        Restaurant restaurant = mizDooni.getRestaurantByName ( restaurantName );
 //        if ( restaurant == null || restaurant.getReservations ( ) == null ) {
