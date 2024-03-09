@@ -83,4 +83,23 @@ public class Restaurant {
         this.serviceAvg = service;
         this.ambianceAvg = ambiance;
     }
+
+
+    public String toHtml(int id){
+        String finalStr = "<ul>" +
+                "    <li id='id"+id+"'>Id: "+id+"</li>" +
+                "    <li id='name"+id+"'>Name:"+this.name+"</li>" +
+                "    <li id='type"+id+"'>Type: "+this.type+"</li>" +
+                "    <li id='time"+id+"'>Time: "+this.startTime+" - "+this.endTime+"</li>" +
+                "    <li id='description"+id+"'>Description: "+this.description+"</li>" +
+                "    <li id='address"+id+"'>Address: "+this.address.getCountry()+", "+this.address.getCity()+", "+this.address.getStreet()+"</li>" +
+                "    <li id='tables"+id+"'>Tables:</li>" +
+                "    <ul>";
+        for (int i = 0 ; i < tables.size();i++){
+            finalStr += "<li>table"+i+1+"</li>";
+        }
+        finalStr += "    </ul>\n" +
+                "</ul>";
+        return finalStr;
+    }
 }

@@ -11,7 +11,7 @@ import controller.logic.AuthenticationController;
 
 @WebServlet(name = "loginController", value = "/loginController")
 public class loginController extends HttpServlet {
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if(StringUtils.isBlank(username) || StringUtils.isBlank(password)) {

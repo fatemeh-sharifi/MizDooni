@@ -252,4 +252,20 @@ public class MizDooni {
         double overallAvg = (ambianceRate + restaurant.getOverallAvg())/feedbacks.size();
         restaurant.updateRatingsAvg(foodAvg,serviceAvg,ambianceAvg,overallAvg);
     }
+
+    public String createManagerRestaurantHtml(String username){
+        String html = "";
+        for (int i=0;i<restaurants.size();i++){
+            if (restaurants.get(i).getManagerUsername().equals(username)){
+                html += restaurants.get(i).toHtml(i+1);
+                break;
+            }
+        }
+
+        return html;
+    }
+
+    public void logout(){
+        this.loggedInUser = null;
+    }
 }

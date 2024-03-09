@@ -21,4 +21,14 @@ public class Table {
         this.seatsNumber = seatsNumber;
         this.timeSlots = new int[24];
     }
+
+    public String toHtml(){
+        return "    <ul>\n" +
+                "        <li>table1</li>\n" +
+                "        <li>table2</li>\n" +
+                "        <li>table3</li>\n" +
+                "        <li>table4</li>\n" +
+                "        <li>table5</li>\n" +
+                "    </ul>\n";
+    }
 }
