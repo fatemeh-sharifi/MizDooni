@@ -1,4 +1,5 @@
 package Service;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -31,8 +32,7 @@ public class MizDooni {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final String USERS_FILE_PATH = "json/users.json";
     private static final String RESTAURANTS_FILE_PATH = "json/restaurants.json";
-
-
+    private static final String FEEDBACKS_FILE_PATH = "json/feedbacks.json";
     public static MizDooni getInstance() {
         if (instance == null) {
             instance = new MizDooni();
@@ -337,4 +337,21 @@ public class MizDooni {
 
         return restaurants;
     }
+    public void loadFeedbacksFromJson() {
+    try {
+        feedbacks = new ArrayList<>(loadFromJsonFile(FEEDBACKS_FILE_PATH, new TypeReference<List<Feedback>>() {}));
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    }
+    public List<Feedback> getFeedbacksByUsernameAndRestaurantName(String username, String restaurantName) {
+        List<Feedback> matchingFeedbacks = new ArrayList<>();
+        for (Feedback feedback : feedbacks) {
+            if (feedback.getUsername().equals(username) && feedback.getRestaurantName().equals(restaurantName)) {
+                matchingFeedbacks.add(feedback);
+            }
+        }
+        return matchingFeedbacks;
+    }
+
 }
