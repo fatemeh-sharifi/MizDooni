@@ -7,8 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
+
 @WebServlet(name = "HomeServlet", value = "/home")
 public class HomeServlet extends HttpServlet {
 
@@ -18,14 +18,14 @@ public class HomeServlet extends HttpServlet {
         String page;
         if (loggedInUser != null) {
             if (mizDooni.isManager(loggedInUser)) {
-                page = "views/manager_home.jsp"; // Just the JSP filename without /views prefix
+                page = "views/manager_home.jsp";
             } else {
-                page = "views/client_home.jsp"; // Just the JSP filename without /views prefix
+                page = "views/client_home.jsp";
             }
         } else {
-            page = "views/login.jsp"; // Redirect to login page if user is not logged in
+            page = "views/login.jsp";
         }
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/views/" + page);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
         requestDispatcher.forward(request, response);
     }
 }

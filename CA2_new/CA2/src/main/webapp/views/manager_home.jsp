@@ -1,4 +1,4 @@
-<%@page import="Controller.MizDooni"%>
+<%@ page import="Controller.MizDooni" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,14 +8,15 @@
 <%
     MizDooni mizDooni = MizDooni.getInstance();
     if (!mizDooni.isLoggedIn()) {
-        response.sendRedirect(request.getContextPath() + "/views/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login");
+    } else if (!mizDooni.isManager(mizDooni.getLoggedInUser().getUsername())) {
+        response.sendRedirect(request.getContextPath() + "views/client_home.jsp");
     } else {
 %>
-<h1>Welcome <%= mizDooni.getLoggedInUser().getUsername() %><a href="/logout" style="color: red">Log Out</a></h1>
-
+<h1>Welcome <%= mizDooni.getLoggedInUser().getUsername() %></h1>
+<a href="/logout" style="color: red">Logout</a>
 <h2>Your Restaurant Information:</h2>
 <%= mizDooni.createManagerRestaurantHtml(mizDooni.getLoggedInUser().getUsername())%>
-
 <table border="1" cellpadding="10">
     <tr>
         <td>
