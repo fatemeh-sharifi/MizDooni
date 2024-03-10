@@ -1,11 +1,9 @@
 package Controller;
 
-import Model.Address.AddressRestaurant;
-import Model.Exception.*;
+import Model.Exception.ExceptionMessages;
+import Model.Exception.SuperException;
 import Model.Restaurant.Restaurant;
 import Model.Table.Table;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,26 +41,26 @@ public class RestaurantController {
         return res;
     }
 
-    public List<Restaurant> searchRestaurantsByName(String name) throws NoRestaurantFoundException {
+    public List<Restaurant> searchRestaurantsByName(String name) throws SuperException {
         List<Restaurant> restaurantsByName = getRestaurantsByName(name);
         if (restaurantsByName.isEmpty()) {
-            throw new NoRestaurantFoundException(ExceptionMessages.NO_RESTAURANT_WITH_NAME + name);
+            throw new SuperException (ExceptionMessages.NO_RESTAURANT_WITH_NAME + name);
         }
         return restaurantsByName;
     }
 
-    public List<Restaurant> searchRestaurantsByType(String type) throws NoRestaurantFoundException {
+    public List<Restaurant> searchRestaurantsByType(String type) throws SuperException {
         List<Restaurant> restaurantsByType = getRestaurantsByType(type);
         if (restaurantsByType.isEmpty()) {
-            throw new NoRestaurantFoundException(ExceptionMessages.NO_RESTAURANT_WITH_TYPE + type);
+            throw new SuperException(ExceptionMessages.NO_RESTAURANT_WITH_TYPE + type);
         }
         return restaurantsByType;
     }
 
-    public List<Restaurant> searchRestaurantsByCity(String city) throws NoRestaurantFoundException {
+    public List<Restaurant> searchRestaurantsByCity(String city) throws SuperException {
         List<Restaurant> restaurantsByCity = getRestaurantsByCity(city);
         if (restaurantsByCity.isEmpty()) {
-            throw new NoRestaurantFoundException(ExceptionMessages.NO_RESTAURANT_WITH_CITY + city);
+            throw new SuperException(ExceptionMessages.NO_RESTAURANT_WITH_CITY + city);
         }
         return restaurantsByCity;
     }
@@ -206,31 +204,31 @@ public class RestaurantController {
 //        }
 //    }
 
-    public void parseArgAdd ( String args ) throws Exception {
-        JSONObject jsonObject = (JSONObject) new JSONParser().parse(args);
-        String name = (String) jsonObject.get("name");
-//        validateRestaurantName(name);
-
-        String manager = (String) jsonObject.get("managerUsername");
-//        validateManager(manager);
-
-        String type = (String) jsonObject.get("type");
-//        validateType(type);
-
-        String description = (String) jsonObject.get("description");
-
-        String startTime = (String) jsonObject.get("startTime");
-        String endTime = (String) jsonObject.get("endTime");
-//        validateTime(startTime, endTime);
-
-        JSONObject addressObject = (JSONObject) jsonObject.get("address");
-//        validateAddress(addressObject);
-
-        AddressRestaurant address = new AddressRestaurant((String) addressObject.get("country"),
-                (String) addressObject.get("city"), (String) addressObject.get("street"));
-
-        Restaurant restaurant = new Restaurant(name, manager, type, startTime, endTime, description, address);
-    }
+//    public void parseArgAdd ( String args ) throws Exception {
+//        JSONObject jsonObject = (JSONObject) new JSONParser().parse(args);
+//        String name = (String) jsonObject.get("name");
+////        validateRestaurantName(name);
+//
+//        String manager = (String) jsonObject.get("managerUsername");
+////        validateManager(manager);
+//
+//        String type = (String) jsonObject.get("type");
+////        validateType(type);
+//
+//        String description = (String) jsonObject.get("description");
+//
+//        String startTime = (String) jsonObject.get("startTime");
+//        String endTime = (String) jsonObject.get("endTime");
+////        validateTime(startTime, endTime);
+//
+//        JSONObject addressObject = (JSONObject) jsonObject.get("address");
+////        validateAddress(addressObject);
+//
+//        AddressRestaurant address = new AddressRestaurant((String) addressObject.get("country"),
+//                (String) addressObject.get("city"), (String) addressObject.get("street"));
+//
+//        Restaurant restaurant = new Restaurant(name, manager, type, startTime, endTime, description, address);
+//    }
 //    public int parseArgReserveTable ( String args ) throws Exception {
 //        JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
 //        String username = ( String ) jsonObject.get ( "username" );

@@ -3,18 +3,18 @@ package Servlet;
 import Controller.MizDooni;
 import Controller.RestaurantController;
 import Model.Exception.ExceptionMessages;
-import Model.Exception.NoRestaurantFoundException;
-import Model.Exception.ParameterException;
+import Model.Exception.SuperException;
 import Model.Restaurant.Restaurant;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/restaurants")
+@WebServlet(name = "RestaurantsServlet", urlPatterns = "/restaurants")
 public class RestaurantsServlet extends HttpServlet {
     private final MizDooni mizDooni = MizDooni.getInstance();
     private final RestaurantController restaurantController = new RestaurantController();
@@ -66,12 +66,12 @@ public class RestaurantsServlet extends HttpServlet {
             List<Restaurant> restaurants = getSearchResults(parameter, query);
             request.setAttribute("restaurants", restaurants);
             request.getRequestDispatcher("/views/restaurants.jsp").forward(request, response);
-        } catch (ParameterException | NoRestaurantFoundException e) {
+        } catch (SuperException e) {
             handleError(request, response, e.getMessage());
         }
     }
 
-    private List<Restaurant> getSearchResults(String parameter, String query) throws ParameterException, NoRestaurantFoundException {
+    private List<Restaurant> getSearchResults(String parameter, String query) throws SuperException {
         switch (parameter) {
             case "name":
                 return restaurantController.searchRestaurantsByName(query);
@@ -80,7 +80,7 @@ public class RestaurantsServlet extends HttpServlet {
             case "city":
                 return restaurantController.searchRestaurantsByCity(query);
             default:
-                throw new ParameterException("Unknown parameter: " + parameter);
+                throw new SuperException("Unknown parameter: " + parameter);
         }
     }
 
@@ -108,17 +108,17 @@ public class RestaurantsServlet extends HttpServlet {
         handleError(request, response, "Invalid action.");
     }
 
-    private void validateQueryParameter(String query, String parameterName) throws ParameterException {
+    private void validateQueryParameter(String query, String parameterName) throws SuperException {
         if (query == null || query.isEmpty()) {
             switch (parameterName) {
                 case "name":
-                    throw new ParameterException(ExceptionMessages.MISSING_RESTAURANT_NAME);
+                    throw new SuperException(ExceptionMessages.MISSING_RESTAURANT_NAME);
                 case "type":
-                    throw new ParameterException(ExceptionMessages.MISSING_TYPE);
+                    throw new SuperException(ExceptionMessages.MISSING_TYPE);
                 case "city":
-                    throw new ParameterException(ExceptionMessages.MISSING_CITY);
+                    throw new SuperException(ExceptionMessages.MISSING_CITY);
                 default:
-                    throw new ParameterException("Unknown parameter: " + parameterName);
+                    throw new SuperException("Unknown parameter: " + parameterName);
             }
         }
     }

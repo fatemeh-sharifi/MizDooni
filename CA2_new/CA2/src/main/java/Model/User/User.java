@@ -1,4 +1,4 @@
-package Model.user;
+package Model.User;
 
 import java.util.ArrayList;
 import java.util.List;
