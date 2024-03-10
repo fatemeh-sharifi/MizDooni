@@ -109,4 +109,7 @@ public class MizDooni {
 
         return html;
     }
+    public void logout(){
+        this.loggedInUser = null;
+    }
 }

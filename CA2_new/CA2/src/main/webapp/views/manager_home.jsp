@@ -1,15 +1,15 @@
 <%@page import="Controller.MizDooni"%>
-<html lang="en"><head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <title>Manager Home</title>
 </head>
 <body>
 <%
     MizDooni mizDooni = MizDooni.getInstance();
-    if (!mizDooni.isLoggedIn() ){
-        response.sendRedirect("views/login.jsp");
-    }
-    else{
+    if (!mizDooni.isLoggedIn()) {
+        response.sendRedirect(request.getContextPath() + "/views/login.jsp");
+    } else {
 %>
 <h1>Welcome <%= mizDooni.getLoggedInUser().getUsername() %><a href="/logout" style="color: red">Log Out</a></h1>
 
@@ -19,7 +19,6 @@
 <table border="1" cellpadding="10">
     <tr>
         <td>
-
             <h3>Add Table:</h3>
             <form method="post" action="">
                 <label>Table Number:</label>
@@ -30,11 +29,9 @@
                 <br>
                 <button type="submit">Add</button>
             </form>
-
         </td>
     </tr>
 </table>
-
 <%
     }
 %>

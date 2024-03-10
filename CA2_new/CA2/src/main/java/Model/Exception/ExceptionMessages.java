@@ -9,4 +9,5 @@ public class ExceptionMessages {
     public static final String NO_RESTAURANT_WITH_CITY = "There is no restaurant in this city: ";
     public static final String USER_NOT_FOUND = "User not found: ";
     public static final String INVALID_USERNAME_PASSWORD = "Invalid username or password.";
+    public static final String MISSING_USERNAME_PASSWORD = "Username and password are required.";
 }
