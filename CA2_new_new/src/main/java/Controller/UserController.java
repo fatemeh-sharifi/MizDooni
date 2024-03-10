@@ -1,4 +1,4 @@
-package Application.Controller;
+package Controller;
 import Model.Exception.ExceptionMessages;
 import Model.Exception.SuperException;
 import Model.Reservation.Reservation;

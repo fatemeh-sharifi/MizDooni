@@ -9,6 +9,8 @@ public class AddressRestaurant {
     private String city;
     private String street;
 
+    public AddressRestaurant() {
+    }
     public AddressRestaurant(String country, String city, String street) {
         this.country = country;
         this.city = city;

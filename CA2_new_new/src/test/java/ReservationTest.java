@@ -1,5 +1,5 @@
-import Application.Controller.RestaurantController;
-import Application.Controller.UserController;
+import Controller.RestaurantController;
+import Controller.UserController;
 import Model.Exception.ExceptionMessages;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.*;

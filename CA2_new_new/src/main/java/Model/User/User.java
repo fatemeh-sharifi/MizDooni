@@ -17,6 +17,9 @@ public class User {
     private String password;
     private List<Reservation> reservations;
     private AddressUser address;
+    public User(){
+        this.reservations = new ArrayList<>();
+    }
     public User(String username, String email, String password, String role, AddressUser address) {
         this.username = username;
         this.email = email;

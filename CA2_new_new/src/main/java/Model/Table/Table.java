@@ -1,4 +1,5 @@
 package Model.Table;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,9 @@ public class Table {
     // THIS IS FOR RESERVATION TIME
     private int[] timeSlots;
 
+    public Table() {
+        this.timeSlots = new int[24];
+    }
     public Table(int tableNumber, String restaurantName, String managerUsername, int seatsNumber) {
         this.tableNumber = tableNumber;
         this.restaurantName = restaurantName;

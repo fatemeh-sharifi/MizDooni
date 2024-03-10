@@ -14,6 +14,8 @@ public class Reservation {
 
     private int reservationNumber;
 
+    public Reservation() {
+    }
     public Reservation(String userName, String restaurantName, int tableNumber,int reservationNumber, LocalDateTime datetime) {
         this.username = userName;
         this.restaurantName = restaurantName;

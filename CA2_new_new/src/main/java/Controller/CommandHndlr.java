@@ -1,4 +1,4 @@
-package Application.Controller;
+package Controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import Model.Command.Command;

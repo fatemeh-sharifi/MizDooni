@@ -1,6 +1,6 @@
 package Application;
 
-import Application.Controller.CommandHndlr;
+import Controller.CommandHndlr;
 import Service.MizDooni;
 
 public class MizDooniApplication {

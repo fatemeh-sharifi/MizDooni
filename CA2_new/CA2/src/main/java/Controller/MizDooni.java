@@ -80,7 +80,7 @@ public class MizDooni {
         return html;
     }
 
-    private void loadUsersFromJson() {
+    public void loadUsersFromJson() {
         try {
             users = loadFromJsonFile(USERS_FILE_PATH, new TypeReference<>() {});
         } catch (IOException e) {
@@ -88,7 +88,7 @@ public class MizDooni {
         }
     }
 
-    private void loadRestaurantsFromJson() {
+    public void loadRestaurantsFromJson() {
         try {
             restaurants = loadFromJsonFile(RESTAURANTS_FILE_PATH, new TypeReference<>() {});
         } catch (IOException e) {

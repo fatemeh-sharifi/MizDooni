@@ -16,6 +16,8 @@ public class Feedback {
     private String comment;
     private LocalDateTime dateTime;
 
+    public Feedback() {
+    }
     public Feedback(String username, String restaurantName, double foodRate, double serviceRate, double ambianceRate, double overallRate, String comment, LocalDateTime dateTime) {
         this.username = username;
         this.restaurantName = restaurantName;

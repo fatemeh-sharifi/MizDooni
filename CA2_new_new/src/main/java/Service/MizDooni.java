@@ -1,9 +1,16 @@
 package Service;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import Model.Exception.ExceptionMessages;
+import Model.Exception.SuperException;
 import Model.Reservation.Reservation;
 import Model.Table.Table;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,8 +29,8 @@ public class MizDooni {
     private static MizDooni instance;
     private User loggedInUser = null;
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String USERS_FILE_PATH = "src/main/resources/user.json";
-    private static final String RESTAURANTS_FILE_PATH = "src/main/resources/restaurants.json";
+    private static final String USERS_FILE_PATH = "json/users.json";
+    private static final String RESTAURANTS_FILE_PATH = "json/restaurants.json";
 
 
     public static MizDooni getInstance() {
@@ -31,6 +38,32 @@ public class MizDooni {
             instance = new MizDooni();
         }
         return instance;
+    }
+
+
+    public void loadUsersFromJson() {
+        try {
+            users = new ArrayList<>(loadFromJsonFile(USERS_FILE_PATH, new TypeReference<List<User>>() {}));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadRestaurantsFromJson() {
+        try {
+            restaurants = new ArrayList<>(loadFromJsonFile(RESTAURANTS_FILE_PATH, new TypeReference<List<Restaurant>>() {}));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public <T> List<T> loadFromJsonFile(String filePath, TypeReference<List<T>> typeReference) throws IOException {
+        try (InputStream inputStream = MizDooni.class.getClassLoader().getResourceAsStream(filePath)) {
+            if (inputStream == null) {
+                throw new IOException("File not found: " + filePath);
+            }
+            return objectMapper.readValue(inputStream, typeReference);
+        }
     }
 
     public void addUser(User user) throws Exception{
@@ -103,25 +136,6 @@ public class MizDooni {
         return user.getReservations();
     }
 
-    public List<Restaurant> getRestaurantsByName(String name){
-        List<Restaurant> res = new ArrayList<>();
-        for(Restaurant restaurant : restaurants){
-            if (restaurant.getName().contains(name)){
-                res.add(restaurant);
-            }
-        }
-        return res;
-    }
-
-    public List<Restaurant> getRestaurantsByType(String type){
-        List<Restaurant> res = new ArrayList<>();
-        for(Restaurant restaurant : restaurants){
-            if (restaurant.getType().equals(type)){
-                res.add(restaurant);
-            }
-        }
-        return res;
-    }
 
     public void addFeedback(Feedback feedback){
         this.feedbacks.add(feedback);
@@ -244,4 +258,83 @@ public class MizDooni {
         this.loggedInUser = null;
     }
 
+    public User findUserByUsername(String username) throws SuperException {
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        throw new SuperException(ExceptionMessages.USER_NOT_FOUND + username);
+    }
+    public List<Restaurant> getRestaurantsByName(String name){
+        List<Restaurant> res = new ArrayList<>();
+        for(Restaurant restaurant : restaurants){
+            if (restaurant.getName().contains(name)){
+                res.add(restaurant);
+            }
+        }
+        return res;
+    }
+
+    public List<Restaurant> getRestaurantsByType(String type){
+        List<Restaurant> res = new ArrayList<>();
+        for(Restaurant restaurant : restaurants){
+            if (restaurant.getType().equals(type)){
+                res.add(restaurant);
+            }
+        }
+        return res;
+    }
+
+    public List<Restaurant> searchRestaurantsByName(String name) throws SuperException {
+        List<Restaurant> restaurantsByName = getRestaurantsByName(name);
+        if (restaurantsByName.isEmpty()) {
+            throw new SuperException (ExceptionMessages.NO_RESTAURANT_WITH_NAME + name);
+        }
+        return restaurantsByName;
+    }
+
+    public List<Restaurant> searchRestaurantsByType(String type) throws SuperException {
+        List<Restaurant> restaurantsByType = getRestaurantsByType(type);
+        if (restaurantsByType.isEmpty()) {
+            throw new SuperException(ExceptionMessages.NO_RESTAURANT_WITH_TYPE + type);
+        }
+        return restaurantsByType;
+    }
+
+    public List<Restaurant> searchRestaurantsByCity(String city) throws SuperException {
+        List<Restaurant> restaurantsByCity = getRestaurantsByCity(city);
+        if (restaurantsByCity.isEmpty()) {
+            throw new SuperException(ExceptionMessages.NO_RESTAURANT_WITH_CITY + city);
+        }
+        return restaurantsByCity;
+    }
+
+    public List<Restaurant> getRestaurantsByCity(String city){
+        List<Restaurant> res = new ArrayList<>();
+        for(Restaurant restaurant : restaurants){
+            if (restaurant.getAddress().getCity().equals(city)){
+                res.add(restaurant);
+            }
+        }
+        return res;
+    }
+    public List<Restaurant> getRestaurants() {
+        return restaurants;
+    }
+
+    public List<Restaurant> sortRestaurantsByScore() {
+        // Sort the list of restaurants based on overall score
+        Collections.sort(restaurants, new Comparator<Restaurant>() {
+            @Override
+            public int compare(Restaurant restaurant1, Restaurant restaurant2) {
+                // Compare based on overall score
+                double overallScore1 = (restaurant1.getServiceAvg() + restaurant1.getFoodAvg() + restaurant1.getAmbianceAvg()) / 3.0;
+                double overallScore2 = (restaurant2.getServiceAvg() + restaurant2.getFoodAvg() + restaurant2.getAmbianceAvg()) / 3.0;
+                return Double.compare(overallScore2, overallScore1); // Descending order
+            }
+        });
+
+        return restaurants;
+    }
 }

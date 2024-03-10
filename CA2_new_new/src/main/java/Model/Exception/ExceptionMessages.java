@@ -28,4 +28,16 @@ public class ExceptionMessages {
     public static final String WRONG_MANAGER_ROLE_EXCEPTION_MESSAGE = "Wrong manager role.";
     public static final String WRONG_TIME_EXCEPTION_MESSAGE = "Wrong time format.";
     public static final String WRONG_TYPE_EXCEPTION_MESSAGE = "Wrong type.";
+    // NEW
+    public static final String MISSING_RESTAURANT_NAME = "Restaurant name is required.";
+    public static final String MISSING_CITY = "City is required.";
+    public static final String MISSING_TYPE = "Type is required.";
+    public static final String NO_RESTAURANT_WITH_NAME = "There is no restaurant with this name: ";
+    public static final String NO_RESTAURANT_WITH_TYPE = "There is no restaurant with this type: ";
+    public static final String NO_RESTAURANT_WITH_CITY = "There is no restaurant in this city: ";
+    public static final String USER_NOT_FOUND = "User not found: ";
+    public static final String INVALID_USERNAME_PASSWORD = "Invalid username or password.";
+    public static final String MISSING_USERNAME_PASSWORD = "Username and password are required.";
+    public static final String NOT_LOGGED_IN = "You are not logged in.";
+    public static final String ADD_TABLE_EMPTY = "Table number, seats number, and restaurant name cannot be empty.";
 }

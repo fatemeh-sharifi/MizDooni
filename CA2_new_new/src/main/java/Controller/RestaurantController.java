@@ -1,4 +1,4 @@
-package Application.Controller;
+package Controller;
 
 import Model.Exception.ExceptionMessages;
 import Model.Exception.SuperException;
@@ -20,6 +20,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class RestaurantController {
@@ -64,14 +66,15 @@ public class RestaurantController {
         JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
         String name = ( String ) jsonObject.get ( "name" );
         doesRestaurantExists ( name );
-        return mizDooni.getRestaurantsByName ( name );
+        return mizDooni.getRestaurantsByName(name);
     }
 
     public List < Restaurant > parseSearchByTypeArgs ( String args ) throws Exception {
         JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
         String type = ( String ) jsonObject.get ( "type" );
         validateType ( type );
-        List < Restaurant > restaurants = mizDooni.getRestaurantsByType ( type );
+        List<Restaurant> restaurants;
+        restaurants = mizDooni.getRestaurantsByType(type);
         if ( restaurants.isEmpty ( ) ) {
             throw new SuperException(ExceptionMessages.TYPE_NOT_EXISTS_EXCEPTION_MESSAGE);
         }
