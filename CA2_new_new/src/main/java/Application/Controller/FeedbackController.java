@@ -48,30 +48,30 @@ public class FeedbackController {
 
     private void validateCommentNotEmpty ( String comment ) throws Exception {
         if ( comment == null || comment.trim ( ).isEmpty ( ) ) {
-            new SuperException(ExceptionMessages.MISSING_COMMENT_EXCEPTION_MESSAGE);
+            throw new SuperException(ExceptionMessages.MISSING_COMMENT_EXCEPTION_MESSAGE);
         }
     }
 
     private double getDouble ( JSONObject jsonObject , String key ) throws Exception {
         Number rate = ( Number ) jsonObject.get ( key );
         if ( rate == null ) {
-            new SuperException(ExceptionMessages.JSON_EXCEPTION_MESSAGE);
+            throw new SuperException(ExceptionMessages.JSON_EXCEPTION_MESSAGE);
         }
         return rate.doubleValue ( );
     }
 
     private void validateUsername ( String username ) throws Exception {
         if ( ! mizDooni.isUserExists ( username ) ) {
-            new SuperException(ExceptionMessages.USERNAME_NOT_EXISTS_EXCEPTION_MESSAGE);
+            throw new SuperException(ExceptionMessages.USERNAME_NOT_EXISTS_EXCEPTION_MESSAGE);
         }
         if ( mizDooni.isManager ( username ) ) {
-            new SuperException(ExceptionMessages.ROLE_EXCEPTION_MESSAGE);
+            throw new SuperException(ExceptionMessages.ROLE_EXCEPTION_MESSAGE);
         }
     }
 
     private void validateRestaurantExistence ( String restaurantName ) throws Exception {
         if ( ! mizDooni.isRestaurantNameExists ( restaurantName ) ) {
-            new SuperException(ExceptionMessages.RESERVATION_NOT_FOUND_EXCEPTION_MESSAGE);
+            throw new SuperException(ExceptionMessages.RESERVATION_NOT_FOUND_EXCEPTION_MESSAGE);
         }
     }
 
@@ -82,7 +82,7 @@ public class FeedbackController {
     private void validateRates ( double foodRate , double serviceRate , double ambianceRate , double overallRate ) throws Exception {
         if ( ! isValidRange ( foodRate ) || ! isValidRange ( serviceRate ) ||
                 ! isValidRange ( ambianceRate ) || ! isValidRange ( overallRate ) ) {
-            new SuperException(ExceptionMessages.RATE_OUT_OF_RANGE_EXCEPTION_MESSAGE);
+            throw new SuperException(ExceptionMessages.RATE_OUT_OF_RANGE_EXCEPTION_MESSAGE);
         }
     }
     public void addFeedback (String username , String restaurantName, double foodRate,
@@ -110,10 +110,10 @@ public class FeedbackController {
 
     private void validatePossibilityFeedback(String username, String restaurantName) throws Exception{
         if(!mizDooni.doesUserHaveReserve(username,restaurantName)){
-            new SuperException(ExceptionMessages.RESERVATION_NOT_FOUND_EXCEPTION_MESSAGE);
+            throw new SuperException(ExceptionMessages.RESERVATION_NOT_FOUND_EXCEPTION_MESSAGE);
         }
         if(!mizDooni.isFeedbackTimeCorrect(username,restaurantName)){
-            new SuperException((ExceptionMessages.PAST_DATE_TIME_EXCEPTION_MESSAGE));
+            throw new SuperException((ExceptionMessages.PAST_DATE_TIME_EXCEPTION_MESSAGE));
         }
     }
     //    public List<Feedback> getFeedbacks(String username, String restaurantName){

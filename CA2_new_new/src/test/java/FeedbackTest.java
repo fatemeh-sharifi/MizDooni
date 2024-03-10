@@ -1,6 +1,7 @@
 import Application.Controller.FeedbackController;
 import Application.Controller.RestaurantController;
 import Application.Controller.UserController;
+import Model.Exception.ExceptionMessages;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -8,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import Service.MizDooni;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FeedbackTest {
 
@@ -16,6 +17,7 @@ public class FeedbackTest {
     private final UserController userController = new UserController();
     private final RestaurantController restaurantController = new RestaurantController();
     private final MizDooni mizDooni = MizDooni.getInstance();
+
     @BeforeEach
     public void setUp() throws Exception {
         // Mock manager user
@@ -91,8 +93,7 @@ public class FeedbackTest {
 
         String args = jsonObject.toJSONString();
         Assertions.assertDoesNotThrow(() -> feedbackController.parseArgAdd(args));
-        Assertions.assertEquals (1, mizDooni.getFeedbacks ().size ());
-
+        Assertions.assertEquals(1, mizDooni.getFeedbacks().size());
     }
 
     @Test
@@ -108,7 +109,7 @@ public class FeedbackTest {
 
         String args = jsonObject.toJSONString();
         Exception exception = assertThrows(Exception.class, () -> feedbackController.parseArgAdd(args));
-        Assertions.assertEquals("The username does not Exists.\n", exception.getMessage());
+        Assertions.assertEquals(ExceptionMessages.USERNAME_NOT_EXISTS_EXCEPTION_MESSAGE, exception.getMessage());
     }
 
     @Test
@@ -124,7 +125,7 @@ public class FeedbackTest {
 
         String args = jsonObject.toJSONString();
         Exception exception = assertThrows(Exception.class, () -> feedbackController.parseArgAdd(args));
-        Assertions.assertEquals("The restaurant does not exists.\n", exception.getMessage());
+        Assertions.assertEquals(ExceptionMessages.RESERVATION_NOT_FOUND_EXCEPTION_MESSAGE, exception.getMessage());
     }
 
     @Test
@@ -140,7 +141,7 @@ public class FeedbackTest {
 
         String args = jsonObject.toJSONString();
         Exception exception = assertThrows(Exception.class, () -> feedbackController.parseArgAdd(args));
-        Assertions.assertEquals("The rating must be in range of 0 to 5.", exception.getMessage());
+        Assertions.assertEquals(ExceptionMessages.RATE_OUT_OF_RANGE_EXCEPTION_MESSAGE, exception.getMessage());
     }
 
     @Test
@@ -154,8 +155,9 @@ public class FeedbackTest {
 
         String args = jsonObject.toJSONString();
         Exception exception = assertThrows(Exception.class, () -> feedbackController.parseArgAdd(args));
-        Assertions.assertEquals("Key 'serviceRate' not found in JSON object.", exception.getMessage());
+        Assertions.assertEquals(ExceptionMessages.JSON_EXCEPTION_MESSAGE, exception.getMessage());
     }
+
     @Test
     public void testAddFeedbackWithInvalidUsernameRole() {
         JSONObject jsonObject = new JSONObject();
@@ -169,7 +171,7 @@ public class FeedbackTest {
 
         String args = jsonObject.toJSONString();
         Exception exception = assertThrows(Exception.class, () -> feedbackController.parseArgAdd(args));
-        Assertions.assertEquals("The role must be client.", exception.getMessage());
+        Assertions.assertEquals(ExceptionMessages.ROLE_EXCEPTION_MESSAGE, exception.getMessage());
     }
 
     @Test
@@ -185,6 +187,6 @@ public class FeedbackTest {
 
         String args = jsonObject.toJSONString();
         Exception exception = assertThrows(Exception.class, () -> feedbackController.parseArgAdd(args));
-        Assertions.assertEquals("Feedback comment cannot be empty.\n", exception.getMessage());
+        Assertions.assertEquals(ExceptionMessages.MISSING_COMMENT_EXCEPTION_MESSAGE, exception.getMessage());
     }
 }

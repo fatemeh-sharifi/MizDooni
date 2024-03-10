@@ -189,7 +189,7 @@ public class RestaurantController {
         LocalTime endTime = LocalTime.parse ( restaurant.getEndTime ( ) );
         LocalTime reservationTime = datetime.toLocalTime ( );
         if ( reservationTime.isBefore ( startTime ) || reservationTime.isAfter ( endTime ) ) {
-            throw new SuperException (ExceptionMessages.WRONG_TIME_EXCEPTION_MESSAGE );
+            throw new SuperException (ExceptionMessages.OUT_OF_WORKING_HOUR_EXCEPTION_MESSAGE );
         }
 
         if ( datetime.isBefore ( LocalDateTime.now ( ) ) ) {

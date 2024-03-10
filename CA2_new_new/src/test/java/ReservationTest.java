@@ -1,5 +1,6 @@
 import Application.Controller.RestaurantController;
 import Application.Controller.UserController;
+import Model.Exception.ExceptionMessages;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.*;
 import Service.MizDooni;
@@ -82,31 +83,31 @@ public class ReservationTest {
     public void testUsernameNotFound () {
         String args = "{\"username\": \"nonexistentuser\", \"restaurantName\": \"restaurant1\", \"tableNumber\": 1, \"datetime\": \"3000-02-26 12:00\"}";
         Exception exception = assertThrows (Exception.class, () -> restaurantController.parseArgReserveTable (args));
-        Assertions.assertEquals ("The username does not Exists.\n", exception.getMessage ());
+        Assertions.assertEquals (ExceptionMessages.USERNAME_NOT_EXISTS_EXCEPTION_MESSAGE, exception.getMessage ());
     }
     @Test
     public void testManagerRoleRestriction () {
         String args = "{\"username\": \"manager\", \"restaurantName\": \"restaurant1\", \"tableNumber\": 1, \"datetime\": \"3000-02-26 12:00\"}";
         Exception exception = assertThrows (Exception.class, () -> restaurantController.parseArgReserveTable (args));
-        Assertions.assertEquals ("Only clients are allowed to make reservations.\n", exception.getMessage ());
+        Assertions.assertEquals (ExceptionMessages.NOT_ALLOWED_RESERVATION_EXCEPTION_MESSAGE, exception.getMessage ());
     }
     @Test
     public void testInvalidTimeFormat () {
         String args = "{\"username\": \"client\", \"restaurantName\": \"restaurant1\", \"tableNumber\": 1, \"datetime\": \"3000-02-26 22:30\"}";
         Exception exception = assertThrows (Exception.class, () -> restaurantController.parseArgReserveTable (args));
-        Assertions.assertEquals ("The time must be in order of 00:00,01:00,... .\n", exception.getMessage ());
+        Assertions.assertEquals (ExceptionMessages.WRONG_TIME_EXCEPTION_MESSAGE, exception.getMessage ());
     }
     @Test
     public void testNonExistentRestaurantName () {
         String args = "{\"username\": \"client\", \"restaurantName\": \"nonexistentrestaurant\", \"tableNumber\": 1, \"datetime\": \"3000-02-26 12:00\"}";
         Exception exception = assertThrows (Exception.class, () -> restaurantController.parseArgReserveTable (args));
-        Assertions.assertEquals ("The restaurant does not exists.\n", exception.getMessage ());
+        Assertions.assertEquals (ExceptionMessages.RESERVATION_NOT_FOUND_EXCEPTION_MESSAGE, exception.getMessage ());
     }
     @Test
     public void testNonExistentTableNumber () {
         String args = "{\"username\": \"client\", \"restaurantName\": \"restaurant1\", \"tableNumber\": 10, \"datetime\": \"3000-02-26 12:00\"}";
         Exception exception = assertThrows (Exception.class, () -> restaurantController.parseArgReserveTable (args));
-        Assertions.assertEquals ("Table not found in the restaurant.\n", exception.getMessage ());
+        Assertions.assertEquals (ExceptionMessages.TABLE_NOT_FOUND_EXCEPTION_MESSAGE, exception.getMessage ());
     }
     @Test
     public void testReservedTimeSlot () throws Exception {
@@ -114,18 +115,18 @@ public class ReservationTest {
         String args2 = "{\"username\": \"client\", \"restaurantName\": \"restaurant1\", \"tableNumber\": 1, \"datetime\": \"3000-02-26 12:00\"}";
         restaurantController.parseArgReserveTable (args1);
         Exception exception = assertThrows (Exception.class, () -> restaurantController.parseArgReserveTable (args2));
-        Assertions.assertEquals ("Table is already reserved at the specified datetime.\n", exception.getMessage ());
+        Assertions.assertEquals (ExceptionMessages.TABLE_ALREADY_RESERVED_EXCEPTION_MESSAGE, exception.getMessage ());
     }
     @Test
     public void testPastDatetime () {
         String args = "{\"username\": \"client\", \"restaurantName\": \"restaurant1\", \"tableNumber\": 1, \"datetime\": \"2022-01-01 12:00\"}";
         Exception exception = assertThrows (Exception.class, () -> restaurantController.parseArgReserveTable (args));
-        Assertions.assertEquals ("Reservation datetime should be in the future.\n", exception.getMessage ());
+        Assertions.assertEquals (ExceptionMessages.PAST_DATE_TIME_EXCEPTION_MESSAGE, exception.getMessage ());
     }
     @Test
     public void testOutOfRestaurantWorkingHours () {
         String args = "{\"username\": \"client\", \"restaurantName\": \"restaurant1\", \"tableNumber\": 1, \"datetime\": \"3000-02-26 02:00\"}";
         Exception exception = assertThrows (Exception.class, () -> restaurantController.parseArgReserveTable (args));
-        Assertions.assertEquals ("The selected date and time is outside of the restaurant's working hours.\n", exception.getMessage ());
+        Assertions.assertEquals (ExceptionMessages.OUT_OF_WORKING_HOUR_EXCEPTION_MESSAGE, exception.getMessage ());
     }
 }
