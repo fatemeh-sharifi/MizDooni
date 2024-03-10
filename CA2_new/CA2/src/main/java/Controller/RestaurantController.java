@@ -1,20 +1,16 @@
 package Controller;
 
 import Model.Address.AddressRestaurant;
-import Model.exception.*;
+import Model.Exception.*;
 import Model.Restaurant.Restaurant;
 import Model.Table.Table;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 public class RestaurantController {
     private MizDooni mizDooni = MizDooni.getInstance ( );
     List <Restaurant> restaurants = mizDooni.getRestaurants();
@@ -46,12 +42,29 @@ public class RestaurantController {
         }
         return res;
     }
-    public List<Restaurant> searchRestaurantsByName(String name){
-        return getRestaurantsByName(name);
+
+    public List<Restaurant> searchRestaurantsByName(String name) throws NoRestaurantFoundException {
+        List<Restaurant> restaurantsByName = getRestaurantsByName(name);
+        if (restaurantsByName.isEmpty()) {
+            throw new NoRestaurantFoundException(ExceptionMessages.NO_RESTAURANT_WITH_NAME + name);
+        }
+        return restaurantsByName;
     }
 
-    public List<Restaurant> searchRestaurantsByType(String type){
-        return getRestaurantsByType(type);
+    public List<Restaurant> searchRestaurantsByType(String type) throws NoRestaurantFoundException {
+        List<Restaurant> restaurantsByType = getRestaurantsByType(type);
+        if (restaurantsByType.isEmpty()) {
+            throw new NoRestaurantFoundException(ExceptionMessages.NO_RESTAURANT_WITH_TYPE + type);
+        }
+        return restaurantsByType;
+    }
+
+    public List<Restaurant> searchRestaurantsByCity(String city) throws NoRestaurantFoundException {
+        List<Restaurant> restaurantsByCity = getRestaurantsByCity(city);
+        if (restaurantsByCity.isEmpty()) {
+            throw new NoRestaurantFoundException(ExceptionMessages.NO_RESTAURANT_WITH_CITY + city);
+        }
+        return restaurantsByCity;
     }
 
     public List<Restaurant> getRestaurantsByCity(String city){
@@ -63,9 +76,7 @@ public class RestaurantController {
         }
         return res;
     }
-    public List<Restaurant> searchRestaurantsByCity(String city){
-        return getRestaurantsByCity(city);
-    }
+
 //    public void addRestaurant ( String args ) throws Exception {
 //        JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
 //        String name = ( String ) jsonObject.get ( "name" );
@@ -111,11 +122,11 @@ public class RestaurantController {
 //        return restaurants;
 //    }
 
-    private void validateTime ( String startTime , String endTime ) throws Exception {
-        if ( ! AVAILABLE_TIMES.contains ( startTime ) || ! AVAILABLE_TIMES.contains ( endTime ) ) {
-            new throwWrongTimeException ( );
-        }
-    }
+//    private void validateTime ( String startTime , String endTime ) throws Exception {
+//        if ( ! AVAILABLE_TIMES.contains ( startTime ) || ! AVAILABLE_TIMES.contains ( endTime ) ) {
+//            new throwWrongTimeException ( );
+//        }
+//    }
 
 //    private void validateRestaurantName ( String name ) throws Exception {
 //        if ( mizDooni.isRestaurantNameExists ( name ) ) {
@@ -183,17 +194,17 @@ public class RestaurantController {
         return true;
     }
 
-    private void validateTableNum ( List < Table > tables , int tableNumber ) throws Exception {
-        if ( ! isValidTableNum ( tables , tableNumber ) ) {
-            new throwTableNumAlreadyExistsException ( );
-        }
-    }
-
-    private void validateSeatsNumber ( int seatsNumber ) throws Exception {
-        if ( seatsNumber <= 0 || seatsNumber != ( int ) seatsNumber ) {
-            new throwInvalidSeatsNumberException ( );
-        }
-    }
+//    private void validateTableNum ( List < Table > tables , int tableNumber ) throws Exception {
+//        if ( ! isValidTableNum ( tables , tableNumber ) ) {
+//            new throwTableNumAlreadyExistsException ( );
+//        }
+//    }
+//
+//    private void validateSeatsNumber ( int seatsNumber ) throws Exception {
+//        if ( seatsNumber <= 0 || seatsNumber != ( int ) seatsNumber ) {
+//            new throwInvalidSeatsNumberException ( );
+//        }
+//    }
 
     public void parseArgAdd ( String args ) throws Exception {
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(args);
@@ -210,7 +221,7 @@ public class RestaurantController {
 
         String startTime = (String) jsonObject.get("startTime");
         String endTime = (String) jsonObject.get("endTime");
-        validateTime(startTime, endTime);
+//        validateTime(startTime, endTime);
 
         JSONObject addressObject = (JSONObject) jsonObject.get("address");
 //        validateAddress(addressObject);
@@ -281,16 +292,16 @@ public class RestaurantController {
 //        return mizDooni.getReservationNumber ( ) - 1;
 //    }
 
-    private LocalDateTime parseDateTime ( String datetimeString ) throws Exception {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy-MM-dd HH:mm" );
-        TemporalAccessor temporalAccessor = formatter.parseBest ( datetimeString , LocalDateTime :: from , LocalDate :: from );
-        if ( temporalAccessor instanceof LocalDateTime ) {
-            return ( LocalDateTime ) temporalAccessor;
-        } else {
-            new throwInvalidDateTimeFormatException ( );
-        }
-        return null;
-    }
+//    private LocalDateTime parseDateTime ( String datetimeString ) throws Exception {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy-MM-dd HH:mm" );
+//        TemporalAccessor temporalAccessor = formatter.parseBest ( datetimeString , LocalDateTime :: from , LocalDate :: from );
+//        if ( temporalAccessor instanceof LocalDateTime ) {
+//            return ( LocalDateTime ) temporalAccessor;
+//        } else {
+//            new throwInvalidDateTimeFormatException ( );
+//        }
+//        return null;
+//    }
 
     public List<Restaurant> getRestaurants() {
         return restaurants;

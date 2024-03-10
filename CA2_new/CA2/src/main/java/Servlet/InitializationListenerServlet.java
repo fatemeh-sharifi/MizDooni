@@ -1,4 +1,4 @@
-package servlet;
+package Servlet;
 
 import Controller.MizDooni;
 import jakarta.servlet.ServletContextEvent;

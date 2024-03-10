@@ -4,14 +4,18 @@
 <web-app>
   <display-name>Mizdooni</display-name>
   <listener>
-    <listener-class>servlet.InitializationListenerServlet</listener-class>
+    <listener-class>Servlet.InitializationListenerServlet</listener-class>
   </listener>
   <servlet>
-    <servlet-name>servlet.RestaurantsServlet</servlet-name>
-    <servlet-class>servlet.RestaurantsServlet</servlet-class>
+    <servlet-name>Servlet.RestaurantsServlet</servlet-name>
+    <servlet-class>Servlet.RestaurantsServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>servlet.RestaurantsServlet</servlet-name>
+    <servlet-name>Servlet.RestaurantsServlet</servlet-name>
     <url-pattern>/restaurants</url-pattern>
   </servlet-mapping>
+  <error-page>
+    <error-code>400</error-code>
+    <location>/WEB-INF/errors/error.jsp</location>
+  </error-page>
 </web-app>
