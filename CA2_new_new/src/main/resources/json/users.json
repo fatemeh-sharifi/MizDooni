@@ -1,0 +1,46 @@
+[
+  {
+    "username": "fatemeh",
+    "password": "pass1",
+    "role" : "client",
+    "email": "f@e.com",
+    "reservations" : [],
+    "address" : {
+      "city": "Tehran",
+      "country": "Iran"
+    }
+  },
+  {
+    "username": "shakiba",
+    "password": "pass2",
+    "role" : "manager",
+    "email": "sh@e.com",
+    "reservations" : [],
+    "address" : {
+      "city": "Tehran",
+      "country": "Iran"
+    }
+  },
+  {
+    "username": "randomGuy",
+    "password": "pass3",
+    "role" : "manager",
+    "email": "r@e.com",
+    "reservations" : [],
+    "address" : {
+      "city": "Tehran",
+      "country": "Iran"
+    }
+  },
+  {
+    "username": "randomGuy2",
+    "password": "pass4",
+    "role" : "client",
+    "email": "r2@e.com",
+    "reservations" : [],
+    "address" : {
+      "city": "Tehran",
+      "country": "Iran"
+    }
+  }
+]

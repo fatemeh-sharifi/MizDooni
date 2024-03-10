@@ -1,0 +1,119 @@
+[
+  {
+    "name": "rest1",
+    "managerUsername": "shakiba",
+    "type": "Iranian",
+    "startTime": "08:00",
+    "endTime" : "23:00",
+    "description" : "We can do it!",
+    "address" : {
+      "city" : "Tehran",
+      "country": "Iran",
+      "street": "Kargar"
+    },
+    "tables": [
+      {
+        "tableNumber" : 1,
+        "restaurantName" : "rest1",
+        "managerUsername": "shakiba",
+        "seatsNumber" : 2
+      },
+      {
+        "tableNumber" : 2,
+        "restaurantName" : "rest1",
+        "managerUsername": "shakiba",
+        "seatsNumber" : 3
+      },
+      {
+        "tableNumber" : 3,
+        "restaurantName" : "rest1",
+        "managerUsername": "shakiba",
+        "seatsNumber" : 4
+      },
+      {
+        "tableNumber" : 4,
+        "restaurantName" : "rest1",
+        "managerUsername": "shakiba",
+        "seatsNumber" : 5
+      }
+    ]
+  },
+  {
+    "name": "rest2",
+    "managerUsername": "shakiba",
+    "type": "Asian",
+    "startTime": "08:00",
+    "endTime" : "23:00",
+    "description" : "We can do it!",
+    "address" : {
+      "city" : "Tehran",
+      "country": "Iran",
+      "street": "Enghelab"
+    },
+    "tables": [
+      {
+        "tableNumber" : 1,
+        "restaurantName" : "rest2",
+        "managerUsername": "shakiba",
+        "seatsNumber" : 2
+      },
+      {
+        "tableNumber" : 2,
+        "restaurantName" : "rest2",
+        "managerUsername": "shakiba",
+        "seatsNumber" : 3
+      },
+      {
+        "tableNumber" : 3,
+        "restaurantName" : "rest2",
+        "managerUsername": "shakiba",
+        "seatsNumber" : 4
+      },
+      {
+        "tableNumber" : 4,
+        "restaurantName" : "rest2",
+        "managerUsername": "shakiba",
+        "seatsNumber" : 5
+      }
+    ]
+  },
+  {
+    "name": "rest3",
+    "managerUsername": "randomGuy",
+    "type": "Italian",
+    "startTime": "16:00",
+    "endTime" : "00:00",
+    "description" : "You're gonna love it!",
+    "address" : {
+      "city" : "Tehran",
+      "country": "Iran",
+      "street": "Valiasr"
+    },
+    "tables": [
+      {
+        "tableNumber" : 1,
+        "restaurantName" : "rest3",
+        "managerUsername": "randomGuy",
+        "seatsNumber" : 2
+      },
+      {
+        "tableNumber" : 2,
+        "restaurantName" : "rest3",
+        "managerUsername": "randomGuy",
+        "seatsNumber" : 3
+      },
+      {
+        "tableNumber" : 3,
+        "restaurantName" : "rest3",
+        "managerUsername": "randomGuy",
+        "seatsNumber" : 4
+      },
+      {
+        "tableNumber" : 4,
+        "restaurantName" : "rest3",
+        "managerUsername": "randomGuy",
+        "seatsNumber" : 5
+      }
+    ]
+  }
+]
