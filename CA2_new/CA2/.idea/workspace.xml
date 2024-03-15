@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce15308d-bf1f-4da9-b874-b7d34092c975" name="Changes" comment="" />
+    <list default="true" id="ce15308d-bf1f-4da9-b874-b7d34092c975" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../CA3/Home.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../CA3/Home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../CA3/assets/css/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../CA3/assets/css/home.css" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,7 +32,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/university/8/IE/CA/1-2/MizDooni/tmp",
+    "last_opened_file_path": "D:/university/8/IE/CA/1-2/MizDooni/CA2",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
@@ -45,6 +48,7 @@
       <option name="presentableId" value="Default" />
       <updated>1709983824221</updated>
       <workItem from="1709983825586" duration="2142000" />
+      <workItem from="1710506845758" duration="28000" />
     </task>
     <servers />
   </component>
