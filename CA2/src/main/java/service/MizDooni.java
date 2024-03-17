@@ -138,6 +138,7 @@ public class MizDooni {
 
 
     public void addFeedback(Feedback feedback){
+
         this.feedbacks.add(feedback);
     }
 

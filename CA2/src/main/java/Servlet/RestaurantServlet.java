@@ -1,4 +1,5 @@
 package Servlet;
+import Controller.FeedbackController;
 import Model.Exception.ExceptionMessages;
 import Service.MizDooni;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ import java.util.List;
 @WebServlet(name = "RestaurantServlet", urlPatterns = "/restaurants/*")
 public class RestaurantServlet extends HttpServlet {
     private final MizDooni mizDooni = MizDooni.getInstance();
+    private final FeedbackController feedbackController = FeedbackController.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

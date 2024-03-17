@@ -1,4 +1,5 @@
 package Model.Address;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,9 +10,10 @@ public class AddressRestaurant {
     private String city;
     private String street;
 
-    public AddressRestaurant() {
+    public AddressRestaurant ( ) {
     }
-    public AddressRestaurant(String country, String city, String street) {
+
+    public AddressRestaurant ( String country, String city, String street ) {
         this.country = country;
         this.city = city;
         this.street = street;

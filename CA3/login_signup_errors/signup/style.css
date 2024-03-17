@@ -1,0 +1,136 @@
+body {
+    background-image: url('background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover; 
+    font-family: 'Spline Sans';
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; 
+    background-attachment: fixed;  
+}
+
+header {
+    width: 100%;
+    height: 100px;
+    background-color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 0px 3px 0px #00000040;
+}
+
+.logo {
+    width: 103px;
+    height: 85px;
+    position: absolute;
+    top: 8px;
+    left: 53px;
+}
+
+.header-text {
+    font-size: 22px;
+    color: #ed3545;
+    position: absolute;
+    width: 305px;
+    height: 26px;
+    top: 20px;
+    left: 181px;
+}
+
+.signup {
+    background-color: white;
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 5px 10px 10px rgba(2, 128, 144, 0.2);
+    width: 90%;
+    max-width: 400px;
+    position: fixed; /* Change to fixed */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 300ms, box-shadow 300ms;
+    z-index: 1;
+    overflow: hidden;
+}
+
+
+.signup label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: 'Spline Sans';
+    color: #ed3545; 
+}
+
+.signup input {
+    display: block;
+    width: calc(100% - 20px);
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 1px solid #ccc; /* Adding a bottom border for decoration */
+    outline: none; /* Remove the default focus outline */
+}
+
+.signup button {
+    display: block;
+    width: calc(100% - 20px);
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #fff;
+    text-transform: uppercase;
+    cursor: pointer;
+    background-color: #ed3545;
+    border: none;
+    transition: background-color 300ms;
+}
+
+.signup button:hover {
+    background-color: #d53040;
+}
+
+.signup::before,
+.signup::after {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-top-left-radius: 40%;
+    border-top-right-radius: 45%;
+    border-bottom-left-radius: 35%;
+    border-bottom-right-radius: 40%;
+    z-index: -1;
+    top: -25%;
+    left: -25%;
+    animation: waves 6s infinite linear;
+}
+
+.signup::before {
+    left: 40%;
+    bottom: -130%;
+    background-color: rgba(69, 105, 144, 0.15);
+}
+
+.signup::after {
+    left: 35%;
+    bottom: -135%;
+    background-color: rgba(2, 128, 144, 0.2);
+}
+
+@keyframes waves {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

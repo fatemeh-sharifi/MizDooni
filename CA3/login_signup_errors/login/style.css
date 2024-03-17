@@ -1,0 +1,155 @@
+body {
+    background-image: url('background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover; 
+    font-family: 'Spline Sans';
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; 
+    background-attachment: fixed;
+    
+}
+:root {
+    --header-height: 110px; /* Adjust this value as needed */
+  }
+header {
+    width: 100%;
+    height: 100px;
+    background-color: #ffffff;
+    position: fixed; /* Fixed positioning to keep the header at the top */
+    top: 0;
+    left: 0;
+    z-index: 999; /* Ensure the header is above other elements */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 0px 3px 0px #00000040;
+}
+
+.logo {
+    width: 103px;
+    height: 85px;
+    position: absolute;
+    top: 8px;
+    left: 53px;
+}
+
+.header-text {
+    font-size: 22px;
+    color: #ed3545;
+    position: absolute;
+    width: 305px;
+    height: 26px;
+    top: 20px;
+    left: 181px;
+}
+
+
+.login {
+    background-color: white;
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 5px 10px 10px rgba(2, 128, 144, 0.2);
+    width: 90%; /* Set to 90% of the viewport width */
+    max-width: 400px; /* Limit maximum width */
+    position: absolute;
+    top: calc(50% + (var(--header-height) / 2));
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 300ms, box-shadow 300ms;
+    z-index: 1;
+    overflow: hidden;
+}
+.login label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: 'Spline Sans';
+    color: #ed3545; 
+}
+
+/* Adjusted positioning for pseudo-elements */
+.login::before,
+.login::after {
+    content: '';
+    position: absolute;
+    width: 600px; /* Adjusted width to ensure full coverage */
+    height: 600px; /* Adjusted height to ensure full coverage */
+    border-top-left-radius: 40%;
+    border-top-right-radius: 45%;
+    border-bottom-left-radius: 35%;
+    border-bottom-right-radius: 40%;
+    z-index: -1;
+    top: -25%; /* Adjusted top position */
+    left: -25%; /* Adjusted left position */
+}
+
+.login::before {
+    left: 40%;
+    bottom: -130%;
+    background-color: rgba(69, 105, 144, 0.15);
+    animation: wawes 6s infinite linear;
+}
+
+.login::after {
+    left: 35%;
+    bottom: -135%;
+    background-color: rgba(2, 128, 144, 0.2);
+    animation: wawes 7s infinite linear;
+}
+
+.login > input,
+.login > button {
+    display: block;
+    width: calc(100% - 20px); /* Adjusted width to account for padding */
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    background: white;
+    border: 0;
+}
+
+.login > button {
+    color: #fff;
+    text-transform: uppercase;
+    cursor: pointer;
+    background-color: #ed3545;
+    transition: background-color 300ms;
+}
+
+.login > button:hover {
+    background-color: #ed3545;
+}
+
+@keyframes wawes {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+    position: fixed; /* Fixed positioning to keep the link at the bottom */
+    right: 10px;
+    bottom: 10px;
+    font-size: 12px;
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 768px) {
+    :root {
+        --header-height: 140px; /* Adjust this value for smaller screens */
+      }
+}
+
+@media screen and (max-width: 480px) {
+    :root {
+        --header-height: 60px; /* Adjust this value for even smaller screens */
+      }
+}
