@@ -117,17 +117,22 @@ body{
 .time-logo{
     width: 24px;
     margin-right: 8px;
+    margin-top: -5px;
+}
+
+.message-logo{
+    width: 21px;
+    margin-top: -3px;
 }
 
 .black-star{
     margin-left: -13px;
-    margin-top: -4px;
-    margin-right: 6.5px;
-    margin: -4px 10px 0 -13px;
+    margin: -7px 10px 0 -14px;
 }
 
 .knife-logo{
     margin-right: 8px;
+    margin-top: -3px;
 }
 
 .lotime-checkboxion-part{
@@ -174,9 +179,18 @@ body{
 }
 
 .selection{
+    color: #303030;
     width: 427px;
     font-size: 16px;
     font-weight: 400;
+    margin-left: 4px;
+}
+
+.time-title{
+    color: #000000;
+    font-size: 16px;
+    font-weight: 400;
+    margin-left: 4px;
 }
 
 .calendar{
@@ -195,15 +209,14 @@ body{
     border: 1px solid #ED3545;
     overflow: hidden;
     float: left;
-    margin-bottom: 50px;
-    width: 156px;
+    width: 119px;
     height: 40px;
 }
 
 .time-checkbox label {
     cursor: pointer;
     float: left; line-height: 36px;
-    width: 156px;
+    width: 119px;
 }
 
 .time-checkbox label span {
@@ -225,7 +238,8 @@ body{
 
 .time-checkbox input:checked + span {
     color: #ffffff;
-    text-shadow: 0 0  6px rgba(0, 0, 0, 0.8);
+    font-size: 16px;
+    font-weight: 400;
 }
 
 .time-checkbox input:checked + span{
@@ -240,4 +254,32 @@ body{
     border-radius: 12px;
     font-size: 16px;
     font-weight: 400;
+}
+
+.reserve-warning{
+    margin-top: 130px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #ED3545;
+    text-align: justify;
+}
+
+@media (max-width:1199.99px) and (min-width :992px){
+    .time-checkbox{
+        width: 137px;
+    }
+
+    .time-checkbox label {
+        width: 137px;
+    }
+}
+
+@media (min-width:1400px){
+    .time-checkbox{
+        width: 142px;
+    }
+
+    .time-checkbox label {
+        width: 142px;
+    }
 }
