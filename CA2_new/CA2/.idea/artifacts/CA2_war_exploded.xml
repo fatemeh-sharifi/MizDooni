@@ -1,0 +1,30 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="CA2:war exploded">
+    <output-path>$PROJECT_DIR$/target/CA2</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>true</exploded>
+        <module>CA2</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="CA2" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.26" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.16.1" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.16.1" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.16.1" />
+          <element id="library" level="project" name="Maven: com.googlecode.json-simple:json-simple:1.1.1" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/CA2/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="CA2/web/Web" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/restaurant.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="container-fluid sticky d-flex justify-content-between">
+        <div class="d-flex">
+            <img src="./assets/img/Logo.svg" alt="logo-img" class="logo">
+            <p class="headTitle mx-3">Reserve Table From Anywhere!</p>
+        </div>
+        <button type="button" class="reserveBtn text-white">Reserve Now!</button>
+    </nav>
+    <div class="container first-part">
+        <div class="row justify-content-around">
+            <div class="alidaei col-lg-8 col-xl-6 pe-2">
+                <img src="./assets/img/ali dai.png" alt="restaurant-img" class="restaurant-img">
+                <div class="title">
+                    <div class="head-part d-flex justify-content-between">
+                        <p class="restaurant-title">Dizy Ali Daei</p>
+                    <button type="button" class="openBtn text-white">Open!</button>
+                    </div>
+                    <hr class="img-line">
+                    <div class="details ">
+                        <p class="time-details"><img src="./assets/img/clk.svg" alt="clock-img" class="time-logo">From 11 AM to 10 PM</p>
+                        <p class="review-details"><img src="./assets/img/message.svg" alt="message-logo" class="message-logo"><img src="./assets/img/black-star.svg" alt="black-star" class="black-star">160 Reviews</p>
+                        <p class="type"><img src="./assets/img/knife.svg" alt="knife-img" class="knife-logo">Dizy</p>
+                        <p class="location-part d-flex align-items-center"><img src="./assets/img/gray-location.svg" alt="location-logo" class="location-logo me-1">Iran,  Boshehr, Vali-e-Asr Square</p>
+                        <div class="description">
+                            <p>Ali Daei Dizy restaurant is a cultural oasis in the heart of the city, serving up the best of traditional Iranian cuisine. </p>
+                            <p>With a menu that boasts a diverse selection of flavorful dishes such as kebabs, stews, and rice dishes, guests will experience the richness and depth of Persian flavors. The ambiance of the restaurant is warm and inviting, with intricate Persian rugs adorning the walls and the soothing sounds of traditional Iranian music playing in the background. </p>
+                            <p>Whether you're looking to indulge in a delicious meal with friends or simply craving a taste of Iran, Ali Daei Dizy restaurant is the perfect spot to satisfy your culinary cravings.</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="table-reserve col-lg-8 col-xl-6 ps-5">
+                <p class="form-title">Reserve Table</p>
+                <form action="#" class="reserve-form">
+                    <p class="selection d-flex align-items-center">
+                        For
+                        <select class="form-select mx-1">
+                            <option value="p1">1</option>
+                            <option value="p2" selected>2</option>
+                            <option value="p3">3</option>
+                            <option value="p4">4</option>
+                            <option value="p5">5</option>
+                        </select>
+                        people, on date
+                        <input type="date" name="date" id="date" class="calendar ms-2 px-2">
+                    </p>
+                    <p class="time-title">Available Times for Table #1 (2 seats)</p>
+                    <div class="time-checkbox text-center">
+                        <label>
+                            <input type="checkbox" value="1"><span>11:00 PM</span>
+                        </label>
+                    </div>
+                    <div class="time-checkbox text-center">
+                        <label>
+                            <input type="checkbox" value="1"><span>11:00 PM</span>
+                        </label>
+                    </div>
+                    <div class="time-checkbox text-center">
+                        <label>
+                            <input type="checkbox" value="1"><span>11:00 PM</span>
+                        </label>
+                    </div>
+                    <div class="time-checkbox text-center">
+                        <label>
+                            <input type="checkbox" value="1"><span>11:00 PM</span>
+                        </label>
+                    </div>
+                    <div class="time-checkbox text-center">
+                        <label>
+                            <input type="checkbox" value="1"><span>11:00 PM</span>
+                        </label>
+                    </div>
+                    <div class="time-checkbox text-center">
+                        <label>
+                            <input type="checkbox" value="1"><span>11:00 PM</span>
+                        </label>
+                    </div>
+                    <div class="time-checkbox text-center">
+                        <label>
+                            <input type="checkbox" value="1"><span>11:00 PM</span>
+                        </label>
+                    </div>
+                    <div class="time-checkbox text-center">
+                        <label>
+                            <input type="checkbox" value="1"><span>11:00 PM</span>
+                        </label>
+                    </div>
+                    <p class="reserve-warning">You  will reserve this table  only for one  hour, for more time please contact the restaurant.</p>
+                    <button type="button" class="final-reserve text-white">Complete the Reservation</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
