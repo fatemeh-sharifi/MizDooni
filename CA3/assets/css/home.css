@@ -30,7 +30,7 @@ body{
     height: 45px;
     width: 150px;
     border: none;
-    margin: 28px 84px 28px 0;
+    margin: 28px 40px 28px 0;
 }
 
 .img-background{
@@ -144,11 +144,11 @@ body{
 }
 
 .card-body p {
-    margin-bottom: -8px; /* Adjust margin as needed */
+    margin-bottom: -8px;
 }
 
 .card-body {
-    padding-bottom: 5px; /* Adjust padding as needed */
+    padding-bottom: 5px;
 }
 
 .card-title{
