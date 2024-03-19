@@ -34,6 +34,10 @@ body{
     margin: 28px 40px 28px 0;
 }
 
+.reserveBtn a{
+    all: unset;
+}
+
 .welcome{
     margin-bottom: 0;
 }
@@ -59,7 +63,7 @@ body{
 
 .col-8,.col-4{
     background-color: white;
-    height: 675px;
+    height: auto;
 }
 
 .col-8{
@@ -117,6 +121,7 @@ body{
     width: 102px;
     height: 70px;
     border-radius: 12px;
+    border: none;
 }
 
 .all-tables{

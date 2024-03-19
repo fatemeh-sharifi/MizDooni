@@ -33,6 +33,10 @@ body{
     margin: 28px 40px 28px 0;
 }
 
+.reserveBtn a{
+    all: unset;
+}
+
 .welcome{
     margin-bottom: 0;
 }
@@ -85,6 +89,10 @@ body{
     border-radius: 12px;
     width: 109px;
     height: 40px;
+}
+
+.manage a{
+    all: unset;
 }
 
 .footer-part{

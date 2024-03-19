@@ -33,6 +33,14 @@ body{
     margin: 28px 40px 28px 0;
 }
 
+.reserveBtn a{
+    all: unset;
+}
+
+.welcome{
+    margin-bottom: 0;
+}
+
 .main-part{
     margin-top: 135px;
 }
@@ -97,6 +105,11 @@ body{
 .rest-name , .reserve-action{
     color: #ED3545;
     font-size: 16px;
+}
+
+.rest-name a{
+    all: unset;
+    cursor: pointer;
 }
 
 .reserve-action{

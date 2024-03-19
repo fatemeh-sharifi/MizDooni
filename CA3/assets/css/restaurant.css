@@ -64,16 +64,20 @@ body{
     height: 88px;
 }
 
-.openBtn{
+.open{
     font-size: 18px;
     font-weight: 300;
     background-color: #2B9407;
-    border: none;
     border-radius: 12px;
     width: 90px;
     height: 33px;
     margin-top: 27px;
     margin-right: 25px;
+}
+
+.open p{
+    margin-bottom: 0;
+    margin-top: 3px;
 }
 
 .img-line{
