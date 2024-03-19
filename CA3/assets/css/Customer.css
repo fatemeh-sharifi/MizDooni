@@ -33,15 +33,6 @@ body{
     margin: 28px 40px 28px 0;
 }
 
-.img-background{
-    color: #000000;
-    background-image : url("../img/Background.png");
-    background-size: cover;
-    background-position: center;
-    height: 830px;
-    margin-top: 100px;
-}
-
 .main-part{
     margin-top: 135px;
 }

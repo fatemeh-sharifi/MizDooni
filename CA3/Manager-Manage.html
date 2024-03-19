@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager-Manage</title>
+    <link rel="stylesheet" href="http://meyerweb.com/eric/tools/css/reset/reset.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/manager.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="container-fluid sticky d-flex justify-content-between">
+        <div class="d-flex">
+            <img src="./assets/img/Logo.svg" alt="logo-img" class="logo">
+            <p class="headTitle mx-3">Reserve Table From Anywhere!</p>
+        </div>
+        <div class="logged-in d-flex align-items-center">
+            <p class="welcome me-2">Welcome, Admin!</p>
+            <button type="button" class="reserveBtn text-white">My Restaurants</button>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="title d-flex justify-content-between align-items-center">
+            <p class="name text-white mx-3">Ali Daei Dizy</p>
+            <p class="address text-white me-5">Address: Vali-e-Asr Square, Boshehr, Iran</p>
+        </div>
+        <div class="row justify-content-between">
+            <div class="col-4 p-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="reservation-list text-center">Reservation List</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col" class="table-choice text-end">Select a table to see its reservations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="border-end time-table text-center">17:00 Jul 24th</th>
+                            <td colspan="2" class="user text-center">By Tom Holland</td>
+                            <td class="text-center tables">Table-2</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="border-end time-table text-center">17:00 Jul 24th</th>
+                            <td colspan="2" class="user text-center">By Tom Holland</td>
+                            <td class="text-center tables">Table-3</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="border-end time-table text-center text-decoration-line-through">17:00 Jul 24th</th>
+                            <td colspan="2" class="user text-center text-decoration-line-through">By Tom Holland</td>
+                            <td class="text-center tables text-decoration-line-through">Table-5</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="border-end time-table text-center text-decoration-line-through">17:00 Jul 24th</th>
+                            <td colspan="2" class="user text-center text-decoration-line-through">By Tom Holland</td>
+                            <td class="text-center tables text-decoration-line-through">Table-8</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="border-end time-table text-center text-decoration-line-through">17:00 Jul 24th</th>
+                            <td colspan="2" class="user text-center text-decoration-line-through">By Tom Holland</td>
+                            <td class="text-center tables text-decoration-line-through">Table-10</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="border-end time-table text-center text-decoration-line-through">17:00 Jul 24th</th>
+                            <td colspan="2" class="user text-center text-decoration-line-through">By Tom Holland</td>
+                            <td class="text-center tables text-decoration-line-through">Table-15</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="border-end time-table text-center text-decoration-line-through">17:00 Jul 24th</th>
+                            <td colspan="2" class="user text-center text-decoration-line-through">By Tom Holland</td>
+                            <td class="text-center tables text-decoration-line-through">Table-1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-8 p-0">
+                <p class="add-table ms-4 mt-2">+ Add Table</p>
+                <div class="d-flex flex-wrap gap-4 justify-content-center all-tables">
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">1</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">2</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">3</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">4</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">5</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">6</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">7</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">8</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">9</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">10</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">11</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">12</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">13</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">14</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">15</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex data-part justify-content-center align-items-center mt-1">
+                                <img src="./assets/img/numbr.svg" alt="">
+                                <p class="number text-white">16</p>
+                            </div>
+                            <div class="d-flex data-part justify-content-center align-items-center">
+                                <img src="./assets/img/sofa.svg" alt="">
+                                <p class="seats text-white">4</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="text-white footer-part text-center">
+        <p class="footer-text">Copyright © 2024 Mizdooni - All rights reserved.</p>
+    </footer>
+</body>
+</html>
