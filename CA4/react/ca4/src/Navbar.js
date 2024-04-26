@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "./App";
-import "./css/Navbar.css"
+import "./assets/css/Navbar.css"
+// import "../public"
 
 function Navbar(){
     const UserInfo = useContext(UserContext);
     return (
         <nav className="container-fluid sticky d-flex justify-content-between">
             <div className="d-flex">
-                <img src="./img/Logo.svg" alt="logo-img" className="logo"/>
+                <img src="img/Logo.svg" alt="logo-img" className="logo"/>
                 <p className="headTitle mx-3">Reserve Table From Anywhere!</p>
             </div>
             {!UserInfo.loggedIn ? (
