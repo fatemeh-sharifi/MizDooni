@@ -1,0 +1,130 @@
+body{
+    font-family: "Spline Sans", sans-serif;
+}
+
+.sticky{
+    position: fixed;
+    background-color: white;
+    top: 0;
+    box-shadow: 0px 0px 1px 0px #303030;
+    z-index: 1;
+}
+
+.logo{
+    width: 103px;
+    margin: 8px 0px 8px 53px;
+}
+
+
+.headTitle{
+    color: #ED3545;
+    font-size: 22px;
+    line-height: 26px;
+    margin-top: 37px;
+}
+
+.reserveBtn{
+    background-color: #ED3545;
+    font-size: 16px;
+    border-radius: 12px;
+    height: 45px;
+    width: 150px;
+    border: none;
+    margin: 28px 40px 28px 0;
+}
+
+.reserveBtn a{
+    all: unset;
+}
+
+.welcome{
+    margin-bottom: 0;
+}
+
+.main-part{
+    margin-top: 135px;
+}
+
+.main-part hr{
+    margin: 0;
+}
+
+.mail-part{
+    height: 40px;
+    background-color: #FFF6F7;
+    border-radius: 12px;
+}
+
+.mail-part p{
+    margin-bottom: 0;
+}
+
+.mail-text, .mail-text a, .address{
+    color: #303030;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.mail-text a{
+    color: #ED3545;
+    text-decoration: none;
+}
+
+.table-header{
+    background-color: #F5F5F5;
+    height: 58px;
+    border-radius: 12px 12px 0 0 ;
+}
+
+.title{
+    margin-bottom: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+.reserve{
+    height: 69px;
+}
+
+.reserve p{
+    margin-bottom: 0;
+}
+
+.date , .table-number , .number-seats{
+    color: #2B9407;
+    font-size: 16px;
+}
+
+.date{
+    margin-left: 21px;
+}
+
+.disable{
+    color: #D4D4D4;
+}
+
+.rest-name , .reserve-action{
+    color: #ED3545;
+    font-size: 16px;
+}
+
+.rest-name a{
+    all: unset;
+    cursor: pointer;
+}
+
+.reserve-action{
+    width: 105px;
+    margin-right: 37px;
+}
+
+.footer-part{
+    background-color: #ED3545;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 300px;
+}
+
+.footer-text{
+    padding: 14px;
+    margin: 0;
+}

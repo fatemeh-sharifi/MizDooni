@@ -1,23 +1,43 @@
-import logo from './logo.svg';
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import React, { createContext } from "react";
 import './App.css';
+import UserInfo from "./utility/userInfo";
+import Navbar from "./Navbar";
+
+export const UserContext = createContext({});
 
 function App() {
+
+  const user = UserInfo();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+      <UserContext.Provider value={{ ...user }}>
+        <Navbar />
+        {/* <Routes>
+          <Route
+            path="/Profile"
+            element={
+              <Protected isLoggedIn={user.loggedIn}>
+                <Profile />
+              </Protected>
+            }
+          />
+          <Route path="/Provider/:id" element={<Protected isLoggedIn={user.loggedIn}><Provider /></Protected>} />
+          <Route path="/Register" element={<Register />} />
+          <Route path="/Login" element={<Login />} />
+          <Route
+            path="/Products/:id"
+            element={
+              <Protected isLoggedIn={user.loggedIn}>
+                <Product />
+              </Protected>
+            }
+          />
+          <Route path="/" element={<Protected isLoggedIn={user.loggedIn}><Baloot /></Protected>} />
+        </Routes> */}
+        </UserContext.Provider>
+      </Router>
     </div>
   );
 }

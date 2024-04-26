@@ -1,0 +1,26 @@
+.logo{
+    width: 103px;
+    margin: 8px 0px 8px 53px;
+}
+
+
+.headTitle{
+    color: #ED3545;
+    font-size: 22px;
+    line-height: 26px;
+    margin-top: 37px;
+}
+
+.reserveBtn{
+    background-color: #ED3545;
+    font-size: 16px;
+    border-radius: 12px;
+    height: 45px;
+    width: 150px;
+    border: none;
+    margin: 28px 40px 28px 0;
+}
+
+.welcome{
+    margin-bottom: 0;
+}
