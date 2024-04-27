@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "./App";
-import "./assets/css/Navbar.css"
+import { UserContext } from "../App";
+import "../assets/css/Navbar.css"
 // import "../public"
 
 function Navbar(){
@@ -9,7 +9,9 @@ function Navbar(){
     return (
         <nav className="container-fluid sticky d-flex justify-content-between">
             <div className="d-flex">
-                <img src="img/Logo.svg" alt="logo-img" className="logo"/>
+                <Link to="/"> 
+                    <img src="img/Logo.svg" alt="logo-img" className="logo"/>
+                </Link>
                 <p className="headTitle mx-3">Reserve Table From Anywhere!</p>
             </div>
             {!UserInfo.loggedIn ? (

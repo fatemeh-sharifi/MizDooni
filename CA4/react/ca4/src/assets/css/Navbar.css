@@ -3,6 +3,14 @@
     margin: 8px 0px 8px 53px;
 }
 
+.sticky{
+    position: fixed;
+    background-color: white;
+    top: 0;
+    box-shadow: 0px 0px 1px 0px #303030;
+    z-index: 1;
+}
+
 
 .headTitle{
     color: #ED3545;
