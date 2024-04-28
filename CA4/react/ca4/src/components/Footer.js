@@ -2,8 +2,8 @@ import React from "react";
 import "../assets/css/Footer.css"
 function Footer(){
     return (
-        <footer class="text-white footer-part text-center">
-        <p class="footer-text">Copyright © 2024 Mizdooni - All rights reserved.</p>
+        <footer calssName="text-white footer-part text-center">
+        <p calssName="footer-text">Copyright © 2024 Mizdooni - All rights reserved.</p>
     </footer>
     );
 };

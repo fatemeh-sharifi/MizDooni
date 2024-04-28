@@ -15,7 +15,9 @@ function Navbar(){
                 <p className="headTitle mx-3">Reserve Table From Anywhere!</p>
             </div>
             {!UserInfo.loggedIn ? (
+                <Link to="/Login">
                 <button type="button" className="reserveBtn text-white">Reserve Now!</button>
+                </Link>
             ) : (
                 <div className="logged-in d-flex align-items-center">
                     {UserInfo.role === "manager" ? (
