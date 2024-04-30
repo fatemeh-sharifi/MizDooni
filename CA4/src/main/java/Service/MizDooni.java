@@ -2,10 +2,7 @@ package Service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import Model.Address.AddressUser;
 import Model.Exception.ExceptionMessages;
@@ -422,4 +419,32 @@ public class MizDooni {
         return restaurants;
     }
 
+    public List<String> getAllRestaurantTypes() {
+        List<Restaurant> allRestaurants = restaurants;
+        List<String> restaurantTypes = new ArrayList<>();
+        for (Restaurant restaurant : allRestaurants) {
+            String type = restaurant.getType();
+            if (!restaurantTypes.contains(type)) {
+                restaurantTypes.add(type);
+            }
+        }
+        Collections.sort(restaurantTypes);
+        return restaurantTypes;
+    }
+
+    public Map<String, List<String>> getCountriesAndCities() {
+        List<Restaurant> allRestaurants = restaurants;
+
+        Map<String, List<String>> countryCityMap = new HashMap<>();
+
+        for (Restaurant restaurant : allRestaurants) {
+            String country = restaurant.getAddress().getCountry();
+            String city = restaurant.getAddress().getCity();
+
+            countryCityMap.putIfAbsent(country, new ArrayList<>());
+            countryCityMap.get(country).add(city);
+        }
+
+        return countryCityMap;
+    }
 }

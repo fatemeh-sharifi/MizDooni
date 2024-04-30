@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -72,7 +69,6 @@ public class MizDooniController {
                 country = user.getAddress().getCountry();
             }
 
-            // Filter restaurants based on provided parameters
             String finalCity = city;
             String finalCountry = country;
             List<Restaurant> filteredRestaurants = allRestaurants.stream()
@@ -81,13 +77,27 @@ public class MizDooniController {
                     .filter(restaurant -> finalCountry == null || restaurant.getAddress().getCountry().equalsIgnoreCase(finalCountry))
                     .collect(Collectors.toList());
 
-            // Sort filtered restaurants by overall average rating in descending order
             filteredRestaurants.sort(Comparator.comparingDouble(Restaurant::getOverallAvg).reversed());
-
-            // Get the top 6 restaurants
             List<Restaurant> topRestaurants = filteredRestaurants.stream().limit(6).collect(Collectors.toList());
 
             return ResponseEntity.ok().body(topRestaurants);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+    @GetMapping("/types")
+    public ResponseEntity<List<String>> findRestaurantsTypes(){
+        try{
+            return ResponseEntity.ok().body(mizDooniService.getAllRestaurantTypes());
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+    @GetMapping("/location")
+    public ResponseEntity<Map<String, List<String>>> findRestaurantsLocation() {
+        try {
+            Map<String, List<String>> countryCityMap = mizDooniService.getCountriesAndCities();
+            return ResponseEntity.ok().body(countryCityMap);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }
