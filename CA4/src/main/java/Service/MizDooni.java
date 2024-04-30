@@ -442,9 +442,30 @@ public class MizDooni {
             String city = restaurant.getAddress().getCity();
 
             countryCityMap.putIfAbsent(country, new ArrayList<>());
-            countryCityMap.get(country).add(city);
+            if(!countryCityMap.get(country).contains(city)){
+                countryCityMap.get(country).add(city);
+            }
         }
 
         return countryCityMap;
+    }
+    public Map<String, Map<String, List<String>>> getTypesCountriesAndCities() {
+        List<Restaurant> allRestaurants = restaurants;
+
+        Map<String, Map<String, List<String>>> typeCountryCityMap = new HashMap<>();
+
+        for (Restaurant restaurant : allRestaurants) {
+            String type = restaurant.getType();
+            String country = restaurant.getAddress().getCountry();
+            String city = restaurant.getAddress().getCity();
+
+            typeCountryCityMap.putIfAbsent(type, new HashMap<>());
+
+            typeCountryCityMap.get(type).putIfAbsent(country, new ArrayList<>());
+
+            typeCountryCityMap.get(type).get(country).add(city);
+        }
+
+        return typeCountryCityMap;
     }
 }
