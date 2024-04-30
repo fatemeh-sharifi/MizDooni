@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/")
@@ -29,47 +31,46 @@ public class MizDooniController {
     }
 
     // Endpoint to create a new user
-    @PostMapping("/users")
-    public ResponseEntity<String> createUser( @RequestBody User user) {
+    @GetMapping("/restaurants")
+    public ResponseEntity<List<Restaurant>> findRestaurants(
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) String name
+    ) {
         try {
-            mizDooniService.addUser(user);
-            return ResponseEntity.ok("User created successfully");
+            List<Restaurant> allRestaurants = mizDooniService.getRestaurants();
+            List<Restaurant> filteredRestaurants = allRestaurants.stream()
+                    .filter(restaurant -> type == null || restaurant.getType().equalsIgnoreCase(type))
+                    .filter(restaurant -> city == null || restaurant.getAddress().getCity().equalsIgnoreCase(city))
+                    .filter(restaurant -> country == null || restaurant.getAddress().getCountry().equalsIgnoreCase(country))
+                    .filter(restaurant -> name == null || restaurant.getName().equalsIgnoreCase(name))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok().body(filteredRestaurants);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed to create user: " + e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
-    @GetMapping("/topRestaurantsBy")
-    public ArrayList<Restaurant> getTopRestaurants( @RequestBody User user) { return mizDooniService.findTopRestaurants(user); }
-    @GetMapping("/topRestaurantsByOverallAvg")
-    public ArrayList<Restaurant> getTopRestaurantsByOverallAvg() { return mizDooniService.findTopRestaurantsByOverallAvg(); }
-    @GetMapping("/topRestaurantsByUserLocation")
-    public ArrayList<Restaurant> getTopRestaurantsByUserLocation( @RequestBody User user) { return mizDooniService.findTopRestaurantsByUserLocation(user); }
-    // Endpoint to update an existing user
-//    @PutMapping("/users/{username}")
-//    public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody User user) {
-//        try {
-//            // Find the user by username and update its properties
-//            // You need to implement the updateUser method in your service class
-//            mizDooniService.updateUser(username, user);
-//            return ResponseEntity.ok("User updated successfully");
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body("Failed to update user: " + e.getMessage());
-//        }
-//    }
+    @GetMapping("/topRestaurants")
+    public ResponseEntity<List<Restaurant>> findTopRestaurants(
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String country,
+    ) {
+        try {
+            List<Restaurant> allRestaurants = mizDooniService.getRestaurants();
+            List<Restaurant> filteredRestaurants = allRestaurants.stream()
+                    .filter(restaurant -> type == null || restaurant.getType().equalsIgnoreCase(type))
+                    .filter(restaurant -> city == null || restaurant.getAddress().getCity().equalsIgnoreCase(city))
+                    .filter(restaurant -> country == null || restaurant.getAddress().getCountry().equalsIgnoreCase(country))
+                    .collect(Collectors.toList());
 
-    // Endpoint to delete a user by username
-//    @DeleteMapping("/users/{username}")
-//    public ResponseEntity<String> deleteUser(@PathVariable String username) {
-//        try {
-//            // Delete the user by username
-//            // You need to implement the deleteUser method in your service class
-//            mizDooniService.deleteUser(username);
-//            return ResponseEntity.ok("User deleted successfully");
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body("Failed to delete user: " + e.getMessage());
-//        }
-//    }
-
-    // Define more endpoints as needed for other operations
+            List<Restaurant> sortedFilteredRestaurants =
+            return ResponseEntity.ok().body(filteredRestaurants);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }
