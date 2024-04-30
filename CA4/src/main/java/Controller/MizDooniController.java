@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +59,7 @@ public class MizDooniController {
     public ResponseEntity<List<Restaurant>> findTopRestaurants(
             @RequestParam(required = false) String type,
             @RequestParam(required = false) String city,
-            @RequestParam(required = false) String country,
+            @RequestParam(required = false) String country
     ) {
         try {
             List<Restaurant> allRestaurants = mizDooniService.getRestaurants();
@@ -67,10 +69,19 @@ public class MizDooniController {
                     .filter(restaurant -> country == null || restaurant.getAddress().getCountry().equalsIgnoreCase(country))
                     .collect(Collectors.toList());
 
-            List<Restaurant> sortedFilteredRestaurants =
-            return ResponseEntity.ok().body(filteredRestaurants);
+            Collections.sort(filteredRestaurants, Comparator.comparingDouble(Restaurant::getOverallAvg).reversed());
+            ArrayList<Restaurant> topRestaurants = new ArrayList<>();
+            for (int i = 0; i < filteredRestaurants.size() - 1; i++) {
+                topRestaurants.add(filteredRestaurants.get(i));
+                if (i == 5){
+                    i = filteredRestaurants.size() + 1;
+                }
+            }
+            return ResponseEntity.ok().body(topRestaurants);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    @GetMapping
 }
