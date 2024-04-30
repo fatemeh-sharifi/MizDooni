@@ -57,31 +57,39 @@ public class MizDooniController {
 
     @GetMapping("/topRestaurants")
     public ResponseEntity<List<Restaurant>> findTopRestaurants(
+            @RequestParam(required = false) String username,
             @RequestParam(required = false) String type,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String country
     ) {
         try {
             List<Restaurant> allRestaurants = mizDooniService.getRestaurants();
+
+            // If username is provided, filter restaurants by user's city and country
+            if (username != null) {
+                User user = mizDooniService.getUserByUsername(username);
+                city = user.getAddress().getCity();
+                country = user.getAddress().getCountry();
+            }
+
+            // Filter restaurants based on provided parameters
+            String finalCity = city;
+            String finalCountry = country;
             List<Restaurant> filteredRestaurants = allRestaurants.stream()
                     .filter(restaurant -> type == null || restaurant.getType().equalsIgnoreCase(type))
-                    .filter(restaurant -> city == null || restaurant.getAddress().getCity().equalsIgnoreCase(city))
-                    .filter(restaurant -> country == null || restaurant.getAddress().getCountry().equalsIgnoreCase(country))
+                    .filter(restaurant -> finalCity == null || restaurant.getAddress().getCity().equalsIgnoreCase(finalCity))
+                    .filter(restaurant -> finalCountry == null || restaurant.getAddress().getCountry().equalsIgnoreCase(finalCountry))
                     .collect(Collectors.toList());
 
-            Collections.sort(filteredRestaurants, Comparator.comparingDouble(Restaurant::getOverallAvg).reversed());
-            ArrayList<Restaurant> topRestaurants = new ArrayList<>();
-            for (int i = 0; i < filteredRestaurants.size() - 1; i++) {
-                topRestaurants.add(filteredRestaurants.get(i));
-                if (i == 5){
-                    i = filteredRestaurants.size() + 1;
-                }
-            }
+            // Sort filtered restaurants by overall average rating in descending order
+            filteredRestaurants.sort(Comparator.comparingDouble(Restaurant::getOverallAvg).reversed());
+
+            // Get the top 6 restaurants
+            List<Restaurant> topRestaurants = filteredRestaurants.stream().limit(6).collect(Collectors.toList());
+
             return ResponseEntity.ok().body(topRestaurants);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }
     }
-
-    @GetMapping
 }
