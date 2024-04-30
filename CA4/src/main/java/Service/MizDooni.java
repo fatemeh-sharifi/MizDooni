@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import Model.Address.AddressUser;
 import Model.Exception.ExceptionMessages;
 import Model.Exception.SuperException;
 import Model.Reservation.Reservation;
@@ -18,15 +19,22 @@ import lombok.Setter;
 import Model.User.User;
 import Model.Restaurant.Restaurant;
 import Model.Feedback.Feedback;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.springframework.stereotype.Service;
 
 @Getter
 @Setter
+@Service
 public class MizDooni {
 
     private int reservationNumber = 1;
     private ArrayList<User> users = new ArrayList<>();
     private ArrayList<Restaurant> restaurants= new ArrayList<>();
     private ArrayList<Feedback> feedbacks = new ArrayList<>();
+    private ArrayList<Table> tables = new ArrayList<>();
     private static MizDooni instance;
     private User loggedInUser = null;
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -41,6 +49,81 @@ public class MizDooni {
     }
 
 
+    public void fetchAndStoreDataFromAPI() throws IOException {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        System.out.println("Hello, world");
+        // Define the endpoint URLs
+        String restaurantsEndpoint = "http://91.107.137.117:55/restaurants";
+        String reviewsEndpoint = "http://91.107.137.117:55/reviews";
+        String usersEndpoint = "http://91.107.137.117:55/users";
+        String tablesEndpoint = "http://91.107.137.117:55/tables";
+
+        CloseableHttpResponse restaurantsResponse = httpClient.execute(new HttpGet(restaurantsEndpoint));
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Restaurant> fetchedRestaurants = objectMapper.readValue(restaurantsResponse.getEntity().getContent(), new TypeReference<List<Restaurant>>() {});
+            restaurants.addAll(fetchedRestaurants);
+        } finally {
+            restaurantsResponse.close();
+        }
+
+        CloseableHttpResponse reviewsResponse = httpClient.execute(new HttpGet(reviewsEndpoint));
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Feedback> fetchedFeedbacks = objectMapper.readValue(reviewsResponse.getEntity().getContent(), new TypeReference<List<Feedback>>() {});
+            feedbacks.addAll(fetchedFeedbacks);
+        } finally {
+            reviewsResponse.close();
+        }
+
+        CloseableHttpResponse usersResponse = httpClient.execute(new HttpGet(usersEndpoint));
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<User> fetchedUsers = objectMapper.readValue(usersResponse.getEntity().getContent(), new TypeReference<List<User>>() {});
+            users.addAll(fetchedUsers);
+        } finally {
+            usersResponse.close();
+        }
+
+        CloseableHttpResponse tablesResponse = httpClient.execute(new HttpGet(tablesEndpoint));
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Table> fetchedTables = objectMapper.readValue(tablesResponse.getEntity().getContent(), new TypeReference<List<Table>>() {});
+            tables.addAll(fetchedTables);
+        } finally {
+            tablesResponse.close();
+        }
+
+        httpClient.close();
+        // Assuming you have already created and populated a User object
+
+// Get the User object
+        User user = users.get(0);// get the User object from your data source
+
+// Print out the details of the user
+                System.out.println("Username: " + user.getUsername());
+        System.out.println("Role: " + user.getRole());
+        System.out.println("Email: " + user.getEmail());
+        System.out.println("Password: " + user.getPassword());
+
+// Print out the address details
+        AddressUser address = user.getAddress();
+        if (address != null) {
+            System.out.println("Address: ");
+            System.out.println(" - City: " + address.getCity());
+            System.out.println(" - Country: " + address.getCountry());
+        } else {
+            System.out.println("Address: Not provided");
+        }
+
+// Print out reservations (assuming you have implemented the toString method for the Reservation class)
+        System.out.println("Reservations:");
+        for (Reservation reservation : user.getReservations()) {
+            System.out.println(" - " + reservation);
+        }
+
+    }
     public void loadUsersFromJson() {
         try {
             users = new ArrayList<>(loadFromJsonFile(USERS_FILE_PATH, new TypeReference<List<User>>() {}));
@@ -355,4 +438,39 @@ public class MizDooni {
         return matchingFeedbacks;
     }
 
+
+    public ArrayList<Restaurant> findTopRestaurantsByOverallAvg() {
+        ArrayList<Restaurant> sortedRestaurants = restaurants;
+        Collections.sort(sortedRestaurants, Comparator.comparingDouble(Restaurant::getOverallAvg).reversed());
+        ArrayList<Restaurant> topRestaurants = new ArrayList<>();
+        for (int i = 0; i < 6 && i < sortedRestaurants.size(); i++) {
+            topRestaurants.add(sortedRestaurants.get(i));
+        }
+        return topRestaurants;
+    }
+    public ArrayList<Restaurant> findTopRestaurantsByUserLocation(User user){
+        String userCity = user.getAddress().getCity();
+        String userCountry = user.getAddress().getCountry();
+        ArrayList<Restaurant> sortedRestaurants = restaurants;
+        Collections.sort(sortedRestaurants, Comparator.comparingDouble(Restaurant::getOverallAvg).reversed());
+        ArrayList<Restaurant> topRestaurants = new ArrayList<>();
+        for (int i = 0; i < sortedRestaurants.size() - 1; i++){
+            if(userCity == sortedRestaurants.get(i).getAddress().getCity() &
+            userCountry == sortedRestaurants.get(i).getAddress().getCountry()){
+                topRestaurants.add(sortedRestaurants.get(i));
+                if(topRestaurants.size() == 6){
+                    return topRestaurants;
+                }
+            }
+        }
+        return topRestaurants;
+    }
+    public ArrayList<Restaurant> findTopRestaurants(User user) {
+        ArrayList <Restaurant> topRestaurantsByOverallAvg = findTopRestaurantsByOverallAvg();
+        ArrayList <Restaurant> topRestaurantsByUserLocation = findTopRestaurantsByUserLocation(user);
+        ArrayList <Restaurant> allTopRestaurants = new ArrayList<Restaurant>();
+        allTopRestaurants.addAll(topRestaurantsByOverallAvg);
+        allTopRestaurants.addAll(topRestaurantsByUserLocation);
+        return allTopRestaurants;
+    }
 }

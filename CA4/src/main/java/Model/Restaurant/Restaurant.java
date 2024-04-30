@@ -9,9 +9,11 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Restaurant {
     private int id;
     private String name;
@@ -28,6 +30,8 @@ public class Restaurant {
     private double foodAvg;
     private double ambianceAvg;
     private double overallAvg;
+
+    private String image;
 
     //  Default constructor
     public Restaurant() {
