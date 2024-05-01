@@ -453,16 +453,18 @@ public class MizDooni {
             throw new SuperException(ExceptionMessages.INVALID_USERNAME_PASSWORD);
         }
     }
-    public void signUp(User newUser) throws SuperException {
-        // Check if the username already exists
-        if (findUserByUsername(newUser.getUsername()) != null) {
+    public User signUp(String username, String password, String email, String role, String city, String country) throws SuperException {
+        if (findUserByUsername(username) != null) {
             throw new SuperException(ExceptionMessages.USERNAME_ALREADY_EXISTS_EXCEPTION_MESSAGE);
         }
 
-        // Add the new user to the list of users
+        AddressUser addressUser = new AddressUser();
+        addressUser.setCity(city);
+        addressUser.setCountry(country);
+        User newUser = new User(username, email, password, role, addressUser);
         users.add(newUser);
-        //saveUsersToJson(); // Save the updated list of users to JSON file
-    }
+        return newUser;
 
+    }
 
 }
