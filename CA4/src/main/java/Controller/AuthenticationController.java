@@ -16,9 +16,14 @@ public class AuthenticationController {
         return instance;
     }
 
-    public String login(String username, String password) throws SuperException {
+//    public String login(String username, String password) throws SuperException {
+//        User validatedUser = validateUsernamePassword(username, password);
+//        return mizDooni.login(validatedUser);
+//    }
+    public User loginRestAPI(String username, String password) throws SuperException {
         User validatedUser = validateUsernamePassword(username, password);
-        return mizDooni.login(validatedUser);
+        mizDooni.setLoggedInUser(validatedUser);
+        return validatedUser;
     }
 
     private User validateUsernamePassword(String username, String password) throws SuperException {

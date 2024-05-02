@@ -112,4 +112,35 @@ public class MizDooniController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<User> login(
+            @RequestParam String username,
+            @RequestParam String password
+    ) {
+        try {
+            User validatedUser = mizDooniService.login(username, password);
+            return ResponseEntity.ok().body(validatedUser);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+//
+//    @PostMapping("/signup")
+//    public ResponseEntity<String> signUp(
+//            @RequestParam String username,
+//            @RequestParam String password,
+//            @RequestParam String email,
+//            @RequestParam String role,
+//            @RequestParam String city,
+//            @RequestParam String country
+//    ) {
+//        try {
+//            mizDooniService.signUp(username, password, email, role, city, country);
+//            return ResponseEntity.ok().body("User registered successfully");
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//    }
 }
+

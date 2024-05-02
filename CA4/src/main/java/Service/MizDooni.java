@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+import Controller.AuthenticationController;
 import Model.Address.AddressUser;
 import Model.Exception.ExceptionMessages;
 import Model.Exception.SuperException;
@@ -93,32 +94,6 @@ public class MizDooni {
         }
 
         httpClient.close();
-        // Assuming you have already created and populated a User object
-
-// Get the User object
-        User user = users.get(0);// get the User object from your data source
-
-// Print out the details of the user
-                System.out.println("Username: " + user.getUsername());
-        System.out.println("Role: " + user.getRole());
-        System.out.println("Email: " + user.getEmail());
-        System.out.println("Password: " + user.getPassword());
-
-// Print out the address details
-        AddressUser address = user.getAddress();
-        if (address != null) {
-            System.out.println("Address: ");
-            System.out.println(" - City: " + address.getCity());
-            System.out.println(" - Country: " + address.getCountry());
-        } else {
-            System.out.println("Address: Not provided");
-        }
-
-// Print out reservations (assuming you have implemented the toString method for the Reservation class)
-        System.out.println("Reservations:");
-        for (Reservation reservation : user.getReservations()) {
-            System.out.println(" - " + reservation);
-        }
 
     }
     public void loadUsersFromJson() {
@@ -271,17 +246,17 @@ public class MizDooni {
         return null;
     }
 
-    public String login(User user){
-        this.loggedInUser = user;
-        String URL ;
-        if(isManager(user.getUsername())){
-            URL = "manager_home.jsp";
-        }
-        else{
-            URL = "client_home.jsp";
-        }
-        return URL;
-    }
+//    public String login(User user){
+//        this.loggedInUser = user;
+//        String URL ;
+//        if(isManager(user.getUsername())){
+//            URL = "manager_home.jsp";
+//        }
+//        else{
+//            URL = "client_home.jsp";
+//        }
+//        return URL;
+//    }
 
     public boolean doesUserHaveReserve(String username, String restaurantName){
         for(Restaurant restaurant: restaurants){
@@ -468,4 +443,28 @@ public class MizDooni {
 
         return typeCountryCityMap;
     }
+    public User login(String username, String password) throws SuperException {
+        User user = findUserByUsername(username);
+
+        if (user != null && user.getPassword().equals(password)) {
+            loggedInUser = user;
+            return user;
+        } else {
+            throw new SuperException(ExceptionMessages.INVALID_USERNAME_PASSWORD);
+        }
+    }
+    public User signUp(String username, String password, String email, String role, String city, String country) throws SuperException {
+        if (findUserByUsername(username) != null) {
+            throw new SuperException(ExceptionMessages.USERNAME_ALREADY_EXISTS_EXCEPTION_MESSAGE);
+        }
+
+        AddressUser addressUser = new AddressUser();
+        addressUser.setCity(city);
+        addressUser.setCountry(country);
+        User newUser = new User(username, email, password, role, addressUser);
+        users.add(newUser);
+        return newUser;
+
+    }
+
 }
