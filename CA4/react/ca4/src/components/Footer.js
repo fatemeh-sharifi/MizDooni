@@ -1,5 +1,5 @@
 import React from "react";
-import "../assets/css/Footer.css"
+import "../css/Footer.css"
 function Footer(){
     return (
         <footer calssName="text-white footer-part text-center">

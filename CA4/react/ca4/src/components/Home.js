@@ -4,7 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom"
 import Card from "./Card";
-import "../assets/css/home.css"
+import "../css/home.css"
 
 function Home() {
     const [locations, setLocations] = useState('');
