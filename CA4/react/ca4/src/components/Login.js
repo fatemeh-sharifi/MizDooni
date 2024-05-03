@@ -59,10 +59,10 @@ function Login() {
     function handleSignIn(event) {
         event.preventDefault();
         const params = { username: username, password: password };
-        axios.post("//localhost:8080/login", params).then(
+        axios.post("http://localhost:8080/login", params).then(
             (response) => {
                 if (response.status === 200) {
-                    axios.get("//localhost:8080/users/" + String(username)).then(
+                    axios.get("http://localhost:8080/users/" + String(username)).then(
                         (response) => {
                             UserInfo.SetAllInfo(response.data);
                             navigate("/")
@@ -90,7 +90,7 @@ function Login() {
     function handleSignUp(event) {
         event.preventDefault();
         const params = { username: username, password: password, email: email, city: city, country: country };
-        axios.post("//localhost:8080/signup", params).then(
+        axios.post("http://localhost:8080/signup", params).then(
             (response) => {
                 if (response.status === 200) {
                     UserInfo.SetAllInfo(response.data);
