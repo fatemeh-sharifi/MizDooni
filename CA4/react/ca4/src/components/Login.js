@@ -29,15 +29,36 @@ function Login() {
         axios.post("//localhost:8080/login", params)
             .then((response) => {
                 if (response.status === 200) {
+<<<<<<< Updated upstream
                     axios.get(`//localhost:8080/users/${username}`)
                         .then((response) => {
+=======
+                    console.log(response.status)
+                    axios.get("//localhost:8080/users/" + String(username)).then(
+                        (response) => {
+>>>>>>> Stashed changes
                             UserInfo.SetAllInfo(response.data);
                             navigate("/");
                         })
                         .catch((error) => handleSignInError(error));
                 }
+<<<<<<< Updated upstream
             })
             .catch((error) => handleSignInError(error));
+=======
+            },
+            (error) => {
+                Swal.fire({
+                    icon: error,
+                    title: error.response.data.message.split(":")[1],
+                    text: "Sign in failed! Please try again.",
+                });
+            }
+        ).catch((error) => {
+            console.error("Error in login request:", error);
+            // Handle the error (e.g., display an error message)
+        });
+>>>>>>> Stashed changes
     }
 
     function handleSignInError(error) {

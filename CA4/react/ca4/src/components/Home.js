@@ -135,7 +135,7 @@ function Home() {
         return (
             <Card
                 key={index}
-                id = {restaurant.id}
+                id={restaurant.id}
                 rating={restaurant.rating}
                 start={restaurant.startTime}
                 end={restaurant.enTime}
@@ -143,7 +143,7 @@ function Home() {
                 title={restaurant.title}
                 reviews={restaurant.reviews}
                 type={restaurant.type}
-                city={restaurant.adress.city}
+                city={restaurant.address.city}
             />
         );
     }
