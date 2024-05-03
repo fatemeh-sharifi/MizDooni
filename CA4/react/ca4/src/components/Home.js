@@ -18,7 +18,7 @@ function Home() {
     const navigate = useNavigate();
 
     function getTopRestaurants() {
-        axios.get("//localhost:8080/topRestaurants").then(
+        axios.get("http://localhost:8080/topRestaurants").then(
             (response) => {
                 setTopRestaurants(response.data);
             },
@@ -36,7 +36,7 @@ function Home() {
     }
 
     function getTypes() {
-        axios.get("//localhost:8080/types").then(
+        axios.get("http://localhost:8080/types").then(
             (response) => {
                 setType(response.data);
             },
@@ -54,7 +54,7 @@ function Home() {
     }
 
     function getLocations() {
-        axios.get("//localhost:8080/locations").then(
+        axios.get("http://localhost:8080/locations").then(
             (response) => {
                 setLocations(response.data);
             },
@@ -72,7 +72,7 @@ function Home() {
     }
 
     function getSameLocation() {
-        axios.get("//localhost:8080/topRestaurants/" + String(UserInfo.username)).then(
+        axios.get("http://localhost:8080/topRestaurants/" + String(UserInfo.username)).then(
             (response) => {
                 setSameLocation(response.data);
             },
@@ -92,7 +92,7 @@ function Home() {
     function handleSearch(event) {
         event.preventDefault();
         const params = { name: selectedName, type: selectedType, location: selectedLocation }
-        axios.post("//localhost:8080/search", params).then(
+        axios.post("http://localhost:8080/search", params).then(
             (response) => {
                 if (response.status === 200) {
                     navigate("/searchResualt", { state: response.data, params: params });
