@@ -46,16 +46,16 @@ public class MizDooni {
         return instance;
     }
 
-
     public void fetchAndStoreDataFromAPI() throws IOException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        System.out.println("Hello, world");
+
         // Define the endpoint URLs
         String restaurantsEndpoint = "http://91.107.137.117:55/restaurants";
         String reviewsEndpoint = "http://91.107.137.117:55/reviews";
         String usersEndpoint = "http://91.107.137.117:55/users";
         String tablesEndpoint = "http://91.107.137.117:55/tables";
 
+        // Fetch restaurants
         CloseableHttpResponse restaurantsResponse = httpClient.execute(new HttpGet(restaurantsEndpoint));
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -65,17 +65,8 @@ public class MizDooni {
             restaurantsResponse.close();
         }
 
-        CloseableHttpResponse reviewsResponse = httpClient.execute(new HttpGet(reviewsEndpoint));
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<Feedback> fetchedFeedbacks = objectMapper.readValue(reviewsResponse.getEntity().getContent(), new TypeReference<List<Feedback>>() {});
-            feedbacks.addAll(fetchedFeedbacks);
-        } finally {
-            reviewsResponse.close();
-        }
-
+        // Fetch users
         CloseableHttpResponse usersResponse = httpClient.execute(new HttpGet(usersEndpoint));
-
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             List<User> fetchedUsers = objectMapper.readValue(usersResponse.getEntity().getContent(), new TypeReference<List<User>>() {});
@@ -83,19 +74,128 @@ public class MizDooni {
         } finally {
             usersResponse.close();
         }
+        // Fetch reviews
+        CloseableHttpResponse reviewsResponse = httpClient.execute(new HttpGet(reviewsEndpoint));
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Feedback> fetchedFeedbacks = objectMapper.readValue(reviewsResponse.getEntity().getContent(), new TypeReference<List<Feedback>>() {});
 
+            // Match each review with the corresponding restaurant
+            for (Feedback feedback : fetchedFeedbacks) {
+                for (Restaurant restaurant : restaurants) {
+                    if (restaurant.getName().equals(feedback.getRestaurantName())) {
+                        restaurant.getFeedbacks().add(feedback);
+                        // Calculate and update averages
+                        updateAverages(restaurant, feedback);
+                        break; // Assuming restaurant names are unique, no need to continue searching
+                    }
+                }
+            }
+
+            // Update users with their feedbacks
+            for (User user : users) {
+                for (Feedback feedback : fetchedFeedbacks) {
+                    if (user.getUsername().equals(feedback.getUsername())) {
+                        user.getFeedbacks().add(feedback);
+                        break; // Assuming usernames are unique, no need to continue searching
+                    }
+                }
+            }
+        } finally {
+            reviewsResponse.close();
+        }
+
+
+// Fetch tables
         CloseableHttpResponse tablesResponse = httpClient.execute(new HttpGet(tablesEndpoint));
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             List<Table> fetchedTables = objectMapper.readValue(tablesResponse.getEntity().getContent(), new TypeReference<List<Table>>() {});
-            tables.addAll(fetchedTables);
+
+            // Match each table with the corresponding restaurant
+            for (Table table : fetchedTables) {
+                for (Restaurant restaurant : restaurants) {
+                    if (restaurant.getName().equals(table.getRestaurantName())) {
+                        restaurant.getTables().add(table);
+                        break; // Assuming restaurant names are unique, no need to continue searching
+                    }
+                }
+            }
         } finally {
             tablesResponse.close();
         }
 
-        httpClient.close();
 
+        httpClient.close();
     }
+
+    private Restaurant updateAverages(Restaurant restaurant, Feedback feedback) {
+        // Incrementally update the averages
+        int numFeedbacks = restaurant.getFeedbacks().size(); // Number of existing feedbacks
+
+        // Calculate the new averages based on the existing averages and the new feedback
+        double newServiceAvg = ((restaurant.getServiceAvg() * numFeedbacks) + feedback.getServiceRate()) / (numFeedbacks + 1);
+        double newFoodAvg = ((restaurant.getFoodAvg() * numFeedbacks) + feedback.getFoodRate()) / (numFeedbacks + 1);
+        double newAmbianceAvg = ((restaurant.getAmbianceAvg() * numFeedbacks) + feedback.getAmbianceRate()) / (numFeedbacks + 1);
+        double newOverallAvg = ((restaurant.getOverallAvg() * numFeedbacks) + feedback.getOverallRate()) / (numFeedbacks + 1);
+
+        // Update the averages in the restaurant object
+        restaurant.setServiceAvg(newServiceAvg);
+        restaurant.setFoodAvg(newFoodAvg);
+        restaurant.setAmbianceAvg(newAmbianceAvg);
+        restaurant.setOverallAvg(newOverallAvg);
+        return restaurant;
+    }
+
+//    public void fetchAndStoreDataFromAPI() throws IOException {
+//        CloseableHttpClient httpClient = HttpClients.createDefault();
+//        System.out.println("Hello, world");
+//        // Define the endpoint URLs
+//        String restaurantsEndpoint = "http://91.107.137.117:55/restaurants";
+//        String reviewsEndpoint = "http://91.107.137.117:55/reviews";
+//        String usersEndpoint = "http://91.107.137.117:55/users";
+//        String tablesEndpoint = "http://91.107.137.117:55/tables";
+//
+//        CloseableHttpResponse restaurantsResponse = httpClient.execute(new HttpGet(restaurantsEndpoint));
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            List<Restaurant> fetchedRestaurants = objectMapper.readValue(restaurantsResponse.getEntity().getContent(), new TypeReference<List<Restaurant>>() {});
+//            restaurants.addAll(fetchedRestaurants);
+//        } finally {
+//            restaurantsResponse.close();
+//        }
+//
+//        CloseableHttpResponse reviewsResponse = httpClient.execute(new HttpGet(reviewsEndpoint));
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            List<Feedback> fetchedFeedbacks = objectMapper.readValue(reviewsResponse.getEntity().getContent(), new TypeReference<List<Feedback>>() {});
+//            feedbacks.addAll(fetchedFeedbacks);
+//        } finally {
+//            reviewsResponse.close();
+//        }
+//
+//        CloseableHttpResponse usersResponse = httpClient.execute(new HttpGet(usersEndpoint));
+//
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            List<User> fetchedUsers = objectMapper.readValue(usersResponse.getEntity().getContent(), new TypeReference<List<User>>() {});
+//            users.addAll(fetchedUsers);
+//        } finally {
+//            usersResponse.close();
+//        }
+//
+//        CloseableHttpResponse tablesResponse = httpClient.execute(new HttpGet(tablesEndpoint));
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            List<Table> fetchedTables = objectMapper.readValue(tablesResponse.getEntity().getContent(), new TypeReference<List<Table>>() {});
+//            tables.addAll(fetchedTables);
+//        } finally {
+//            tablesResponse.close();
+//        }
+//
+//        httpClient.close();
+//
+//    }
     public void loadUsersFromJson() {
         try {
             users = new ArrayList<>(loadFromJsonFile(USERS_FILE_PATH, new TypeReference<List<User>>() {}));

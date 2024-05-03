@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.Address.AddressUser;
+import Model.Feedback.Feedback;
 import Model.Reservation.Reservation;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +18,10 @@ public class User {
     private String password;
     private List<Reservation> reservations;
     private AddressUser address;
+    private List<Feedback> feedbacks;
     public User(){
         this.reservations = new ArrayList<>();
+        this.feedbacks = new ArrayList<>();
     }
     public User(String username, String email, String password, String role, AddressUser address) {
         this.username = username;
@@ -27,6 +30,8 @@ public class User {
         this.address = address;
         this.role = role;
         this.reservations = new ArrayList<>();
+        this.feedbacks = new ArrayList<>();
+
     }
     public void addReservation(Reservation reservation){
         reservations.add(reservation);

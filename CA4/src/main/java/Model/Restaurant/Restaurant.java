@@ -5,6 +5,7 @@ import Model.Address.AddressRestaurant;
 import Model.Reservation.Reservation;
 import lombok.Getter;
 import lombok.Setter;
+import Model.Feedback.Feedback;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,11 +26,13 @@ public class Restaurant {
     private AddressRestaurant address;
     private List<Table> tables;
     private List<Reservation> reservations;
+    private List<Feedback> feedbacks;
     // We should set it later
     private double serviceAvg;
     private double foodAvg;
     private double ambianceAvg;
     private double overallAvg;
+
 
     private String image;
 
@@ -37,6 +40,7 @@ public class Restaurant {
     public Restaurant() {
         this.tables = new ArrayList<>();
         this.reservations = new ArrayList<>();
+        this.feedbacks = new ArrayList<>();
     }
 
     public Restaurant(String name, String managerUsername, String type, String startTime, String endTime, String description, AddressRestaurant address) {
