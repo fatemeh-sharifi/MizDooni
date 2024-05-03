@@ -38,7 +38,7 @@ function App() {
               </Protected>
             }
           /> */}
-          <Route path="/" element={<Protected isLoggedIn={user.loggedIn}><Home /></Protected>} />
+          {/* <Route path="/" element={<Protected isLoggedIn={user.loggedIn}><Home /></Protected>} /> */}
 
         </Routes>
         <Footer/>

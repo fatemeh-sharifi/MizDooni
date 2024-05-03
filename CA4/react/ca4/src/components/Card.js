@@ -29,7 +29,7 @@ function Card(props) {
         let hour = parseInt(hours);
         const ampm = hour >= 12 ? 'PM' : 'AM';
         hour = hour % 12 || 12;
-        return `${hour}:${minutes} ${ampm}`;
+        return `${hour} ${ampm}`;
     }
 
     return (
