@@ -46,8 +46,8 @@ public class MizDooniApplication {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedHeader("http://localhost:3000");
         config.addAllowedMethod("OPTIONS");
         config.addAllowedMethod("GET");
         config.addAllowedMethod("POST");
