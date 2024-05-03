@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/")
 public class MizDooniController {
 
-//    @Autowired
     private final MizDooni mizDooniService = MizDooni.getInstance();
 
 
@@ -26,6 +25,8 @@ public class MizDooniController {
     @GetMapping("/users/{username}")
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
         User user = mizDooniService.getUserByUsername(username);
+        System.out.println("user");
+
         ResponseEntity <User>responseEntity;
         if (user == null) {
             responseEntity = ResponseEntity.notFound().build();
@@ -33,41 +34,10 @@ public class MizDooniController {
         else {
             responseEntity = ResponseEntity.ok(user);
         }
+        System.out.println(responseEntity);
         return responseEntity;
     }
 
-//    @GetMapping("/users")
-//    public ResponseEntity<User> getUserByUsername(@RequestParam(required = false) String username) {
-//        // Use `frontendUsername` if provided, otherwise use `username` from the path
-//        String userToSearch = username;
-//        User user = mizDooniService.getUserByUsername(userToSearch);
-//        ResponseEntity<User> responseEntity;
-//        if (user != null) {
-//            responseEntity = ResponseEntity.ok(user);
-//            System.out.println("ResponseEntity: " + responseEntity);
-//        } else {
-//            responseEntity = ResponseEntity.notFound().build();
-//            System.out.println("ResponseEntity: " + responseEntity);
-//        }
-//
-//        // Print the ResponseEntity object to the console
-//        System.out.println("ResponseEntity: " + responseEntity);
-//
-//        return responseEntity;
-//    }
-
-//    @GetMapping("/users/{username}")
-//    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-//        User user = mizDooniService.getUserByUsername(username);
-//        System.out.println("Here");
-//        if (user != null) {
-//            return ResponseEntity.ok(user);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-
-    // Endpoint to create a new user
     @GetMapping("/restaurants")
     public ResponseEntity<List<Restaurant>> findRestaurants(
             @RequestParam(required = false) String type,
@@ -159,27 +129,12 @@ public class MizDooniController {
         System.out.println("HERE");
         try {
             User validatedUser = mizDooniService.login(username, password);
+
+            System.out.println(ResponseEntity.ok().body(validatedUser));
             return ResponseEntity.ok().body(validatedUser);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }
     }
-//
-//    @PostMapping("/signup")
-//    public ResponseEntity<String> signUp(
-//            @RequestParam String username,
-//            @RequestParam String password,
-//            @RequestParam String email,
-//            @RequestParam String role,
-//            @RequestParam String city,
-//            @RequestParam String country
-//    ) {
-//        try {
-//            mizDooniService.signUp(username, password, email, role, city, country);
-//            return ResponseEntity.ok().body("User registered successfully");
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body(null);
-//        }
-//    }
 }
 
