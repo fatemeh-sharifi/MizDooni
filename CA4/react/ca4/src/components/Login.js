@@ -25,10 +25,16 @@ function Login() {
 
     function handleSignIn(event) {
         event.preventDefault();
+
+        // Assuming 'username' and 'password' are set in your component's state or received as props
         const params = { username, password };
+
         axios.post("//localhost:8080/login", params)
             .then((response) => {
                 if (response.status === 200) {
+                    // Assuming 'username' is retrieved from the response or another source
+                    const { username } = response.data;
+
                     axios.get(`//localhost:8080/users/${username}`)
                         .then((response) => {
                             UserInfo.SetAllInfo(response.data);
