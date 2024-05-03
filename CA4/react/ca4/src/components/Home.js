@@ -150,10 +150,10 @@ function Home() {
 
     return (
         <div>
-            <div calssName="img-background ">
-                <div calssName="main-part">
-                    <img src="img/Logo.svg" alt="logo-img" calssName="logo-img" />
-                    <form calssName="d-flex justify-content-between searchForm">
+            <div className="img-background ">
+                <div className="main-part">
+                    <img src="img/Logo.svg" alt="logo-img" className="logo-img" />
+                    <form className="d-flex justify-content-between searchForm">
                         <select className="form-select" value={selectedLocation} onChange={handleLocationChange}>
                             <option disabled>Location</option>
                             {Object.entries(locations).map(([country, cities], index) => (
@@ -164,39 +164,39 @@ function Home() {
                                 </optgroup>
                             ))}
                         </select>
-                        <select calssName="form-select" value={selectedType} onChange={handleTypeChange}>
+                        <select className="form-select" value={selectedType} onChange={handleTypeChange}>
                             <option disabled>Restaurant</option>
                             {type.map((typ, index) => (
                                 <option key={index} value={typ}>{typ}</option>
                             ))}
                         </select>
-                        <input type="text" placeholder="Restaurant Name" value={selectedName} onChange={handleNameChange} calssName="form-control" />
-                        <button type="submit" calssName="text-white searchBtn" onClick={handleSearch}>Search</button>
+                        <input type="text" placeholder="Restaurant Name" value={selectedName} onChange={handleNameChange} className="form-control" />
+                        <button type="submit" className="text-white searchBtn" onClick={handleSearch}>Search</button>
                     </form>
                 </div>
             </div>
-            <div calssName="container topRestaurant mt-5">
-                <p calssName="title1">Top Restaurants in Mizdooni</p>
-                <div calssName="row">
+            <div className="container topRestaurant mt-5">
+                <p className="title1">Top Restaurants in Mizdooni</p>
+                <div className="row">
                     {topRestaurants.map(createCard)}
                 </div>
             </div>
-            <div calssName="container mt-3">
-                <p calssName="title1">You Might Also Like</p>
-                <div calssName="row">
+            <div className="container mt-3">
+                <p className="title1">You Might Also Like</p>
+                <div className="row">
                     {sameLocation.map(createCard)}
                 </div>
             </div>
-            <div calssName="container d-flex justify-content-between my-5">
-                <img src="img/Banner.svg" alt="table-img" calssName="table-img" />
-                <div calssName="paragraph">
-                    <p calssName="about-mizdooni">About Mizdooni</p>
-                    <p calssName="about-paragraph">Are you tired of waiting in long lines at restaurants or struggling to find a table at your favorite eatery?</p>
-                    <p calssName="about-paragraph"> Look no further than Mizdooni – the ultimate solution for all your dining reservation needs.</p>
-                    <p calssName="about-paragraph">Mizdooni is a user-friendly website where you can reserve a table at any restaurant, from anywhere, at a specific time. Whether you're craving sushi, Italian, or a quick bite to eat, Mizdooni has you covered.</p>
-                    <p calssName="about-paragraph">With a simple search feature, you can easily find a restaurant based on cuisine or location.</p>
-                    <p calssName="about-paragraph"><span calssName="question-part">The best part?</span> There are no fees for making a reservation through Mizdooni. Say goodbye to the hassle of calling multiple restaurants or showing up only to find there's a long wait. With Mizdooni, you can relax knowing that your table is secured and waiting for you.</p>
-                    <p calssName="about-paragraph">Don't let dining out be a stressful experience. Visit Mizdooni today and start enjoying your favorite meals without the headache of making reservations. Reserve your table with ease and dine with peace of mind.</p>
+            <div className="container d-flex justify-content-between my-5">
+                <img src="img/Banner.svg" alt="table-img" className="table-img" />
+                <div className="paragraph">
+                    <p className="about-mizdooni">About Mizdooni</p>
+                    <p className="about-paragraph">Are you tired of waiting in long lines at restaurants or struggling to find a table at your favorite eatery?</p>
+                    <p className="about-paragraph"> Look no further than Mizdooni – the ultimate solution for all your dining reservation needs.</p>
+                    <p className="about-paragraph">Mizdooni is a user-friendly website where you can reserve a table at any restaurant, from anywhere, at a specific time. Whether you're craving sushi, Italian, or a quick bite to eat, Mizdooni has you covered.</p>
+                    <p className="about-paragraph">With a simple search feature, you can easily find a restaurant based on cuisine or location.</p>
+                    <p className="about-paragraph"><span className="question-part">The best part?</span> There are no fees for making a reservation through Mizdooni. Say goodbye to the hassle of calling multiple restaurants or showing up only to find there's a long wait. With Mizdooni, you can relax knowing that your table is secured and waiting for you.</p>
+                    <p className="about-paragraph">Don't let dining out be a stressful experience. Visit Mizdooni today and start enjoying your favorite meals without the headache of making reservations. Reserve your table with ease and dine with peace of mind.</p>
                 </div>
             </div>
         </div>
