@@ -23,29 +23,59 @@ function Login() {
         setJustifyActive(value);
     };
 
+    // function handleSignIn(event) {
+    //     event.preventDefault();
+    //     const params = { username, password };
+    //     axios.post("/login", params)
+    //         .then((response) => {
+    //             if (response.status === 200) {
+    //                 axios.get(`/users/${username}`)
+    //                     .then((response) => {
+    //                         console.log(response.status);
+    //                         UserInfo.SetAllInfo(response.data);
+    //                         navigate("/");
+    //                     })
+    //                     .catch((error) => handleSignInError(error));
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error in login request:", error);
+    //             handleSignInError(error);
+    //         });
+    // }
+    //
+    // function handleSignInError(error) {
+    //     let errorMessage = "Sign in failed! Please try again.";
+    //     if (error.response && error.response.data.message) {
+    //         errorMessage = error.response.data.message;
+    //     }
+    //     Swal.fire({
+    //         icon: "error",
+    //         title: "Sign In Failed",
+    //         text: errorMessage,
+    //     });
+    // }
+
     function handleSignIn(event) {
         event.preventDefault();
-        const params = { username, password };
-        axios.post("//localhost:8080/login", params)
-            .then((response) => {
+        const params = { username: username, password: password };
+        axios.post("//localhost:8080/login", params).then(
+            (response) => {
                 if (response.status === 200) {
-<<<<<<< Updated upstream
-                    axios.get(`//localhost:8080/users/${username}`)
-                        .then((response) => {
-=======
-                    console.log(response.status)
                     axios.get("//localhost:8080/users/" + String(username)).then(
                         (response) => {
->>>>>>> Stashed changes
                             UserInfo.SetAllInfo(response.data);
-                            navigate("/");
-                        })
-                        .catch((error) => handleSignInError(error));
+                            navigate("/")
+                        },
+                        (error) => {
+                            Swal.fire({
+                                icon: error,
+                                title: error.response.data.message.split(":")[1],
+                                text: "Sign in failed! Please try again.",
+                            })
+                        }
+                    )
                 }
-<<<<<<< Updated upstream
-            })
-            .catch((error) => handleSignInError(error));
-=======
             },
             (error) => {
                 Swal.fire({
@@ -54,54 +84,8 @@ function Login() {
                     text: "Sign in failed! Please try again.",
                 });
             }
-        ).catch((error) => {
-            console.error("Error in login request:", error);
-            // Handle the error (e.g., display an error message)
-        });
->>>>>>> Stashed changes
+        )
     }
-
-    function handleSignInError(error) {
-        let errorMessage = "Sign in failed! Please try again.";
-        if (error.response && error.response.data.message) {
-            errorMessage = error.response.data.message;
-        }
-        Swal.fire({
-            icon: "error",
-            title: "Sign In Failed",
-            text: errorMessage,
-        });
-    }
-    // function handleSignIn(event) {
-    //     event.preventDefault();
-    //     const params = { username: username, password: password };
-    //     axios.post("//localhost:8080/login", params).then(
-    //         (response) => {
-    //             if (response.status === 200) {
-    //                 axios.get("//localhost:8080/users/" + String(username)).then(
-    //                     (response) => {
-    //                         UserInfo.SetAllInfo(response.data);
-    //                         navigate("/")
-    //                     },
-    //                     (error) => {
-    //                         Swal.fire({
-    //                             icon: error,
-    //                             title: error.response.data.message.split(":")[1],
-    //                             text: "Sign in failed! Please try again.",
-    //                         })
-    //                     }
-    //                 )
-    //             }
-    //         },
-    //         (error) => {
-    //             Swal.fire({
-    //                 icon: error,
-    //                 title: error.response.data.message.split(":")[1],
-    //                 text: "Sign in failed! Please try again.",
-    //             });
-    //         }
-    //     )
-    // }
 
     function handleSignUp(event) {
         event.preventDefault();

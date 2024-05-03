@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Exception.SuperException;
 import Model.Restaurant.Restaurant;
 import Model.User.User;
 import Service.MizDooni;
@@ -17,31 +18,43 @@ public class MizDooniController {
 //    @Autowired
     private final MizDooni mizDooniService = MizDooni.getInstance();
 
-    // Endpoint to fetch all users
-//    @GetMapping("/users")
-//    public ArrayList<User> getAllUsers() {
-//        return mizDooniService.getUsers();
-//    }
 
     @GetMapping("/users")
-    public ResponseEntity<User> getUserByUsername(@RequestParam(required = false) String username) {
-        // Use `frontendUsername` if provided, otherwise use `username` from the path
-        String userToSearch = username;
-        User user = mizDooniService.getUserByUsername(userToSearch);
-        ResponseEntity<User> responseEntity;
-        if (user != null) {
-            responseEntity = ResponseEntity.ok(user);
-            System.out.println("ResponseEntity: " + responseEntity);
-        } else {
+    public ArrayList<User> getAllUsers() {
+        return mizDooniService.getUsers();
+    }
+    @GetMapping("/users/{username}")
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        User user = mizDooniService.getUserByUsername(username);
+        ResponseEntity <User>responseEntity;
+        if (user == null) {
             responseEntity = ResponseEntity.notFound().build();
-            System.out.println("ResponseEntity: " + responseEntity);
         }
-
-        // Print the ResponseEntity object to the console
-        System.out.println("ResponseEntity: " + responseEntity);
-
+        else {
+            responseEntity = ResponseEntity.ok(user);
+        }
         return responseEntity;
     }
+
+//    @GetMapping("/users")
+//    public ResponseEntity<User> getUserByUsername(@RequestParam(required = false) String username) {
+//        // Use `frontendUsername` if provided, otherwise use `username` from the path
+//        String userToSearch = username;
+//        User user = mizDooniService.getUserByUsername(userToSearch);
+//        ResponseEntity<User> responseEntity;
+//        if (user != null) {
+//            responseEntity = ResponseEntity.ok(user);
+//            System.out.println("ResponseEntity: " + responseEntity);
+//        } else {
+//            responseEntity = ResponseEntity.notFound().build();
+//            System.out.println("ResponseEntity: " + responseEntity);
+//        }
+//
+//        // Print the ResponseEntity object to the console
+//        System.out.println("ResponseEntity: " + responseEntity);
+//
+//        return responseEntity;
+//    }
 
 //    @GetMapping("/users/{username}")
 //    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
@@ -143,6 +156,7 @@ public class MizDooniController {
             @RequestParam String username,
             @RequestParam String password
     ) {
+        System.out.println("HERE");
         try {
             User validatedUser = mizDooniService.login(username, password);
             return ResponseEntity.ok().body(validatedUser);
