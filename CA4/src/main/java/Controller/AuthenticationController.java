@@ -8,7 +8,7 @@ import Service.MizDooni;
 public class AuthenticationController {
     private MizDooni mizDooni = MizDooni.getInstance();
     private static AuthenticationController instance;
-    private AuthenticationController() {}
+    AuthenticationController ( ) {}
 
     public static AuthenticationController getInstance() {
         if (instance == null)
@@ -26,7 +26,7 @@ public class AuthenticationController {
         return validatedUser;
     }
 
-    private User validateUsernamePassword(String username, String password) throws SuperException {
+    public User validateUsernamePassword(String username, String password) throws SuperException {
         User user = mizDooni.findUserByUsername(username);
         if (user == null || !user.getPassword().equals(password)) {
             throw new SuperException(ExceptionMessages.INVALID_USERNAME_PASSWORD);
@@ -34,3 +34,4 @@ public class AuthenticationController {
         return user;
     }
 }
+

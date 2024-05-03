@@ -15,19 +15,44 @@ import java.util.stream.Collectors;
 public class MizDooniController {
 
 //    @Autowired
-    private MizDooni mizDooniService = MizDooni.getInstance();
+    private final MizDooni mizDooniService = MizDooni.getInstance();
 
     // Endpoint to fetch all users
+//    @GetMapping("/users")
+//    public ArrayList<User> getAllUsers() {
+//        return mizDooniService.getUsers();
+//    }
+
     @GetMapping("/users")
-    public ArrayList<User> getAllUsers() {
-        return mizDooniService.getUsers();
+    public ResponseEntity<User> getUserByUsername(@RequestParam(required = false) String username) {
+        // Use `frontendUsername` if provided, otherwise use `username` from the path
+        String userToSearch = username;
+        User user = mizDooniService.getUserByUsername(userToSearch);
+        ResponseEntity<User> responseEntity;
+        if (user != null) {
+            responseEntity = ResponseEntity.ok(user);
+            System.out.println("ResponseEntity: " + responseEntity);
+        } else {
+            responseEntity = ResponseEntity.notFound().build();
+            System.out.println("ResponseEntity: " + responseEntity);
+        }
+
+        // Print the ResponseEntity object to the console
+        System.out.println("ResponseEntity: " + responseEntity);
+
+        return responseEntity;
     }
 
-    // Endpoint to fetch a specific user by username
-    @GetMapping("/users/{username}")
-    public User getUserByUsername(@PathVariable String username) {
-        return mizDooniService.getUserByUsername(username);
-    }
+//    @GetMapping("/users/{username}")
+//    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+//        User user = mizDooniService.getUserByUsername(username);
+//        System.out.println("Here");
+//        if (user != null) {
+//            return ResponseEntity.ok(user);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     // Endpoint to create a new user
     @GetMapping("/restaurants")

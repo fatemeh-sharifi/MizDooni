@@ -29,16 +29,24 @@ function Login() {
         // Assuming 'username' and 'password' are set in your component's state or received as props
         const params = { username, password };
 
-        axios.post("//localhost:8080/login", params)
+        axios.post("/login", params)
             .then((response) => {
                 if (response.status === 200) {
                     // Assuming 'username' is retrieved from the response or another source
                     const { username } = response.data;
 
-                    axios.get(`//localhost:8080/users/${username}`)
-                        .then((response) => {
-                            UserInfo.SetAllInfo(response.data);
-                            navigate("/");
+                    axios.get("/users", username)
+                        .then((userResponse) => {
+                            // Check if the user data exists
+                            if (userResponse.status === 200) {
+                                // Assuming 'UserInfo' is a class or object with a method 'SetAllInfo' to store user data
+                                UserInfo.SetAllInfo(userResponse.data);
+                                // Assuming 'navigate' is a function to redirect the user to another page, like in React Router
+                                navigate("/");
+                            } else {
+                                // Handle user not found error
+                                handleUserNotFoundError();
+                            }
                         })
                         .catch((error) => handleSignInError(error));
                 }
@@ -51,12 +59,24 @@ function Login() {
         if (error.response && error.response.data.message) {
             errorMessage = error.response.data.message;
         }
+        // Assuming 'Swal' is a notification library like SweetAlert
         Swal.fire({
             icon: "error",
             title: "Sign In Failed",
             text: errorMessage,
         });
     }
+
+    function handleUserNotFoundError() {
+        // Handle user not found error
+        Swal.fire({
+            icon: "error",
+            title: "User Not Found",
+            text: "User not found. Please try again.",
+        });
+    }
+
+
     // function handleSignIn(event) {
     //     event.preventDefault();
     //     const params = { username: username, password: password };
