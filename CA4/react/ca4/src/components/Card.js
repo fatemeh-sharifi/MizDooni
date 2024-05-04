@@ -37,7 +37,7 @@ function Card(props) {
             <Link to={"/restaurant/" + String(props.id)}>
                 <img className="card-img-top" src={props.img} alt="Card-img" />
             </Link>
-            <div className="star-part">
+            <div className="star-part gap-1 d-flex justify-content-center align-items-center">
                 {renderStars(props.rating)}
             </div>
             <div className="card-body">

@@ -7,10 +7,10 @@ import Card from "./Card";
 import "../css/home.css"
 
 function Home() {
-    const [locations, setLocations] = useState('');
-    const [type, setType] = useState('');
-    const [topRestaurants, setTopRestaurants] = useState('');
-    const [sameLocation, setSameLocation] = useState('');
+    const [locations, setLocations] = useState({});
+    const [type, setType] = useState([]);
+    const [topRestaurants, setTopRestaurants] = useState([]);
+    const [sameLocation, setSameLocation] = useState([]);
     const [selectedType, setSelectedType] = useState('');
     const [selectedLocation, setSelectedLocation] = useState('');
     const [selectedName, setSelectedName] = useState('');
@@ -20,6 +20,7 @@ function Home() {
     function getTopRestaurants() {
         axios.get("http://localhost:8080/topRestaurants").then(
             (response) => {
+                console.log("top :", response.data);
                 setTopRestaurants(response.data);
             },
             (error) => {
@@ -38,6 +39,7 @@ function Home() {
     function getTypes() {
         axios.get("http://localhost:8080/types").then(
             (response) => {
+                console.log("type :", response.data);
                 setType(response.data);
             },
             (error) => {
@@ -54,8 +56,9 @@ function Home() {
     }
 
     function getLocations() {
-        axios.get("http://localhost:8080/locations").then(
+        axios.get("http://localhost:8080/location").then(
             (response) => {
+                console.log("loc :", response.data);
                 setLocations(response.data);
             },
             (error) => {
@@ -72,8 +75,10 @@ function Home() {
     }
 
     function getSameLocation() {
-        axios.get("http://localhost:8080/topRestaurants/" + String(UserInfo.username)).then(
+        const params = { username: UserInfo.username }
+        axios.get("http://localhost:8080/topRestaurants", null, { params: params }).then(
             (response) => {
+                console.log("same loc :", response.data);
                 setSameLocation(response.data);
             },
             (error) => {
@@ -136,12 +141,12 @@ function Home() {
             <Card
                 key={index}
                 id={restaurant.id}
-                rating={restaurant.rating}
+                rating={restaurant.overallAvg}
                 start={restaurant.startTime}
                 end={restaurant.enTime}
-                img={restaurant.img}
-                title={restaurant.title}
-                reviews={restaurant.reviews}
+                img={restaurant.image}
+                title={restaurant.name}
+                reviews={restaurant.feedbacks.length}
                 type={restaurant.type}
                 city={restaurant.address.city}
             />
@@ -155,9 +160,9 @@ function Home() {
                     <img src="img/Logo.svg" alt="logo-img" className="logo-img" />
                     <form className="d-flex justify-content-between searchForm">
                         <select className="form-select" value={selectedLocation} onChange={handleLocationChange}>
-                            <option disabled>Location</option>
-                            {Object.entries(locations).map(([country, cities], index) => (
-                                <optgroup key={index} label={country} disabled>
+                            <option value="" disabled>Location</option>
+                            {locations && Object.entries(locations).map(([country, cities], index) => (
+                                <optgroup key={index} label={country} >
                                     {cities.map((city, cityIndex) => (
                                         <option key={`${index}-${cityIndex}`} value={city}>{city}</option>
                                     ))}
@@ -165,29 +170,30 @@ function Home() {
                             ))}
                         </select>
                         <select className="form-select" value={selectedType} onChange={handleTypeChange}>
-                            <option disabled>Restaurant</option>
-                            {type.map((typ, index) => (
+                            <option value="" disabled>Restaurant</option>
+                            {type && type.map((typ, index) => (
                                 <option key={index} value={typ}>{typ}</option>
                             ))}
                         </select>
                         <input type="text" placeholder="Restaurant Name" value={selectedName} onChange={handleNameChange} className="form-control" />
                         <button type="submit" className="text-white searchBtn" onClick={handleSearch}>Search</button>
                     </form>
+
                 </div>
             </div>
-            <div className="container topRestaurant mt-5">
+            <div className="container w-75 mt-5">
                 <p className="title1">Top Restaurants in Mizdooni</p>
                 <div className="row">
-                    {topRestaurants.map(createCard)}
+                    {topRestaurants && topRestaurants.map(createCard)}
                 </div>
             </div>
-            <div className="container mt-3">
+            <div className="container w-75 mt-3">
                 <p className="title1">You Might Also Like</p>
                 <div className="row">
-                    {sameLocation.map(createCard)}
+                    {sameLocation && sameLocation.map(createCard)}
                 </div>
             </div>
-            <div className="container d-flex justify-content-between my-5">
+            <div className="container w-75 d-flex justify-content-between my-5">
                 <img src="img/Banner.svg" alt="table-img" className="table-img" />
                 <div className="paragraph">
                     <p className="about-mizdooni">About Mizdooni</p>

@@ -34,23 +34,23 @@ function Login() {
                             UserInfo.SetAllInfo(response.data);
                             navigate("/")
                         },
-                        // (error) => {
-                        //     Swal.fire({
-                        //         icon: error,
-                        //         title: error.response.data.message.split(":")[1],
-                        //         text: "Sign in failed! Please try again.",
-                        //     })
-                        // }
+                        (error) => {
+                            Swal.fire({
+                                icon: error,
+                                title: error.response.data.message.split(":")[1],
+                                text: "Sign in failed! Please try again.",
+                            })
+                        }
                     )
                 }
             },
-            // (error) => {
-            //     Swal.fire({
-            //         icon: error,
-            //         title: error.response.data.message,
-            //         text: "Sign in failed! Please try again.",
-            //     });
-            // }
+            (error) => {
+                Swal.fire({
+                    icon: error,
+                    title: error.response.data.message,
+                    text: "Sign in failed! Please try again.",
+                });
+            }
         ).catch((error)=>{
             console.log(error);
         })
