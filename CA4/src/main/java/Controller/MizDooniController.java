@@ -156,10 +156,60 @@ public class MizDooniController {
         }
     }
 
+//@PostMapping("/reviews")
+//public ResponseEntity<String> addOrUpdateReview(
+//        @RequestParam(required = false) String username,
+//        @RequestParam(required = false) String restaurantName,
+//        @RequestParam(required = false) Double foodRate,
+//        @RequestParam(required = false) Double serviceRate,
+//        @RequestParam(required = false) Double ambianceRate,
+//        @RequestParam(required = false) Double overallRate,
+//        @RequestParam(required = false) String comment
+//) {
+//    try {
+//        // Check if username and restaurantName are provided
+//        if (username == null || restaurantName == null) {
+//            return ResponseEntity.status(400).body("Username and restaurantName are required parameters");
+//        }
+//
+//        // Retrieve user and restaurant
+//        User user = mizDooniService.getUserByUsername(username);
+//        Restaurant restaurant = mizDooniService.getRestaurantByName(restaurantName);
+//
+//        // If either user or restaurant not found, return bad request
+//        if (user == null || restaurant == null) {
+//            return ResponseEntity.status(400).body("User or restaurant not found");
+//        }
+//
+//        // If other parameters are provided, proceed with review update
+//        if (foodRate != null && serviceRate != null && ambianceRate != null && overallRate != null && comment != null) {
+//            if (!mizDooniService.isReservationTimePassed(user, restaurant)) {
+//                return ResponseEntity.status(400).body("You need to have a past reservation to post a review");
+//            }
+//
+//            // Create or update feedback
+//            Feedback feedback = new Feedback(username, restaurantName, foodRate, serviceRate, ambianceRate, overallRate, comment, LocalDateTime.now());
+//            mizDooniService.updateFeedback(feedback);
+//
+//            // Update restaurant ratings
+//            mizDooniService.updateRestaurantRatings(restaurantName, foodRate, serviceRate, ambianceRate, overallRate);
+//
+//            // Update user feedbacks
+//            user.getFeedbacks().add(feedback);
+//
+//            return ResponseEntity.ok("Review added/updated successfully");
+//        } else {
+//            // If only username and restaurantName are provided, return 200 indicating it's allowed
+//            return ResponseEntity.ok("Review parameters are valid, but review update not requested");
+//        }
+//    } catch (Exception e) {
+//        return ResponseEntity.status(400).body("Failed to add/update review: " + e.getMessage());
+//    }
+//    }
 @PostMapping("/reviews")
 public ResponseEntity<String> addOrUpdateReview(
-        @RequestParam(required = false) String username,
-        @RequestParam(required = false) String restaurantName,
+        @RequestParam String username,
+        @RequestParam String restaurantName,
         @RequestParam(required = false) Double foodRate,
         @RequestParam(required = false) Double serviceRate,
         @RequestParam(required = false) Double ambianceRate,
@@ -205,7 +255,8 @@ public ResponseEntity<String> addOrUpdateReview(
     } catch (Exception e) {
         return ResponseEntity.status(400).body("Failed to add/update review: " + e.getMessage());
     }
-    }
+}
+
     @PostMapping("/signin")
     public ResponseEntity<User> signIn(
             @RequestParam String username,

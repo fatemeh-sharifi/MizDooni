@@ -16,8 +16,17 @@ function Review(props) {
     const UserInfo = useContext(UserContext);
 
     function handleSubmitReview() {
-        const params = { username: UserInfo.username, restaurantName: props.restaurant.name, foodRate: foodQualityRating, serviceRate: serviceRating, ambianceRate: ambienceRating, overallRate: overallRating, comment: comment }
-        axios.post("http://localhost:8080/reviews", params).then(
+        axios.post("http://localhost:8080/reviews", null, {
+            params: {
+                username: UserInfo.username,
+                restaurantName: props.restaurant.name,
+                foodRate: foodQualityRating,
+                serviceRate: serviceRating,
+                ambianceRate: ambienceRating,
+                overallRate: overallRating,
+                comment: comment
+            }
+        }).then(
             (response) => {
                 console.log(response);
                 if (response.status === 200) {
@@ -29,8 +38,7 @@ function Review(props) {
             console.log(error);
         });
     }
-
-    useEffect(() => {
+        useEffect(() => {
         setAllowed(true);
         isAble();
     }, [])
