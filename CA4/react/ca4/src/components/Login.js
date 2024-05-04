@@ -123,16 +123,16 @@ function Login() {
             </ul>
             <div className="tab-content">
                 <div className={`tab-pane fade ${justifyActive === 'tab1' ? 'show active' : ''}`}>
-                    <input className="form-control mb-4" type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                    <input className="form-control mb-4" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input className="form-control w-100 mb-4" type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <input className="form-control w-100 mb-4" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     <button className="btn btn-primary mb-4 w-100 bg-danger border-0" onClick={handleSignIn}>Sign in</button>
                 </div>
                 <div className={`tab-pane fade ${justifyActive === 'tab2' ? 'show active' : ''}`}>
-                    <input className="form-control mb-4" type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-                    <input className="form-control mb-4" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-                    <input className="form-control mb-4" type="text" placeholder="Country" onChange={(e) => setCountry(e.target.value)} />
-                    <input className="form-control mb-4" type="text" placeholder="City" onChange={(e) => setCity(e.target.value)} />
-                    <input className="form-control mb-4" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                    <input className="form-control w-100 mb-4" type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
+                    <input className="form-control w-100 mb-4" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+                    <input className="form-control w-100 mb-4" type="text" placeholder="Country" onChange={(e) => setCountry(e.target.value)} />
+                    <input className="form-control w-100 mb-4" type="text" placeholder="City" onChange={(e) => setCity(e.target.value)} />
+                    <input className="form-control w-100 mb-4" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                     <div className="d-flex justify-content-around mb-4">
                         <p className="me-2">I'm a new</p>
                         <div className="form-check form-check-inline">

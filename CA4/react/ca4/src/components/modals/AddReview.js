@@ -14,7 +14,7 @@ function AddReview(props) {
 
     function handleSubmitReview(){
         const params = {username : UserInfo.username , restaurant : props.name ,food : foodQualityRating , service: serviceRating, ambience : ambienceRating, overall : overallRating , review : comment}
-        axios.post("//localhost:8080/reviews", params).then(
+        axios.post("http://localhost:8080/reviews", params).then(
             (response) => {
                 console.log(response);
             }
@@ -23,11 +23,11 @@ function AddReview(props) {
         });
     }
     return (
-        <div className="modal fade" id="completeModal" tabindex="-1" aria-labelledby="completeModalLabel" aria-hidden="true">
+        <div className="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="completeModalLabel">Add Review for <span className="modalRestaurantName">{props.name}</span></h5>
+                        <h5 className="modal-title" id="addReviewModalLabel">Add Review for <span className="modalRestaurantName">{props.name}</span></h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body mb-4">

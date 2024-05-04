@@ -96,11 +96,12 @@ function Home() {
 
     function handleSearch(event) {
         event.preventDefault();
-        const params = { name: selectedName, type: selectedType, location: selectedLocation }
-        axios.post("http://localhost:8080/search", params).then(
+        const params = { name: selectedName || '', type: selectedType || '', city: selectedLocation || '' }
+        axios.get("http://localhost:8080/restaurants",null, {params : params}).then(
             (response) => {
                 if (response.status === 200) {
-                    navigate("/searchResualt", { state: response.data, params: params });
+                    console.log("search : ", response.data);
+                    navigate("/SearchResualt", { state: { data : response.data, name : params.name, type : params.type , city : params.city} });
                 }
             },
             (error) => {

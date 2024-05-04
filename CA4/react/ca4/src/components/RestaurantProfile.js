@@ -34,20 +34,20 @@ function RestaurantProfile(props) {
                 <hr className="img-line" />
                 <div className="details ">
                     <p className="time-details">
-                        <img src="./assets/img/clk.svg" alt="clock-img" className="time-logo" />
+                        <img src="img/clk.svg" alt="clock-img" className="time-logo" />
                         From {convertToAMPM(props.start)} to {convertToAMPM(props.end)}
                     </p>
                     <p className="review-details">
-                        <img src="./assets/img/message.svg" alt="message-logo" className="message-logo" />
-                        <img src="./assets/img/black-star.svg" alt="black-star" className="black-star" />
+                        <img src="img/message.svg" alt="message-logo" className="message-logo" />
+                        <img src="img/black-star.svg" alt="black-star" className="black-star" />
                         {props.reviews} Reviews
                     </p>
                     <p className="type">
-                        <img src="./assets/img/knife.svg" alt="knife-img" className="knife-logo" />
+                        <img src="knife.svg" alt="knife-img" className="knife-logo" />
                         {props.type}
                     </p>
                     <p className="location-part d-flex align-items-center">
-                        <img src="./assets/img/gray-location.svg" alt="location-logo" className="location-logo me-1" />
+                        <img src="img/gray-location.svg" alt="location-logo" className="location-logo me-1" />
                         {props.country},  {props.city}, {props.street}
                     </p>
                     <div className="description">

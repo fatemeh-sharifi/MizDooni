@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import Footer from "./components/Footer";
 import Protected from "./components/Protected";
 import Home from "./components/Home";
+import SearchResult from "./components/SearchResult";
 
 export const UserContext = createContext({});
 
@@ -39,6 +40,7 @@ function App() {
             }
           /> */}
           <Route path="/" element={<Protected isLoggedIn={user.loggedIn}><Home /></Protected>} />
+          <Route path="/searchResualt" element={<Protected isLoggedIn={user.loggedIn}><SearchResult /></Protected>} />
 
         </Routes>
         <Footer/>

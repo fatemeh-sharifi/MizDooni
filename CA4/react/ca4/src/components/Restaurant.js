@@ -19,9 +19,10 @@ function Restaurant() {
     const [selectedTable, setSelectedTable] = useState('');
     const [modalShow, setModalShow] = useState(false);
     const [reviewModalShow, setReviewModalShow] = useState(false);
+    const [maxLimit, setMaxLimit] = useState('');
     const UserInfo = useContext(UserContext);
     function getRestaurant() {
-        axios.get("//localhost:8080/restaurants/" + String(id)).then(
+        axios.get("http://localhost:8080/restaurants/" + String(id)).then(
             (response) => {
                 setRestaurant(response.data);
             }
@@ -40,6 +41,14 @@ function Restaurant() {
 
     function handleReservation() {
         setModalShow(true);
+        const params = { username: UserInfo.username, time: selectedTime, table: selectedTable, restaurantId: id };
+        axios.post("http://localhost:8080/reservation", null, { params: params }).then(
+            (response) => {
+                console.log(response.data);
+            }
+        ).catch((error) => {
+            console.log(error);
+        })
     }
 
     function renderStars(rating) {
@@ -64,9 +73,15 @@ function Restaurant() {
     useEffect(() => {
         function getAvailableTimes() {
             const params = { date: selectedDate, people: selectedPeople };
-            axios.get("//localhost:8080/availableTimes", params).then(
+            axios.get("http://localhost:8080/availableTimes", null, { params: params }).then(
                 (response) => {
-                    setAvailableTimes(response.data);
+                    if (response.status === 200) {
+                        setAvailableTimes(response.data);
+                    }
+                    else {
+                        setMaxLimit(response.data);
+                    }
+
                 }
             ).catch((error) => {
                 console.log(error);
@@ -87,14 +102,14 @@ function Restaurant() {
             <div className="container first-part">
                 <div className="row justify-content-around">
                     <RestaurantProfile
-                        title={restaurant.title}
+                        title={restaurant.name}
                         start={restaurant.startTime}
                         end={restaurant.endTime}
-                        img={restaurant.img}
-                        reviews={restaurant.reviews}
+                        img={restaurant.image}
+                        reviews={restaurant.feedbacks.length}
                         country={restaurant.address.country}
                         city={restaurant.address.city}
-                        street={restaurant.address.stret}
+                        street={restaurant.address.street}
                         type={restaurant.type}
                     />
                     <div className="table-reserve col-lg-8 col-xl-6 ps-5">
@@ -117,10 +132,12 @@ function Restaurant() {
                                 people, on date
                                 <input type="date" name="date" id="date" className="calendar ms-2 px-2" value={selectedDate} onChange={handleSelectedDate} />
                             </p>
-                            <p className="time-title">Available Times</p>
+                            {availableTimes && availableTimes.length > 0 && (
+                                <p className="time-title">Available Times</p>
+                            )}
                             <div >
                                 <div className="time-checkbox text-center">
-                                    {availableTimes && availableTimes.length > 0 ? (
+                                    {(availableTimes && !maxLimit) ? (
                                         availableTimes.map((timeData, index) => (
                                             <label key={index}>
                                                 <input
@@ -134,12 +151,22 @@ function Restaurant() {
                                             </label>
                                         ))
                                     ) : (
-                                        <p>There is no available time for this.</p>
+                                        maxLimit ? (
+                                            <p className="maxTime">The maximum possible date for reservation is {maxLimit}.</p>
+                                        ) : (
+                                            <p className="notAvailable">No Table is Available on this date.</p>
+                                        )
                                     )}
                                 </div>
                             </div>
                             <p className="reserve-warning">You  will reserve this table  only for <u>one</u>  hour, for more time please contact the restaurant.</p>
-                            <button type="button" className="final-reserve text-white" onClick={handleReservation} data-bs-toggle="modal" data-bs-target="#completeModal">Complete the Reservation</button>
+                            <button type="button" disabled={!availableTimes || maxLimit} className="final-reserve text-white" onClick={handleReservation} data-bs-toggle="modal" data-bs-target="#completeModal">
+                                {(maxLimit || !selectedDate || !selectedPeople) ? (
+                                    "Select a date"
+                                ) : (
+                                    "Complete the Reservation"
+                                )}
+                            </button>
                             {modalShow && (
                                 <CompleteReservation
                                     tableNumber={selectedTable}
@@ -152,7 +179,7 @@ function Restaurant() {
                 </div>
                 <div className="review-part d-flex justify-content-between py-3 px-4">
                     <div className="top-part d-flex flex-column">
-                        <p className="review-start">What {restaurant.reviews} people are saying</p>
+                        <p className="review-start">What {restaurant.feedbacks.length} people are saying</p>
                         <p className="rating-star">
                             {renderStars(restaurant.overallAvg)}
                             {restaurant.overallAvg} based on recent ratings
@@ -179,11 +206,11 @@ function Restaurant() {
                 </div>
                 <div className="add-review">
                     <div className="d-flex justify-content-between">
-                        <p className="reviews-num">{restaurant.reviews} Reviews</p>
-                        <button className="add-btn text-white" onClick={() => {setReviewModalShow(true)}}>Add Review</button>
+                        <p className="reviews-num">{restaurant.feedbacks.length} Reviews</p>
+                        <button className="add-btn text-white" onClick={() => { setReviewModalShow(true) }}>Add Review</button>
                         {reviewModalShow && (
                             <AddReview
-                                name = {restaurant.name}
+                                name={restaurant.name}
                             />
                         )}
                     </div>
