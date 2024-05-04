@@ -2,7 +2,9 @@ package Service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 import Controller.AuthenticationController;
@@ -119,25 +121,33 @@ public class MizDooni {
         User user = getUserByUsername("Mostafa_Ebrahimi");
         Restaurant restaurant = getRestaurantByName("The Commoner");
 
-        LocalDateTime dateTime = LocalDateTime.now().minusDays(2); // Assuming the reservation is for tomorrow
-        System.out.println(dateTime);
-        System.out.println(LocalDateTime.now());
-        Reservation reservation = new Reservation(user.getUsername(), restaurant.getName(), 1, generateReservationNumber(), dateTime);
+        LocalDate date = LocalDate.now().minusDays(2); // Assuming the reservation is for tomorrow
+        LocalTime time = LocalTime.now();
+
+        // Set the minutes to zero
+        LocalTime timeWithZeroMinutes = time.withMinute(0);
+
+        // Reassign the modified LocalTime back to the original variable
+        time = timeWithZeroMinutes;
+        System.out.println(date);
+        System.out.println(time);
+        Reservation reservation = new Reservation(user.getUsername(), restaurant.getName(), 1, generateReservationNumber(), date, time);
         user.addReservation(reservation);
         restaurant.addReservation(reservation);
-
         users.set(6, user);
         restaurants.set(0, restaurant);
         // Check if reservation was added successfully
         if (reservation != null) {
             System.out.println("Reservation Number: " + reservation.getReservationNumber());
-            System.out.println("Reservation Date and Time: " + reservation.getDatetime());
+            System.out.println("Reservation Date and Time: " + reservation.getDate());
         }
 
-        dateTime = LocalDateTime.now().plusDays(1); // Assuming the reservation is for tomorrow
-        System.out.println(dateTime);
-        System.out.println(LocalDateTime.now());
-        reservation = new Reservation(user.getUsername(), restaurant.getName(), 1, generateReservationNumber(), dateTime);
+        date = LocalDate.now().plusDays(1);// Assuming the reservation is for tomorrow
+        time = LocalTime.now(); // Assuming the reservation is for tomorrow
+        timeWithZeroMinutes = time.withMinute(0);
+        time = timeWithZeroMinutes;
+        System.out.println(date);
+        reservation = new Reservation(user.getUsername(), restaurant.getName(), 1, generateReservationNumber(), date, time);
         user.addReservation(reservation);
         restaurant.addReservation(reservation);
         users.set(6, user);
@@ -630,7 +640,7 @@ private int generateReservationNumber() {
 
         // Check if there's any reservation for the restaurant
         for (Reservation reservation : reservations) {
-            if (reservation.getRestaurantName().equals(restaurant.getName()) && reservation.getDatetime().isBefore(LocalDateTime.now())) {
+            if (reservation.getRestaurantName().equals(restaurant.getName()) && reservation.getDate().isBefore(LocalDate.now())) {
                 return true; // Reservation time has passed
             }
         }

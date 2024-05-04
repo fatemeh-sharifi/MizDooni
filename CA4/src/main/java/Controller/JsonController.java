@@ -69,24 +69,24 @@ public class JsonController {
         return objectMapper.writeValueAsString ( response );
     }
 
-    public static String generateHistoryJson ( List < Reservation > reservationHistory ) throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper ( );
-        ArrayNode reservationArray = objectMapper.createArrayNode ( );
-        for ( Reservation reservation : reservationHistory ) {
-            ObjectNode reservationObject = objectMapper.createObjectNode ( );
-            reservationObject.put ( "reservationNumber" , reservation.getReservationNumber ( ) );
-            reservationObject.put ( "restaurantName" , reservation.getRestaurantName ( ) );
-            reservationObject.put ( "tableNumber" , reservation.getTableNumber ( ) );
-            LocalDateTime datetime = reservation.getDatetime ( );
-            String formattedDatetime = datetime.format ( DateTimeFormatter.ofPattern ( "yyyy-MM-dd HH:mm" ) );
-            reservationObject.put ( "datetime" , formattedDatetime );
-            reservationArray.add ( reservationObject );
-        }
-        ObjectNode dataObject = objectMapper.createObjectNode ( );
-        dataObject.set ( "reservationHistory" , reservationArray );
-        ObjectNode responseObject = objectMapper.createObjectNode ( );
-        responseObject.put ( "success" , true );
-        responseObject.set ( "data" , dataObject );
-        return objectMapper.writeValueAsString ( responseObject );
-    }
+//    public static String generateHistoryJson ( List < Reservation > reservationHistory ) throws Exception {
+//        ObjectMapper objectMapper = new ObjectMapper ( );
+//        ArrayNode reservationArray = objectMapper.createArrayNode ( );
+//        for ( Reservation reservation : reservationHistory ) {
+//            ObjectNode reservationObject = objectMapper.createObjectNode ( );
+//            reservationObject.put ( "reservationNumber" , reservation.getReservationNumber ( ) );
+//            reservationObject.put ( "restaurantName" , reservation.getRestaurantName ( ) );
+//            reservationObject.put ( "tableNumber" , reservation.getTableNumber ( ) );
+//            LocalDateTime datetime = reservation.getDatetime ( );
+//            String formattedDatetime = datetime.format ( DateTimeFormatter.ofPattern ( "yyyy-MM-dd HH:mm" ) );
+//            reservationObject.put ( "datetime" , formattedDatetime );
+//            reservationArray.add ( reservationObject );
+//        }
+//        ObjectNode dataObject = objectMapper.createObjectNode ( );
+//        dataObject.set ( "reservationHistory" , reservationArray );
+//        ObjectNode responseObject = objectMapper.createObjectNode ( );
+//        responseObject.put ( "success" , true );
+//        responseObject.set ( "data" , dataObject );
+//        return objectMapper.writeValueAsString ( responseObject );
+//    }
 }

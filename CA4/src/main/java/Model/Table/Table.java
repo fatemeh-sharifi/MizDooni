@@ -90,7 +90,7 @@ public class Table {
     private boolean isTimeSlotAvailable(int timeSlot, LocalDate date) {
         // Check if there's any reservation for the given time slot and date
         for (Reservation reservation : reservations) {
-            if (reservation.getDatetime().toLocalDate().equals(date) && reservation.getDatetime().getHour() == timeSlot) {
+            if (reservation.getDate().equals(date) && reservation.getTime().getHour() == timeSlot) {
                 return false; // Slot is reserved
             }
         }

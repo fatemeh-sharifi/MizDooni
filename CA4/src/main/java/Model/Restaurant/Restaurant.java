@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import Model.Feedback.Feedback;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class Restaurant {
 
     public boolean isTimeOk(String username){
         for(Reservation reservation : reservations){
-            if(reservation.getUsername().equals(username) && reservation.getDatetime().isBefore(LocalDateTime.now())){
+            if(reservation.getUsername().equals(username) && reservation.getDate().isBefore(LocalDate.now())){
                 return true;
             }
         }

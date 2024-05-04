@@ -114,7 +114,8 @@ function Restaurant() {
                         <form className="reserve-form">
                             <p className="selection w-100 d-flex align-items-center">
                                 For
-                                <select className="form-select mx-1" value={selectedPeople} onChange={handleSelectedPeople}>
+                                <select className="form-select mx-1" value={selectedPeople}
+                                        onChange={handleSelectedPeople}>
                                     <option value="p1" selected>1</option>
                                     <option value="p2">2</option>
                                     <option value="p3">3</option>
@@ -127,12 +128,13 @@ function Restaurant() {
                                     <option value="p10">10</option>
                                 </select>
                                 people, on date
-                                <input type="date" name="date" id="date" className="calendar ms-2 px-2" value={selectedDate} onChange={handleSelectedDate} />
+                                <input type="date" name="date" id="date" className="calendar ms-2 px-2"
+                                       value={selectedDate} onChange={handleSelectedDate}/>
                             </p>
                             {availableTimes && availableTimes.length > 0 && (
                                 <p className="time-title">Available Times</p>
                             )}
-                            <div >
+                            <div>
                                 {(availableTimes && !maxLimit) && (
                                     availableTimes.map((timeData, index) => (
                                         <div className="time-checkbox text-center">
@@ -152,7 +154,8 @@ function Restaurant() {
                             </div>
                             {
                                 maxLimit ? (
-                                    <p className="reserve-warning">The maximum possible date for reservation is {maxLimit}.</p>
+                                    <p className="reserve-warning">The maximum possible date for reservation
+                                        is {maxLimit}.</p>
                                 ) : (
                                     (!selectedDate || !selectedPeople) ? (
                                         <p className="reserve-warning">Select the number of people and date.</p>
@@ -160,11 +163,14 @@ function Restaurant() {
                                         !availableTimes ? (
                                             <p className="notAvailable">No Table is Available on this date.</p>
                                         ) : (
-                                            <p className="reserve-warning">You  will reserve this table  only for <u>one</u>  hour, for more time please contact the restaurant.</p>
+                                            <p className="reserve-warning">You will reserve this table only
+                                                for <u>one</u> hour, for more time please contact the restaurant.</p>
                                         )
                                     )
                                 )}
-                            <button type="button" disabled={!availableTimes || maxLimit} className={`final-reserve text-white ${(!availableTimes || maxLimit) ? 'disabled' : ''}`} onClick={handleReservation} data-bs-toggle="modal" data-bs-target="#completeModal">
+                            <button type="button" disabled={!availableTimes || maxLimit}
+                                    className={`final-reserve text-white ${(!availableTimes || maxLimit) ? 'disabled' : ''}`}
+                                    onClick={handleReservation} data-bs-toggle="modal" data-bs-target="#completeModal">
                                 {(maxLimit || !selectedDate || !selectedPeople) ? (
                                     "Select a date"
                                 ) : (
@@ -178,16 +184,56 @@ function Restaurant() {
                                     address={restaurant.address}
                                 />
                             )} */}
-                            <div className="modal fade" id="completeModal" tabindex="-1" aria-labelledby="completeModalLabel" aria-hidden="true">
+                            {/*<div className="modal fade" id="completeModal" tabindex="-1"*/}
+                            {/*     aria-labelledby="completeModalLabel" aria-hidden="true">*/}
+                            {/*    <div className="modal-dialog modal-dialog-centered">*/}
+                            {/*        <div className="modal-content">*/}
+                            {/*            <div className="modal-header">*/}
+                            {/*                <h5 className="modal-title" id="completeModalLabel">Reservation Detail</h5>*/}
+                            {/*                <button type="button" className="btn-close" data-bs-dismiss="modal"*/}
+                            {/*                        aria-label="Close"></button>*/}
+                            {/*            </div>*/}
+                            {/*            <div className="modal-body mb-4">*/}
+                            {/*                <div className="d-flex flex-column">*/}
+                            {/*                    <p className="text-muted note mb-5">Note: Please Arrive at Least 15*/}
+                            {/*                        Minutes Early.</p>*/}
+                            {/*                    <div className="reservDetails mx-3">*/}
+                            {/*                        <div className="d-flex justify-content-between">*/}
+                            {/*                            <p>Table Number</p>*/}
+                            {/*                            <p>{selectedTable}</p>*/}
+                            {/*                        </div>*/}
+                            {/*                        <div className="d-flex justify-content-between">*/}
+                            {/*                            <p>Time</p>*/}
+                            {/*                            <p>{selectedTime}</p>*/}
+                            {/*                        </div>*/}
+                            {/*                        <div className="d-flex justify-content-start">*/}
+                            {/*                            <p>Address</p>*/}
+                            {/*                        </div>*/}
+                            {/*                    </div>*/}
+                            {/*                    <p className="text-muted addressDetail mx-3">{restaurant.address.country}, {restaurant.address.city}, {restaurant.address.street}</p>*/}
+                            {/*                </div>*/}
+                            {/*            </div>*/}
+                            {/*            <div className="modal-footer align-items-center">*/}
+                            {/*                <button type="button" className="btn closeBtn w-100 mx-3"*/}
+                            {/*                        data-bs-dismiss="modal">Close*/}
+                            {/*                </button>*/}
+                            {/*            </div>*/}
+                            {/*        </div>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                            <div className="modal fade" id="completeModal" tabIndex="-1"
+                                 aria-labelledby="completeModalLabel" aria-hidden="true">
                                 <div className="modal-dialog modal-dialog-centered">
                                     <div className="modal-content">
                                         <div className="modal-header">
                                             <h5 className="modal-title" id="completeModalLabel">Reservation Detail</h5>
-                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" className="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
                                         </div>
                                         <div className="modal-body mb-4">
                                             <div className="d-flex flex-column">
-                                                <p className="text-muted note mb-5">Note:  Please Arrive at Least 15 Minutes Early.</p>
+                                                <p className="text-muted note mb-5">Note: Please Arrive at Least 15
+                                                    Minutes Early.</p>
                                                 <div className="reservDetails mx-3">
                                                     <div className="d-flex justify-content-between">
                                                         <p>Table Number</p>
@@ -201,15 +247,21 @@ function Restaurant() {
                                                         <p>Address</p>
                                                     </div>
                                                 </div>
-                                                <p className="text-muted addressDetail mx-3">{restaurant.address.country},  {restaurant.address.city}, {restaurant.address.street}</p>
+                                                {/* Conditionally render the address details */}
+                                                {restaurant && restaurant.address && (
+                                                    <p className="text-muted addressDetail mx-3">{restaurant.address.country}, {restaurant.address.city}, {restaurant.address.street}</p>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="modal-footer align-items-center">
-                                            <button type="button" className="btn closeBtn w-100 mx-3" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" className="btn closeBtn w-100 mx-3"
+                                                    data-bs-dismiss="modal">Close
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </form>
                     </div>
                 </div>

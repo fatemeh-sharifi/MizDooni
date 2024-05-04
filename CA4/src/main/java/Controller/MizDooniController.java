@@ -5,6 +5,7 @@ import Model.Feedback.Feedback;
 import Model.Restaurant.Restaurant;
 import Model.Table.Table;
 import Model.User.User;
+import Response.AvailableTimeResponse;
 import Service.MizDooni;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -239,19 +240,25 @@ public ResponseEntity<String> addOrUpdateReview(
         return ResponseEntity.ok(mizDooniService.getTables());
     }
     @GetMapping("/availableTimes")
-    public ResponseEntity<String> availableTimes(
+    public ResponseEntity<AvailableTimeResponse> availableTimes(
             @RequestParam String restaurantName,
             @RequestParam int numberOfPeople,
             @RequestParam String date
     ) {
         try {
+            System.out.println(date);
             // Validate the date
-            LocalDateTime selectedDateTime = LocalDateTime.parse(date);
-            LocalDate selectedDate = selectedDateTime.toLocalDate();
+            LocalDate selectedDate = LocalDate.parse(date);
+            System.out.println(selectedDate);
+            int year = selectedDate.getYear();
+            int month = selectedDate.getMonthValue();
+            int day = selectedDate.getDayOfMonth();
+            System.out.println(year +" " + month +" " + day);
+//            LocalDate selectedDate = selectedDate.toLocalDate();
             LocalDate today = LocalDate.now();
             LocalDate maxAllowedDate = today.plusDays(2); // Maximum allowed date is two days after today
             if (selectedDate.isAfter(maxAllowedDate)) {
-                return ResponseEntity.badRequest().body("Date exceeds maximum allowed"); // Date exceeds maximum allowed
+                return ResponseEntity.badRequest().body(null); // Date exceeds maximum allowed
             }
 
             // Retrieve the restaurant
@@ -262,23 +269,26 @@ public ResponseEntity<String> addOrUpdateReview(
 
             // Sort tables based on the difference between their capacity and the required number of people
             List<Table> sortedTables = new ArrayList<>(restaurant.getTables());
-            sortedTables.sort(Comparator.comparingInt(t -> t.getSeatsNumber() - numberOfPeople));
+            sortedTables.sort(Comparator.comparingInt(t -> Math.abs(t.getSeatsNumber() - numberOfPeople)));
 
             // Find the first available time for the sorted tables
             List<Integer> availableTimes = new ArrayList<>();
+            Table availableTable = null;
             for (Table table : sortedTables) {
                 List<Integer> tableAvailableTimes = table.getAvailableTimes(selectedDate);
                 if (tableAvailableTimes != null && !tableAvailableTimes.isEmpty()) {
                     availableTimes = tableAvailableTimes;
+                    availableTable = table;
                     break;
                 }
             }
 
-            if (availableTimes.isEmpty()) {
+            if (availableTable == null) {
                 return ResponseEntity.notFound().build(); // No available times found
             }
 
-            return ResponseEntity.ok(availableTimes.toString()); // Return the list of available times
+            AvailableTimeResponse response = new AvailableTimeResponse(availableTimes, availableTable);
+            return ResponseEntity.ok(response); // Return the available time and table
         } catch (DateTimeParseException e) {
             return ResponseEntity.badRequest().body(null); // Invalid date format
         } catch (Exception e) {

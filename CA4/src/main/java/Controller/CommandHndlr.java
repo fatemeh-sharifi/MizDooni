@@ -52,14 +52,14 @@ public class CommandHndlr {
                 restaurantController.parseAddTable ( args );
                 return jsonController.generateSuccessJson ( "Table added successfully." );
             case RESERVE_TABLE:
-                int reservationNumber = restaurantController.parseArgReserveTable ( args );
-                return jsonController.generateSuccessJsonReserveTable ( reservationNumber );
+                //int reservationNumber = restaurantController.parseArgReserveTable ( args );
+                //return jsonController.generateSuccessJsonReserveTable ( reservationNumber );
             case CANCEL_RESERVATION:
                 restaurantController.cancelReservation ( args );
                 return jsonController.generateSuccessJson ( "Reservation cancelled successfully." );
             case SHOW_RESERVATION_HISTORY:
-                List < Reservation > reservations = userController.parseHistoryArgs ( args );
-                return jsonController.generateHistoryJson ( reservations );
+//                List < Reservation > reservations = userController.parseHistoryArgs ( args );
+//                return jsonController.generateHistoryJson ( reservations );
             case SEARCH_RESTAURANTS_BY_NAME:
                 List < Restaurant > restaurantsByName = restaurantController.parseSearchByNameArgs ( args );
                 return jsonController.generateSearchByNameJson ( restaurantsByName );
@@ -67,8 +67,8 @@ public class CommandHndlr {
                 List < Restaurant > restaurantsByType = restaurantController.parseSearchByTypeArgs ( args );
                 return jsonController.generateSearchByNameJson ( restaurantsByType );
             case SHOW_AVAILABLE_TABLES:
-                ObjectNode availableTables = restaurantController.showAvailableTables ( args );
-                return jsonController.generateSuccessJsonAvailableTables ( availableTables );
+                //ObjectNode availableTables = restaurantController.showAvailableTables ( args );
+                //return jsonController.generateSuccessJsonAvailableTables ( availableTables );
             case ADD_REVIEW:
                 feedbackController.parseArgAdd ( args );
                 return jsonController.generateSuccessJson ( "Review added successfully." );

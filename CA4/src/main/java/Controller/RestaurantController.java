@@ -165,66 +165,66 @@ public class RestaurantController {
         }
     }
 
-    public int parseArgReserveTable ( String args ) throws Exception {
-        JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
-        String username = ( String ) jsonObject.get ( "username" );
-        String restaurantName = ( String ) jsonObject.get ( "restaurantName" );
-        int tableNumber = ( ( Long ) jsonObject.get ( "tableNumber" ) ).intValue ( );
-        String datetimeString = ( String ) jsonObject.get ( "datetime" );
-        if ( ! mizDooni.isRestaurantNameExists ( restaurantName ) ) {
-            throw new SuperException (ExceptionMessages.RESERVATION_NOT_FOUND_EXCEPTION_MESSAGE );
-        }
-        if ( ! mizDooni.isUserExists ( username ) ) {
-            throw new SuperException (ExceptionMessages.USERNAME_NOT_EXISTS_EXCEPTION_MESSAGE );
-        } else {
-            User user = mizDooni.getUserByUsername ( username );
-            if ( user.getRole ( ).equals ( "manager" ) ) {
-                throw new SuperException (ExceptionMessages.NOT_ALLOWED_RESERVATION_EXCEPTION_MESSAGE );
-            }
-        }
-        LocalDateTime datetime = parseDateTime ( datetimeString );
-        // Check if the minutes and seconds are zero
-        if ( datetime.getMinute ( ) != 0 || datetime.getSecond ( ) != 0 ) {
-            throw new SuperException (ExceptionMessages.WRONG_TIME_EXCEPTION_MESSAGE );
-        }
-        Restaurant restaurant = mizDooni.getRestaurantByName ( restaurantName );
-        LocalTime startTime = LocalTime.parse ( restaurant.getStartTime ( ) );
-        LocalTime endTime = LocalTime.parse ( restaurant.getEndTime ( ) );
-        LocalTime reservationTime = datetime.toLocalTime ( );
-        if ( reservationTime.isBefore ( startTime ) || reservationTime.isAfter ( endTime ) ) {
-            throw new SuperException (ExceptionMessages.OUT_OF_WORKING_HOUR_EXCEPTION_MESSAGE );
-        }
-
-        if ( datetime.isBefore ( LocalDateTime.now ( ) ) ) {
-            throw new SuperException (ExceptionMessages.PAST_DATE_TIME_EXCEPTION_MESSAGE );
-        }
-
-
-        //Restaurant restaurant = mizDooni.getRestaurantByName(restaurantName);
-        List < Table > tables = restaurant.getTables ( );
-        boolean tableExists = false;
-        for ( Table table : tables ) {
-            if ( table.getTableNumber ( ) == tableNumber ) {
-                tableExists = true;
-                break;
-            }
-        }
-        if ( ! tableExists ) {
-            throw new SuperException (ExceptionMessages.TABLE_NOT_FOUND_EXCEPTION_MESSAGE );
-        }
-
-        if ( isTableReserved ( restaurantName , tableNumber , datetime ) ) {
-            throw new SuperException (ExceptionMessages.TABLE_ALREADY_RESERVED_EXCEPTION_MESSAGE );
-        }
-
-        int reservationNumber = mizDooni.getReservationNumber ( );
-        Reservation reservation = new Reservation ( username , restaurantName , tableNumber , reservationNumber , datetime );
-        restaurant.addReservation ( reservation );
-        User user = mizDooni.getUserByUsername ( username );
-        user.addReservation ( reservation );
-        mizDooni.setReservationNumber ( reservationNumber + 1 );
-        return mizDooni.getReservationNumber ( ) - 1;
-    }
+//    public int parseArgReserveTable ( String args ) throws Exception {
+//        JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
+//        String username = ( String ) jsonObject.get ( "username" );
+//        String restaurantName = ( String ) jsonObject.get ( "restaurantName" );
+//        int tableNumber = ( ( Long ) jsonObject.get ( "tableNumber" ) ).intValue ( );
+//        String datetimeString = ( String ) jsonObject.get ( "datetime" );
+//        if ( ! mizDooni.isRestaurantNameExists ( restaurantName ) ) {
+//            throw new SuperException (ExceptionMessages.RESERVATION_NOT_FOUND_EXCEPTION_MESSAGE );
+//        }
+//        if ( ! mizDooni.isUserExists ( username ) ) {
+//            throw new SuperException (ExceptionMessages.USERNAME_NOT_EXISTS_EXCEPTION_MESSAGE );
+//        } else {
+//            User user = mizDooni.getUserByUsername ( username );
+//            if ( user.getRole ( ).equals ( "manager" ) ) {
+//                throw new SuperException (ExceptionMessages.NOT_ALLOWED_RESERVATION_EXCEPTION_MESSAGE );
+//            }
+//        }
+//        LocalDateTime datetime = parseDateTime ( datetimeString );
+//        // Check if the minutes and seconds are zero
+//        if ( datetime.getMinute ( ) != 0 || datetime.getSecond ( ) != 0 ) {
+//            throw new SuperException (ExceptionMessages.WRONG_TIME_EXCEPTION_MESSAGE );
+//        }
+//        Restaurant restaurant = mizDooni.getRestaurantByName ( restaurantName );
+//        LocalTime startTime = LocalTime.parse ( restaurant.getStartTime ( ) );
+//        LocalTime endTime = LocalTime.parse ( restaurant.getEndTime ( ) );
+//        LocalTime reservationTime = datetime.toLocalTime ( );
+//        if ( reservationTime.isBefore ( startTime ) || reservationTime.isAfter ( endTime ) ) {
+//            throw new SuperException (ExceptionMessages.OUT_OF_WORKING_HOUR_EXCEPTION_MESSAGE );
+//        }
+//
+//        if ( datetime.isBefore ( LocalDateTime.now ( ) ) ) {
+//            throw new SuperException (ExceptionMessages.PAST_DATE_TIME_EXCEPTION_MESSAGE );
+//        }
+//
+//
+//        //Restaurant restaurant = mizDooni.getRestaurantByName(restaurantName);
+//        List < Table > tables = restaurant.getTables ( );
+//        boolean tableExists = false;
+//        for ( Table table : tables ) {
+//            if ( table.getTableNumber ( ) == tableNumber ) {
+//                tableExists = true;
+//                break;
+//            }
+//        }
+//        if ( ! tableExists ) {
+//            throw new SuperException (ExceptionMessages.TABLE_NOT_FOUND_EXCEPTION_MESSAGE );
+//        }
+//
+//        if ( isTableReserved ( restaurantName , tableNumber , datetime ) ) {
+//            throw new SuperException (ExceptionMessages.TABLE_ALREADY_RESERVED_EXCEPTION_MESSAGE );
+//        }
+//
+//        int reservationNumber = mizDooni.getReservationNumber ( );
+//        Reservation reservation = new Reservation ( username , restaurantName , tableNumber , reservationNumber , datetime );
+//        restaurant.addReservation ( reservation );
+//        User user = mizDooni.getUserByUsername ( username );
+//        user.addReservation ( reservation );
+//        mizDooni.setReservationNumber ( reservationNumber + 1 );
+//        return mizDooni.getReservationNumber ( ) - 1;
+//    }
 
     private LocalDateTime parseDateTime ( String datetimeString ) throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy-MM-dd HH:mm" );
@@ -237,7 +237,7 @@ public class RestaurantController {
         //return null;
     }
 
-    private boolean isTableReserved ( String restaurantName , int tableNumber , LocalDateTime datetime ) {
+    private boolean isTableReserved ( String restaurantName , int tableNumber , LocalDate date) {
         Restaurant restaurant = mizDooni.getRestaurantByName ( restaurantName );
         if ( restaurant == null || restaurant.getReservations ( ) == null ) {
             return false;
@@ -249,7 +249,7 @@ public class RestaurantController {
         }
 
         for ( Reservation reservation : reservations ) {
-            if ( reservation.getTableNumber ( ) == tableNumber && reservation.getDatetime ( ).equals ( datetime ) ) {
+            if ( reservation.getTableNumber ( ) == tableNumber && reservation.getDate ( ).equals ( date ) ) {
                 return true;
             }
         }
@@ -279,8 +279,8 @@ public class RestaurantController {
             throw new SuperException (ExceptionMessages.RESERVATION_NOT_FOUND_EXCEPTION_MESSAGE );
         }
 
-        LocalDateTime currentDateTime = LocalDateTime.now ( );
-        if ( reservationToRemove.getDatetime ( ).isBefore ( currentDateTime ) ) {
+        LocalDate currentDate = LocalDate.now ( );
+        if ( reservationToRemove.getDate ( ).isBefore ( currentDate ) ) {
             throw new SuperException (ExceptionMessages.PAST_DATE_TIME_EXCEPTION_MESSAGE );
         }
 
@@ -306,56 +306,56 @@ public class RestaurantController {
     }
 
 
-    public ObjectNode showAvailableTables ( String args ) throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper ( );
-        ObjectNode response = objectMapper.createObjectNode ( );
-        ArrayNode availableTablesArray = response.putArray ( "availableTables" );
-
-        JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
-        String restaurantName = ( String ) jsonObject.get ( "restaurantName" );
-        Restaurant restaurant = mizDooni.getRestaurantByName ( restaurantName );
-
-        LocalDate today = LocalDate.now ( );
-        LocalDate tomorrow = today.plusDays ( 1 );
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy-MM-dd" );
-
-        LocalTime startTime = LocalTime.parse ( restaurant.getStartTime ( ) );
-        LocalTime endTime = LocalTime.parse ( restaurant.getEndTime ( ) );
-
-
-        for ( Table table : restaurant.getTables ( ) ) {
-
-
-            ObjectNode tableInfo = objectMapper.createObjectNode ( );
-            tableInfo.put ( "tableNumber" , table.getTableNumber ( ) );
-            tableInfo.put ( "seatsNumber" , table.getSeatsNumber ( ) );
-
-            ArrayNode availableTimesArray = objectMapper.createArrayNode ( );
-
-            for ( LocalTime time = startTime ; ! time.equals ( endTime.plusHours ( 1 ) ) ; time = time.plusHours ( 1 ) ) {
-
-                LocalDateTime todayDateTime = LocalDateTime.of ( today , time );
-                LocalDateTime tomorrowDateTime = LocalDateTime.of ( tomorrow , time );
-
-                if ( ! isTableReserved ( restaurantName , table.getTableNumber ( ) , todayDateTime )
-                        && ! todayDateTime.toLocalTime ( ).isBefore ( startTime )
-                        && ! todayDateTime.toLocalTime ( ).isAfter ( endTime ) ) {
-                    availableTimesArray.add ( today.format ( formatter ) + " " + time );
-                }
-                if ( ! isTableReserved ( restaurantName , table.getTableNumber ( ) , tomorrowDateTime )
-                        && ! tomorrowDateTime.toLocalTime ( ).isBefore ( startTime )
-                        && ! tomorrowDateTime.toLocalTime ( ).isAfter ( endTime ) ) {
-                    availableTimesArray.add ( tomorrow.format ( formatter ) + " " + time );
-                }
-            }
-
-            tableInfo.set ( "availableTimes" , availableTimesArray );
-
-            availableTablesArray.add ( tableInfo );
-        }
-
-        return response;
-    }
+//    public ObjectNode showAvailableTables ( String args ) throws Exception {
+//        ObjectMapper objectMapper = new ObjectMapper ( );
+//        ObjectNode response = objectMapper.createObjectNode ( );
+//        ArrayNode availableTablesArray = response.putArray ( "availableTables" );
+//
+//        JSONObject jsonObject = ( JSONObject ) new JSONParser ( ).parse ( args );
+//        String restaurantName = ( String ) jsonObject.get ( "restaurantName" );
+//        Restaurant restaurant = mizDooni.getRestaurantByName ( restaurantName );
+//
+//        LocalDate today = LocalDate.now ( );
+//        LocalDate tomorrow = today.plusDays ( 1 );
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy-MM-dd" );
+//
+//        LocalTime startTime = LocalTime.parse ( restaurant.getStartTime ( ) );
+//        LocalTime endTime = LocalTime.parse ( restaurant.getEndTime ( ) );
+//
+//
+//        for ( Table table : restaurant.getTables ( ) ) {
+//
+//
+//            ObjectNode tableInfo = objectMapper.createObjectNode ( );
+//            tableInfo.put ( "tableNumber" , table.getTableNumber ( ) );
+//            tableInfo.put ( "seatsNumber" , table.getSeatsNumber ( ) );
+//
+//            ArrayNode availableTimesArray = objectMapper.createArrayNode ( );
+//
+//            for ( LocalTime time = startTime ; ! time.equals ( endTime.plusHours ( 1 ) ) ; time = time.plusHours ( 1 ) ) {
+//
+//                LocalDate todayDate =  today ;
+//                LocalDate tomorrowDate = tomorrow ;
+//
+//                if ( ! isTableReserved ( restaurantName , table.getTableNumber ( ) , todayDate )
+//                        && ! todayDate.toLocalT ( ).isBefore ( startTime )
+//                        && ! todayDateTime.toLocalTime ( ).isAfter ( endTime ) ) {
+//                    availableTimesArray.add ( today.format ( formatter ) + " " + time );
+//                }
+//                if ( ! isTableReserved ( restaurantName , table.getTableNumber ( ) , tomorrowDate )
+//                        && ! tomorrowDateTime.toLocalTime ( ).isBefore ( startTime )
+//                        && ! tomorrowDateTime.toLocalTime ( ).isAfter ( endTime ) ) {
+//                    availableTimesArray.add ( tomorrow.format ( formatter ) + " " + time );
+//                }
+//            }
+//
+//            tableInfo.set ( "availableTimes" , availableTimesArray );
+//
+//            availableTablesArray.add ( tableInfo );
+//        }
+//
+//        return response;
+//    }
 
 
 }
