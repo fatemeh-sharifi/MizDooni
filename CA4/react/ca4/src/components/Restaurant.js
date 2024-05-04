@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { Link, useAsyncError, useParams } from "react-router-dom";
 import CompleteReservation from "./modals/CompleteReservation";
 import AddReview from "./modals/addReview";
+import ReviewPart from "./ReviewPart";
 import "../css/restaurant.css"
 
 import RestaurantProfile from "./RestaurantProfile";
@@ -69,7 +70,22 @@ function Restaurant() {
     function handleTimeChange(time, number) {
         setSelectedTime(time);
         setSelectedTable(number);
-    };
+    }
+
+    function createReviewPart(review,index){
+        return(
+            <ReviewPart
+                key={index}
+                username = {review.username}
+                overallRate = {review.overallRate}
+                foodRate = {review.foodRate}
+                serviceRate = {review.serviceRate}
+                ambianceRate = {review.ambianceRate}
+                comment = {review.comment}
+                dateTime = {review.dateTime}
+            />
+        );
+    }
 
     useEffect(() => {
         function getAvailableTimes() {
@@ -216,51 +232,8 @@ function Restaurant() {
                             />
                         )}
                     </div>
-                    <div className="one-reviews d-flex justify-content-between">
-                        <div className="right-part d-flex gap-3">
-                            <div className="profile text-center flex-shrink-0">
-                                <p>AD</p>
-                            </div>
-                            <div className="comment d-flex flex-column">
-                                <p className="username">Ali Daei</p>
-                                <p className="user-rating">
-                                    Overall <span>5</span>
-                                    <img src="./assets/img/dot.svg" alt="dot-img" className="dot" />
-                                    Food <span>5</span>
-                                    <img src="./assets/img/dot.svg" alt="dot-img" className="dot" />
-                                    Service <span>5</span>
-                                    <img src="./assets/img/dot.svg" alt="dot-img" className="dot" />
-                                    Ambience <span>5</span>
-                                </p>
-                                <p className="comment-text">Excellent pre-theatre meal. Good food and service. Only small criticism is that music was intrusive.</p>
-                            </div>
-                        </div>
-                        <div className="date-star d-flex flex-wrap justify-content-end">
-                            <div className="stars flex-shrink-0">
-                                <img src="./assets/img/full-star.svg" alt="star-img" />
-                                <img src="./assets/img/full-star.svg" alt="star-img" />
-                                <img src="./assets/img/full-star.svg" alt="star-img" />
-                                <img src="./assets/img/full-star.svg" alt="star-img" />
-                                <img src="./assets/img/full-star.svg" alt="star-img" />
-                            </div>
-                            <p className="comment-date flex-shrink-0">
-                                Dined on February 17, 2024
-                            </p>
-                        </div>
-                    </div>
-                    <hr />
                 </div>
-                <nav aria-label="Page navigation">
-                    <ul className="pagination justify-content-center">
-                        <li className="page-item"><a className="page-link mx-1" href="">1</a></li>
-                        <li className="page-item"><a className="page-link mx-1" href="">2</a></li>
-                        <li className="page-item"><a className="page-link mx-1" href="">3</a></li>
-                        <li className="page-item"><a className="page-link mx-1 disabled" href="">...</a></li>
-                        <li className="page-item"><a className="page-link mx-1" href="">10</a></li>
-                        <li className="page-item"><a className="page-link mx-1" href="">11</a></li>
-                        <li className="page-item"><a className="page-link mx-1" href="">12</a></li>
-                    </ul>
-                </nav>
+                {restaurant.feedbacks && restaurant.feedbacks.map(createReviewPart)}
             </div>
         </div>
     );
