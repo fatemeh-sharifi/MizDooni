@@ -2,6 +2,7 @@ package Service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import Controller.AuthenticationController;
@@ -59,7 +60,8 @@ public class MizDooni {
         CloseableHttpResponse restaurantsResponse = httpClient.execute(new HttpGet(restaurantsEndpoint));
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            List<Restaurant> fetchedRestaurants = objectMapper.readValue(restaurantsResponse.getEntity().getContent(), new TypeReference<List<Restaurant>>() {});
+            List<Restaurant> fetchedRestaurants = objectMapper.readValue(restaurantsResponse.getEntity().getContent(), new TypeReference<List<Restaurant>>() {
+            });
             restaurants.addAll(fetchedRestaurants);
         } finally {
             restaurantsResponse.close();
@@ -74,7 +76,8 @@ public class MizDooni {
         CloseableHttpResponse usersResponse = httpClient.execute(new HttpGet(usersEndpoint));
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            List<User> fetchedUsers = objectMapper.readValue(usersResponse.getEntity().getContent(), new TypeReference<List<User>>() {});
+            List<User> fetchedUsers = objectMapper.readValue(usersResponse.getEntity().getContent(), new TypeReference<List<User>>() {
+            });
             users.addAll(fetchedUsers);
         } finally {
             usersResponse.close();
@@ -83,7 +86,8 @@ public class MizDooni {
         CloseableHttpResponse reviewsResponse = httpClient.execute(new HttpGet(reviewsEndpoint));
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            List<Feedback> fetchedFeedbacks = objectMapper.readValue(reviewsResponse.getEntity().getContent(), new TypeReference<List<Feedback>>() {});
+            List<Feedback> fetchedFeedbacks = objectMapper.readValue(reviewsResponse.getEntity().getContent(), new TypeReference<List<Feedback>>() {
+            });
 
             // Match each review with the corresponding restaurant
             for (Feedback feedback : fetchedFeedbacks) {
@@ -115,7 +119,8 @@ public class MizDooni {
         CloseableHttpResponse tablesResponse = httpClient.execute(new HttpGet(tablesEndpoint));
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            List<Table> fetchedTables = objectMapper.readValue(tablesResponse.getEntity().getContent(), new TypeReference<List<Table>>() {});
+            List<Table> fetchedTables = objectMapper.readValue(tablesResponse.getEntity().getContent(), new TypeReference<List<Table>>() {
+            });
 
             // Match each table with the corresponding restaurant
             for (Table table : fetchedTables) {
@@ -130,14 +135,36 @@ public class MizDooni {
             tablesResponse.close();
         }
 
+        // Create instances of user and restaurant
+        User user = getUserByUsername("Mostafa_Ebrahimi");
+        Restaurant restaurant = getRestaurantByName("The Commoner");
+
+        LocalDateTime dateTime = LocalDateTime.now().minusDays(2); // Assuming the reservation is for tomorrow
+        System.out.println(dateTime);
+        System.out.println(LocalDateTime.now());
+        Reservation reservation = new Reservation(user.getUsername(), restaurant.getName(), 1, generateReservationNumber(), dateTime);
+        user.addReservation(reservation);
+        restaurant.addReservation(reservation);
+
+        users.set(6, user);
+        restaurants.set(0, restaurant);
+        System.out.println(users.get(6));
+        System.out.println(restaurants.get(0));
+        // Check if reservation was added successfully
+        if (reservation != null) {
+            System.out.println("Reservation Number: " + reservation.getReservationNumber());
+            System.out.println("Reservation Date and Time: " + reservation.getDatetime());
+        }
 
         httpClient.close();
     }
-
+private int generateReservationNumber() {
+    return (int) (Math.random() * 1000000);
+}
     private static int generateUniqueId(Restaurant restaurant) {
         // Concatenate restaurant attributes to generate a unique string
         String uniqueString = restaurant.getName() + restaurant.getManagerUsername()+ restaurant.getAddress().getCity() + restaurant.getAddress().getCountry();
-        
+
         // Generate unique ID
         int hashCode = Math.abs(uniqueString.hashCode());
 
@@ -582,4 +609,27 @@ public class MizDooni {
 
     }
 
+    public boolean isReservationTimePassed(User user, Restaurant restaurant) {
+        // Assuming you have a method to get the user's reservations
+        List<Reservation> reservations = getUserHistory(user.getUsername());
+
+        // Check if there's any reservation for the restaurant
+        for (Reservation reservation : reservations) {
+            if (reservation.getRestaurantName().equals(restaurant.getName()) && reservation.getDatetime().isBefore(LocalDateTime.now())) {
+                return true; // Reservation time has passed
+            }
+        }
+        return false; // No reservation or reservation time not passed
+    }
+
+
+    public Restaurant getRestaurantById ( int id ) {
+        Restaurant finalRestaurant = new Restaurant();
+        for(Restaurant restaurant : restaurants){
+            if(restaurant.getId() == id){
+                finalRestaurant = restaurant;
+            }
+        }
+        return finalRestaurant;
+    }
 }
