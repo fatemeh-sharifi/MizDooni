@@ -14,7 +14,7 @@ function SearchResult() {
                 id={restaurant.id}
                 rating={restaurant.overallAvg}
                 start={restaurant.startTime}
-                end={restaurant.enTime}
+                end={restaurant.endTime}
                 img={restaurant.image}
                 title={restaurant.name}
                 reviews={restaurant.feedbacks.length}
