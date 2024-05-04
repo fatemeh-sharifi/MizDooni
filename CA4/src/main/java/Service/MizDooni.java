@@ -64,6 +64,11 @@ public class MizDooni {
         } finally {
             restaurantsResponse.close();
         }
+        // Generate unique IDs for restaurants
+        for (Restaurant restaurant : restaurants) {
+            int uniqueId = generateUniqueId(restaurant);
+            restaurant.setId(uniqueId);
+        }
 
         // Fetch users
         CloseableHttpResponse usersResponse = httpClient.execute(new HttpGet(usersEndpoint));
@@ -127,6 +132,16 @@ public class MizDooni {
 
 
         httpClient.close();
+    }
+
+    private static int generateUniqueId(Restaurant restaurant) {
+        // Concatenate restaurant attributes to generate a unique string
+        String uniqueString = restaurant.getName() + restaurant.getManagerUsername()+ restaurant.getAddress().getCity() + restaurant.getAddress().getCountry();
+        
+        // Generate unique ID
+        int hashCode = Math.abs(uniqueString.hashCode());
+
+        return hashCode;
     }
 
     private Restaurant updateAverages(Restaurant restaurant, Feedback feedback) {
