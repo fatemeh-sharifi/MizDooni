@@ -115,27 +115,7 @@ public class MizDooni {
         }
 
 
-// Fetch tables
-        CloseableHttpResponse tablesResponse = httpClient.execute(new HttpGet(tablesEndpoint));
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<Table> fetchedTables = objectMapper.readValue(tablesResponse.getEntity().getContent(), new TypeReference<List<Table>>() {
-            });
-
-            // Match each table with the corresponding restaurant
-            for (Table table : fetchedTables) {
-                for (Restaurant restaurant : restaurants) {
-                    if (restaurant.getName().equals(table.getRestaurantName())) {
-                        restaurant.getTables().add(table);
-                        break; // Assuming restaurant names are unique, no need to continue searching
-                    }
-                }
-            }
-        } finally {
-            tablesResponse.close();
-        }
-
-        // Create instances of user and restaurant
+        //ADD A RESERVATION.
         User user = getUserByUsername("Mostafa_Ebrahimi");
         Restaurant restaurant = getRestaurantByName("The Commoner");
 
@@ -148,13 +128,55 @@ public class MizDooni {
 
         users.set(6, user);
         restaurants.set(0, restaurant);
-        System.out.println(users.get(6));
-        System.out.println(restaurants.get(0));
         // Check if reservation was added successfully
         if (reservation != null) {
             System.out.println("Reservation Number: " + reservation.getReservationNumber());
             System.out.println("Reservation Date and Time: " + reservation.getDatetime());
         }
+
+        dateTime = LocalDateTime.now().plusDays(1); // Assuming the reservation is for tomorrow
+        System.out.println(dateTime);
+        System.out.println(LocalDateTime.now());
+        reservation = new Reservation(user.getUsername(), restaurant.getName(), 1, generateReservationNumber(), dateTime);
+        user.addReservation(reservation);
+        restaurant.addReservation(reservation);
+        users.set(6, user);
+        restaurants.set(0, restaurant);
+// Fetch tables
+        CloseableHttpResponse tablesResponse = httpClient.execute(new HttpGet(tablesEndpoint));
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Table> fetchedTables = objectMapper.readValue(tablesResponse.getEntity().getContent(), new TypeReference<List<Table>>() {});
+
+            // Match each table with the corresponding restaurant
+            for (Table table : fetchedTables) {
+                for (Restaurant rest : restaurants) {
+                    if (rest.getName().equals(table.getRestaurantName())) {
+                        // Convert restaurant start time from string to integer representing the hour
+                        int openingHour = Integer.parseInt(rest.getStartTime().split(":")[0]);
+                        table.setOpeningTime(openingHour);
+                        // Convert restaurant end time from string to integer representing the hour
+                        int closingHour = Integer.parseInt(rest.getEndTime().split(":")[0]);
+                        table.setClosingTime(closingHour);
+                        table.makeTimeSlots();
+                        // Update reservation status for each table based on restaurant reservations
+                        for (Reservation  reserv: restaurant.getReservations()) {
+                            if (reserv.getTableNumber() == table.getTableNumber()) {
+                                // Update reservation status for the corresponding time slot
+                                table.getReservations().add(reserv);
+                            }
+                        }
+                        restaurant.getTables().add(table);
+                        tables.add(table);
+                        break; // Assuming restaurant names are unique, no need to continue searching
+                    }
+                }
+            }
+        } finally {
+            tablesResponse.close();
+        }
+
+
 
         httpClient.close();
     }
@@ -166,9 +188,7 @@ private int generateReservationNumber() {
         String uniqueString = restaurant.getName() + restaurant.getManagerUsername()+ restaurant.getAddress().getCity() + restaurant.getAddress().getCountry();
 
         // Generate unique ID
-        int hashCode = Math.abs(uniqueString.hashCode());
-
-        return hashCode;
+        return Math.abs(uniqueString.hashCode());
     }
 
     private Restaurant updateAverages(Restaurant restaurant, Feedback feedback) {
@@ -371,12 +391,7 @@ private int generateReservationNumber() {
     }
 
     public boolean isLoggedIn(){
-        if (loggedInUser != null){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return loggedInUser != null;
     }
 
     public User doesAccountExists(String username, String password){

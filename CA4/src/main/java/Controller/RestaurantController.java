@@ -133,7 +133,7 @@ public class RestaurantController {
         String managerUsername = ( String ) jsonObject.get ( "managerUsername" );
         validateTable ( restaurantName , tableNumber , seatsNumber , managerUsername );
         Restaurant restaurant = mizDooni.getRestaurantByName ( restaurantName );
-        Table table = new Table ( tableNumber , restaurantName , managerUsername , seatsNumber );
+        Table table = new Table ( tableNumber , restaurantName , managerUsername , seatsNumber);
         mizDooni.addTable ( restaurant , table );
     }
 

@@ -1,15 +1,18 @@
 package Controller;
 
-import Model.Exception.SuperException;
+import Model.Address.AddressUser;
 import Model.Feedback.Feedback;
 import Model.Restaurant.Restaurant;
+import Model.Table.Table;
 import Model.User.User;
 import Service.MizDooni;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -201,7 +204,87 @@ public ResponseEntity<String> addOrUpdateReview(
     } catch (Exception e) {
         return ResponseEntity.status(400).body("Failed to add/update review: " + e.getMessage());
     }
-}
+    }
+    @PostMapping("/signin")
+    public ResponseEntity<User> signIn(
+            @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam String email,
+            @RequestParam String role,
+            @RequestParam String city,
+            @RequestParam String country
+    ) {
+        try {
+            // Check if the username is already taken
+            if (mizDooniService.getUserByUsername(username) != null) {
+                return ResponseEntity.status(400).body(null); // Username already exists, return bad request
+            }
+
+            AddressUser addressUser = new AddressUser();
+            addressUser.setCity(city);
+            addressUser.setCountry(country);
+            // Create a new user object
+            User newUser = new User(username, email, password, role, addressUser);
+
+            // Add the user to the system
+            mizDooniService.addUser(newUser);
+
+            return ResponseEntity.ok(newUser); // Return the newly created user
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(null); // Failed to create user, return bad request
+        }
+    }
+    @GetMapping("/tables")
+    public ResponseEntity<ArrayList<Table>> tables(){
+        return ResponseEntity.ok(mizDooniService.getTables());
+    }
+    @GetMapping("/availableTimes")
+    public ResponseEntity<String> availableTimes(
+            @RequestParam String restaurantName,
+            @RequestParam int numberOfPeople,
+            @RequestParam String date
+    ) {
+        try {
+            // Validate the date
+            LocalDateTime selectedDateTime = LocalDateTime.parse(date);
+            LocalDate selectedDate = selectedDateTime.toLocalDate();
+            LocalDate today = LocalDate.now();
+            LocalDate maxAllowedDate = today.plusDays(2); // Maximum allowed date is two days after today
+            if (selectedDate.isAfter(maxAllowedDate)) {
+                return ResponseEntity.badRequest().body("Date exceeds maximum allowed"); // Date exceeds maximum allowed
+            }
+
+            // Retrieve the restaurant
+            Restaurant restaurant = mizDooniService.getRestaurantByName(restaurantName);
+            if (restaurant == null) {
+                return ResponseEntity.notFound().build(); // Restaurant not found
+            }
+
+            // Sort tables based on the difference between their capacity and the required number of people
+            List<Table> sortedTables = new ArrayList<>(restaurant.getTables());
+            sortedTables.sort(Comparator.comparingInt(t -> t.getSeatsNumber() - numberOfPeople));
+
+            // Find the first available time for the sorted tables
+            List<Integer> availableTimes = new ArrayList<>();
+            for (Table table : sortedTables) {
+                List<Integer> tableAvailableTimes = table.getAvailableTimes(selectedDate);
+                if (tableAvailableTimes != null && !tableAvailableTimes.isEmpty()) {
+                    availableTimes = tableAvailableTimes;
+                    break;
+                }
+            }
+
+            if (availableTimes.isEmpty()) {
+                return ResponseEntity.notFound().build(); // No available times found
+            }
+
+            return ResponseEntity.ok(availableTimes.toString()); // Return the list of available times
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().body(null); // Invalid date format
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Failed to retrieve available times
+        }
+    }
 
 }
 
