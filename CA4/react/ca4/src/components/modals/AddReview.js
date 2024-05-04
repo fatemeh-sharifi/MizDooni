@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState,useContext , useEffect } from "react";
 import axios from "axios";
 import Rating from "../Rating";
 import { UserContext } from "../App";
@@ -10,6 +10,8 @@ function AddReview(props) {
     const [ambienceRating, setAmbienceRating] = useState(null);
     const [overallRating, setOverallRating] = useState(null);
     const [comment, setComment] = useState("");
+    const [showModal, setShowModal] = useState(true);
+    const [allowed, setAllowed] = useState(true);
     const UserInfo = useContext(UserContext);
 
     function handleSubmitReview(){
@@ -17,13 +19,35 @@ function AddReview(props) {
         axios.post("http://localhost:8080/reviews", params).then(
             (response) => {
                 console.log(response);
+                if(response.status === 200){
+                    setShowModal(false);
+                }
+            }
+        ).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    useEffect(()=>{
+        setAllowed(true);
+        isAble();
+    }, [])
+
+    function isAble(){
+        const params = {username : UserInfo.username , restaurant : props.name }
+        axios.post("http://localhost:8080/reviews", params).then(
+            (response) => {
+                console.log(response);
+                if(response.status !== 200){
+                    setAllowed(false);
+                }
             }
         ).catch((error) => {
             console.log(error);
         });
     }
     return (
-        <div className="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+        <div className={`modal fade ${showModal ? 'show' : ''}`} id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -68,7 +92,7 @@ function AddReview(props) {
                         </div>
                     </div>
                     <div className="modal-footer align-items-center">
-                        <button type="button" className="btn submitReview w-100 mx-3" data-bs-dismiss="modal" onClick={handleSubmitReview}>Submit Review</button>
+                        <button type="button" disabled ={!foodQualityRating || !serviceRating || !overallRating || !ambienceRating || !allowed} className="btn submitReview w-100 mx-3"onClick={handleSubmitReview}>Submit Review</button>
                         <button type="button" className="btn cancleBtn closeBtn w-100 mx-3" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>

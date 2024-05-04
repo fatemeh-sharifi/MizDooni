@@ -7,7 +7,7 @@ import Login from "./components/Login";
 import Footer from "./components/Footer";
 import Protected from "./components/Protected";
 import Home from "./components/Home";
-import SearchResult from "./components/searchResult";
+import SearchResult from "./components/SearchResult";
 
 export const UserContext = createContext({});
 

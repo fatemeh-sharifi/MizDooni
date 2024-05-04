@@ -81,7 +81,6 @@ function Restaurant() {
                     else {
                         setMaxLimit(response.data);
                     }
-
                 }
             ).catch((error) => {
                 console.log(error);
