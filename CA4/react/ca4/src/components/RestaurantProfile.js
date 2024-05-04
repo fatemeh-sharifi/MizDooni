@@ -20,7 +20,7 @@ function RestaurantProfile(props) {
             <img src={props.img} alt="restaurant-img" className="restaurant-img" />
             <div className="title">
                 <div className="head-part d-flex justify-content-between">
-                    <p className="restaurant-title">{props.title}</p>
+                    <p className={`restaurant-title ${props.title.length > 20 ? 'long' : ''}`}>{props.title}</p>
                     {isOpen(props.start, props.end) ? (
                         <div className="open text-white text-center">
                             <p>Open!</p>
@@ -33,6 +33,7 @@ function RestaurantProfile(props) {
                 </div>
                 <hr className="img-line" />
                 <div className="details ">
+                    <div className="d-flex justify-content-between">
                     <p className="time-details">
                         <img src="img/clk.svg" alt="clock-img" className="time-logo" />
                         From {convertToAMPM(props.start)} to {convertToAMPM(props.end)}
@@ -43,15 +44,17 @@ function RestaurantProfile(props) {
                         {props.reviews} Reviews
                     </p>
                     <p className="type">
-                        <img src="knife.svg" alt="knife-img" className="knife-logo" />
+                        <img src="img/knife.svg" alt="knife-img" className="knife-logo" />
                         {props.type}
                     </p>
+                    </div>
+                    
                     <p className="location-part d-flex align-items-center">
                         <img src="img/gray-location.svg" alt="location-logo" className="location-logo me-1" />
                         {props.country},  {props.city}, {props.street}
                     </p>
                     <div className="description">
-                        {props.description}
+                        <p>{props.description}</p>
                     </div>
                 </div>
             </div>

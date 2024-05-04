@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import Protected from "./components/Protected";
 import Home from "./components/Home";
 import SearchResult from "./components/SearchResult";
+import Restaurant from "./components/Restaurant";
 export const UserContext = createContext({});
 
 function App() {
@@ -40,7 +41,7 @@ function App() {
           /> */}
           <Route path="/" element={<Protected isLoggedIn={user.loggedIn}><Home /></Protected>} />
           <Route path="/searchResualt" element={<Protected isLoggedIn={user.loggedIn}><SearchResult /></Protected>} />
-
+          <Route path="/restaurant/:id" element={<Protected isLoggedIn={user.loggedIn}><Restaurant /></Protected>} />
         </Routes>
         <Footer/>
         </UserContext.Provider>

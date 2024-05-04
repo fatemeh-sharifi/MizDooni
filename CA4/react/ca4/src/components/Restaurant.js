@@ -2,12 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../App";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { Link, useAsyncError, useParams } from "react-router-dom";
-import CompleteReservation from "./modals/CompleteReservation";
-import AddReview from "./modals/addReview";
-import ReviewPart from "./ReviewPart";
+import { useParams } from "react-router-dom";
 import "../css/restaurant.css"
-
+import Review from "./Review";
 import RestaurantProfile from "./RestaurantProfile";
 
 function Restaurant() {
@@ -19,13 +16,15 @@ function Restaurant() {
     const [selectedTime, setSelectedTime] = useState('');
     const [selectedTable, setSelectedTable] = useState('');
     const [modalShow, setModalShow] = useState(false);
-    const [reviewModalShow, setReviewModalShow] = useState(false);
     const [maxLimit, setMaxLimit] = useState('');
     const UserInfo = useContext(UserContext);
     const [reviewSubmitted, setReviewSubmitted] = useState(false);
+
     function getRestaurant() {
+        console.log("id : ", id);
         axios.get("http://localhost:8080/restaurants/" + String(id)).then(
             (response) => {
+                console.log("restaurant : ", response.data);
                 setRestaurant(response.data);
             }
         ).catch((error) => {
@@ -42,7 +41,7 @@ function Restaurant() {
     }
 
     function handleReservation() {
-        setModalShow(true);
+        // setModalShow(true);
         const params = { username: UserInfo.username, time: selectedTime, table: selectedTable, restaurantId: id };
         axios.post("http://localhost:8080/reservation", null, { params: params }).then(
             (response) => {
@@ -53,43 +52,19 @@ function Restaurant() {
         })
     }
 
-    function renderStars(rating) {
-        const stars = [];
-        const filledStars = Math.floor(rating);
-        const emptyStars = 5 - filledStars;
-        for (let i = 0; i < filledStars; i++) {
-            stars.push(<img key={i} src="img/Vector.svg" alt="star-img" />);
-        }
-        for (let i = 0; i < emptyStars; i++) {
-            stars.push(<img key={filledStars + i} src="img/empty-star.svg" alt="empty-star-img" />);
-        }
 
-        return stars;
-    }
 
     function handleTimeChange(time, number) {
         setSelectedTime(time);
         setSelectedTable(number);
     }
 
-    function createReviewPart(review,index){
-        return(
-            <ReviewPart
-                key={index}
-                username = {review.username}
-                overallRate = {review.overallRate}
-                foodRate = {review.foodRate}
-                serviceRate = {review.serviceRate}
-                ambianceRate = {review.ambianceRate}
-                comment = {review.comment}
-                dateTime = {review.dateTime}
-            />
-        );
-    }
+
 
     useEffect(() => {
         function getAvailableTimes() {
-            const params = { date: selectedDate, people: selectedPeople };
+            const params = { date: selectedDate, numberOfPeople: selectedPeople, restaurantName: restaurant.name };
+            console.log("params : ", params);
             axios.get("http://localhost:8080/availableTimes", null, { params: params }).then(
                 (response) => {
                     if (response.status === 200) {
@@ -113,25 +88,31 @@ function Restaurant() {
         getRestaurant();
     }, [reviewSubmitted]);
 
+    // useEffect(() => {
+    //     setRestaurant(null);
+    //     getRestaurant();
+    // }, []);
+
     return (
         <div>
-            <div className="container first-part">
+            <div className="container w-100 first-part">
                 <div className="row justify-content-around">
-                    <RestaurantProfile
+                    {restaurant && <RestaurantProfile
                         title={restaurant.name}
                         start={restaurant.startTime}
                         end={restaurant.endTime}
                         img={restaurant.image}
+                        description={restaurant.description}
                         reviews={restaurant.feedbacks.length}
                         country={restaurant.address.country}
                         city={restaurant.address.city}
                         street={restaurant.address.street}
                         type={restaurant.type}
-                    />
+                    />}
                     <div className="table-reserve col-lg-8 col-xl-6 ps-5">
                         <p className="form-title">Reserve Table</p>
                         <form className="reserve-form">
-                            <p className="selection d-flex align-items-center">
+                            <p className="selection w-100 d-flex align-items-center">
                                 For
                                 <select className="form-select mx-1" value={selectedPeople} onChange={handleSelectedPeople}>
                                     <option value="p1" selected>1</option>
@@ -152,9 +133,9 @@ function Restaurant() {
                                 <p className="time-title">Available Times</p>
                             )}
                             <div >
-                                <div className="time-checkbox text-center">
-                                    {(availableTimes && !maxLimit) ? (
-                                        availableTimes.map((timeData, index) => (
+                                {(availableTimes && !maxLimit) && (
+                                    availableTimes.map((timeData, index) => (
+                                        <div className="time-checkbox text-center">
                                             <label key={index}>
                                                 <input
                                                     type="radio"
@@ -165,75 +146,77 @@ function Restaurant() {
                                                 />
                                                 <span>{timeData.time}</span>
                                             </label>
-                                        ))
-                                    ) : (
-                                        maxLimit ? (
-                                            <p className="maxTime">The maximum possible date for reservation is {maxLimit}.</p>
-                                        ) : (
-                                            <p className="notAvailable">No Table is Available on this date.</p>
-                                        )
-                                    )}
-                                </div>
+                                        </div>
+                                    ))
+                                )}
                             </div>
-                            <p className="reserve-warning">You  will reserve this table  only for <u>one</u>  hour, for more time please contact the restaurant.</p>
-                            <button type="button" disabled={!availableTimes || maxLimit} className="final-reserve text-white" onClick={handleReservation} data-bs-toggle="modal" data-bs-target="#completeModal">
+                            {
+                                maxLimit ? (
+                                    <p className="reserve-warning">The maximum possible date for reservation is {maxLimit}.</p>
+                                ) : (
+                                    (!selectedDate || !selectedPeople) ? (
+                                        <p className="reserve-warning">Select the number of people and date.</p>
+                                    ) : (
+                                        !availableTimes ? (
+                                            <p className="notAvailable">No Table is Available on this date.</p>
+                                        ) : (
+                                            <p className="reserve-warning">You  will reserve this table  only for <u>one</u>  hour, for more time please contact the restaurant.</p>
+                                        )
+                                    )
+                                )}
+                            <button type="button" disabled={!availableTimes || maxLimit} className={`final-reserve text-white ${(!availableTimes || maxLimit) ? 'disabled' : ''}`} onClick={handleReservation} data-bs-toggle="modal" data-bs-target="#completeModal">
                                 {(maxLimit || !selectedDate || !selectedPeople) ? (
                                     "Select a date"
                                 ) : (
                                     "Complete the Reservation"
                                 )}
                             </button>
-                            {modalShow && (
+                            {/* {modalShow && (
                                 <CompleteReservation
                                     tableNumber={selectedTable}
                                     time={selectedTime}
                                     address={restaurant.address}
                                 />
-                            )}
+                            )} */}
+                            <div className="modal fade" id="completeModal" tabindex="-1" aria-labelledby="completeModalLabel" aria-hidden="true">
+                                <div className="modal-dialog modal-dialog-centered">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title" id="completeModalLabel">Reservation Detail</h5>
+                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div className="modal-body mb-4">
+                                            <div className="d-flex flex-column">
+                                                <p className="text-muted note mb-5">Note:  Please Arrive at Least 15 Minutes Early.</p>
+                                                <div className="reservDetails mx-3">
+                                                    <div className="d-flex justify-content-between">
+                                                        <p>Table Number</p>
+                                                        <p>{selectedTable}</p>
+                                                    </div>
+                                                    <div className="d-flex justify-content-between">
+                                                        <p>Time</p>
+                                                        <p>{selectedTime}</p>
+                                                    </div>
+                                                    <div className="d-flex justify-content-start">
+                                                        <p>Address</p>
+                                                    </div>
+                                                </div>
+                                                <p className="text-muted addressDetail mx-3">{restaurant.address.country},  {restaurant.address.city}, {restaurant.address.street}</p>
+                                            </div>
+                                        </div>
+                                        <div className="modal-footer align-items-center">
+                                            <button type="button" className="btn closeBtn w-100 mx-3" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
-                <div className="review-part d-flex justify-content-between py-3 px-4">
-                    <div className="top-part d-flex flex-column">
-                        <p className="review-start">What {restaurant.feedbacks.length} people are saying</p>
-                        <p className="rating-star">
-                            {renderStars(restaurant.overallAvg)}
-                            {restaurant.overallAvg} based on recent ratings
-                        </p>
-                    </div>
-                    <div className="d-flex justify-content-between align-items-center">
-                        <div className="d-flex flex-column text-center mx-5">
-                            <p className="rating-name">Food</p>
-                            <p className="rating-number">{restaurant.foodAvg}</p>
-                        </div>
-                        <div className="d-flex flex-column text-center mx-5">
-                            <p className="rating-name">Service</p>
-                            <p className="rating-number">{restaurant.serviceAvg}</p>
-                        </div>
-                        <div className="d-flex flex-column text-center mx-5">
-                            <p className="rating-name">Ambience</p>
-                            <p className="rating-number">{restaurant.ambienceAvg}</p>
-                        </div>
-                        <div className="d-flex flex-column text-center ms-5">
-                            <p className="rating-name">Overall</p>
-                            <p className="rating-number">{restaurant.overallAvg}</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="add-review">
-                    <div className="d-flex justify-content-between">
-                        <p className="reviews-num">{restaurant.feedbacks.length} Reviews</p>
-                        <button className="add-btn text-white" onClick={() => { setReviewModalShow(true) }}>Add Review</button>
-                        {reviewModalShow && (
-                            <AddReview
-                                name={restaurant.name}
-                                reviewSubmitted = {reviewSubmitted}
-                                setReviewSubmitted = {setReviewSubmitted}
-                            />
-                        )}
-                    </div>
-                </div>
-                {restaurant.feedbacks && restaurant.feedbacks.map(createReviewPart)}
+                <Review
+                    restaurant={restaurant}
+                    setReviewSubmitted={setReviewSubmitted}
+                />
             </div>
         </div>
     );

@@ -5,6 +5,7 @@ function UserInfo() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [role, setRole] = useState("");
     const [email, setemail] = useState("");
+    const [address, setAddress] = useState("");
     
     const SetAllInfo = (user) => {
         console.log(user);
@@ -12,7 +13,7 @@ function UserInfo() {
         setusername(user.username);
         setRole(user.role);
         setemail(user.email);
-
+        setAddress(user.address)
     };
 
     return {
@@ -22,7 +23,9 @@ function UserInfo() {
         loggedIn,
         setLoggedIn,
         role,
-        email
+        email,
+        setAddress,
+        address
     };
 };
 

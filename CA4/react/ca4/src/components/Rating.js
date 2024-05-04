@@ -5,8 +5,9 @@ function Rating(props) {
     const [hover, setHover] = useState(null);
     const [totalStars, setTotalStars] = useState(5);
     return (
-        <div className="d-flex justify-content-between">
-            <p>props.name</p>
+        <div className="d-flex align-items-center justify-content-between">
+            <p className="mb-0">{props.name}</p>
+            <div>
             {[...Array(totalStars)].map((star, index) => {
                 const currentRating = index + 1;
                 return (
@@ -33,6 +34,7 @@ function Rating(props) {
                     </label>
                 );
             })}
+            </div>
         </div>
     );
 }

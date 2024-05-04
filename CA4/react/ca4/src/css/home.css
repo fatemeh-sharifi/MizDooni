@@ -53,6 +53,7 @@ body{
     background-size: 7px !important;
     border-radius: 12px !important;
     width: 125px !important;
+    height: auto !important;
 }
 
 .form-select:focus , .form-control:focus {

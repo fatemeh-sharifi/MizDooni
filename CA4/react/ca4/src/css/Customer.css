@@ -117,14 +117,8 @@ body{
     margin-right: 37px;
 }
 
-.footer-part{
+.logout{
     background-color: #ED3545;
-    font-size: 14px;
-    font-weight: 700;
-    margin-top: 300px;
-}
-
-.footer-text{
-    padding: 14px;
-    margin: 0;
+    width: 100px;
+    border-radius: 12px;
 }
