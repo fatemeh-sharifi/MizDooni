@@ -21,6 +21,7 @@ function Restaurant() {
     const [reviewModalShow, setReviewModalShow] = useState(false);
     const [maxLimit, setMaxLimit] = useState('');
     const UserInfo = useContext(UserContext);
+    const [reviewSubmitted, setReviewSubmitted] = useState(false);
     function getRestaurant() {
         axios.get("http://localhost:8080/restaurants/" + String(id)).then(
             (response) => {
@@ -94,7 +95,7 @@ function Restaurant() {
     useEffect(() => {
         setRestaurant(null);
         getRestaurant();
-    }, []);
+    }, [reviewSubmitted]);
 
     return (
         <div>
@@ -210,6 +211,8 @@ function Restaurant() {
                         {reviewModalShow && (
                             <AddReview
                                 name={restaurant.name}
+                                reviewSubmitted = {reviewSubmitted}
+                                setReviewSubmitted = {setReviewSubmitted}
                             />
                         )}
                     </div>

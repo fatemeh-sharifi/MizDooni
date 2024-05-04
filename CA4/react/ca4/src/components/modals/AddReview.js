@@ -21,6 +21,7 @@ function AddReview(props) {
                 console.log(response);
                 if(response.status === 200){
                     setShowModal(false);
+                    props.setReviewSubmitted(true);
                 }
             }
         ).catch((error) => {
