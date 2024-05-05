@@ -86,6 +86,7 @@ function Restaurant() {
     useEffect(() => {
         setRestaurant(null);
         getRestaurant();
+        console.log("reviewSubmited");
     }, [reviewSubmitted]);
 
     // useEffect(() => {

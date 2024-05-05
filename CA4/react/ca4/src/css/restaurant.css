@@ -493,6 +493,11 @@ input[type="radio"] {
     color: #303030;
 }
 
+.reviewErr{
+    font-size: 14px;
+    color: #ED3545;
+}
+
 @media (max-width:1200px) and (min-width :992px){
     .time-checkbox{
         width: 137px !important;

@@ -82,7 +82,6 @@ public class MizDooniController {
                     .filter(restaurant -> country == null || restaurant.getAddress().getCountry().equalsIgnoreCase(country))
                     .filter(restaurant -> name == null || restaurant.getName().equalsIgnoreCase(name))
                     .collect(Collectors.toList());
-
             return ResponseEntity.ok().body(filteredRestaurants);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
