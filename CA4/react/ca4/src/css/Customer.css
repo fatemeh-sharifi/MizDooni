@@ -113,6 +113,7 @@ body{
 }
 
 .reserve-action{
+    border: none;
     width: 105px;
     margin-right: 37px;
 }
@@ -121,4 +122,24 @@ body{
     background-color: #ED3545;
     width: 100px;
     border-radius: 12px;
+}
+
+.modalRestaurantName{
+    color: #ED3545 !important;
+}
+
+
+.note{
+    font-weight: 400 !important;
+    font-size: 16px !important;
+}
+.closeBtn{
+    color: #ED3545 !important;
+    border-color: #ED3545 !important;
+    border-radius: 12px !important;
+}
+
+.closeBtn:hover{
+    color: white !important;
+    background-color: #ED3545 !important;
 }

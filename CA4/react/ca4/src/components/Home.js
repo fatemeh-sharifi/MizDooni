@@ -111,8 +111,8 @@ function Home() {
 
     function handleSearch(event) {
         event.preventDefault();
-        const params = { name: selectedName || '', type: selectedType || '', city: selectedLocation || '' }
-        axios.get("http://localhost:8080/restaurants", null, {params : params}).then(
+        const params = { name: selectedName || null, type: selectedType || null, city: selectedLocation || null, country : null }
+        axios.get("http://localhost:8080/restaurants", {params : params}).then(
             (response) => {
                 if (response.status === 200) {
                     console.log("search : ", response.data);
