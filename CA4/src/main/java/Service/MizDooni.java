@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 import Controller.AuthenticationController;
+import Model.Table.Table;
 import Model.Address.AddressUser;
 import Model.Exception.ExceptionMessages;
 import Model.Exception.SuperException;
@@ -25,6 +26,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Getter
 @Setter
@@ -656,5 +658,16 @@ private int generateReservationNumber() {
             }
         }
         return finalRestaurant;
+    }
+
+    public void addReservation( String username,String restaurantName,int tableNumber,String date,String time){
+        Restaurant restaurant = getRestaurantByName(restaurantName);
+        User user = getUserByUsername(username);
+        LocalDate lDate = LocalDate.parse(date);
+        LocalTime lTime = LocalTime.parse(time);
+        Table table = restaurant.getTableByNumber(tableNumber);
+        Reservation reservation = new Reservation(user.getUsername(), restaurant.getName(), tableNumber, generateReservationNumber(), lDate, lTime,restaurant.getId(), table.getSeatsNumber());
+        user.addReservation(reservation);
+        restaurant.addReservation(reservation);
     }
 }

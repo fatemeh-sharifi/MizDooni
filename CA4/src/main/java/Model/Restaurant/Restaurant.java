@@ -111,4 +111,14 @@ public class Restaurant {
                 "</ul>";
         return finalStr;
     }
+
+    public Table getTableByNumber(int tableNumber) {
+        for (Table table : tables) {
+            if (table.getTableNumber() == tableNumber) {
+                return table;
+            }
+        }
+        return null; // Table not found
+    }
+
 }

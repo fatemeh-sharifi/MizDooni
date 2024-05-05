@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Address.AddressUser;
 import Model.Feedback.Feedback;
+import Model.Reservation.Reservation;
 import Model.Restaurant.Restaurant;
 import Model.Table.Table;
 import Model.User.User;
@@ -293,6 +294,22 @@ public ResponseEntity<String> addOrUpdateReview(
             return ResponseEntity.badRequest().body(null); // Invalid date format
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Failed to retrieve available times
+        }
+    }
+
+    @PostMapping("/addReservation")
+    public ResponseEntity<String> reservations(
+            @RequestParam String username,
+            @RequestParam String restaurantName,
+            @RequestParam int tableNumber,
+            @RequestParam String date,
+            @RequestParam String time
+    ) {
+        try{
+            mizDooniService.addReservation(username,restaurantName,tableNumber,date,time);
+            return ResponseEntity.ok().body("reservation successfully added.");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Failed to add/update review: " + e.getMessage());
         }
     }
 
