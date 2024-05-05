@@ -18,10 +18,19 @@ function Card(props) {
         return stars;
     }
 
+    // function isOpen(start, end) {
+    //     const date = new Date();
+    //     const currentTime = date.getHours() + ":" + date.getMinutes();
+    //     console.log("current : ", currentTime , "start time :  ", start, "end time  :", end);
+    //     return currentTime >= start && currentTime <= end;
+    // }
     function isOpen(start, end) {
-        const date = new Date();
-        const currentTime = date.getHours() + ":" + date.getMinutes();
-        return currentTime >= start && currentTime <= end;
+        const currentTime = new Date();
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const startTime = new Date(today.toDateString() + ' ' + start);
+        const endTime = new Date(today.toDateString() + ' ' + end);
+        return currentTime >= startTime && currentTime <= endTime;
     }
 
     function convertToAMPM(time) {

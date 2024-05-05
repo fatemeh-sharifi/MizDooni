@@ -243,10 +243,10 @@ function Restaurant() {
                         </form>
                     </div>
                 </div>
-                <Review
+                {restaurant && <Review
                     restaurant={restaurant}
                     setReviewSubmitted={setReviewSubmitted}
-                />
+                />}
             </div>
         </div>
     );

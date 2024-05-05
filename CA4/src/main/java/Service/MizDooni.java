@@ -687,7 +687,9 @@ private int generateReservationNumber() {
 
     }
 
-    public boolean isReservationTimePassed(User user, Restaurant restaurant) {
+    public boolean isReservationTimePassed(String username, String restaurantName) {
+        User user = getUserByUsername(username);
+        Restaurant restaurant =getRestaurantByName(restaurantName);
         // Assuming you have a method to get the user's reservations
         List<Reservation> reservations = getUserHistory(user.getUsername());
 
@@ -713,23 +715,14 @@ private int generateReservationNumber() {
     }
 
     public void addReservation( String username,String restaurantName,int tableNumber,String date,String time){
-        System.out.println("1");
         Restaurant restaurant = getRestaurantByName(restaurantName);
-        System.out.println("2");
         User user = getUserByUsername(username);
-        System.out.println("3");
         LocalDate lDate = LocalDate.parse(date);
-        System.out.println("4");
         LocalTime lTime = LocalTime.parse(time+":00");
-        System.out.println("5");
         Table table = restaurant.getTableByNumber(tableNumber);
-        System.out.println("6");
         Reservation reservation = new Reservation(user.getUsername(), restaurant.getName(), tableNumber, generateReservationNumber(), lDate, lTime,restaurant.getId(), table.getSeatsNumber());
-        System.out.println("7");
         user.addReservation(reservation);
-        System.out.println("8");
         restaurant.addReservation(reservation);
-        System.out.println("9");
     }
     public void updateUsers(User user){
         int i = 0;
@@ -796,6 +789,8 @@ private int generateReservationNumber() {
             }
         }
 
+
+
         // Retrieve the user and restaurant associated with the review
 //        User user = getUserByUsername(existingReview.getUsername());
 //        Restaurant restaurant = getRestaurantByName(existingReview.getRestaurantName());
@@ -853,5 +848,4 @@ private int generateReservationNumber() {
 //        updateUsers(user);
 //        updateRestaurants(restaurant);
     }
-
 }

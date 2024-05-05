@@ -203,7 +203,7 @@ public ResponseEntity<String> addOrUpdateReview(
 
         // If other parameters are provided, proceed with review update
         if (foodRate != null && serviceRate != null && ambianceRate != null && overallRate != null && comment != null) {
-            if (!mizDooniService.isReservationTimePassed(user, restaurant)) {
+            if (!mizDooniService.isReservationTimePassed(username, restaurantName)) {
                 return ResponseEntity.status(400).body("You need to have a past reservation to post a review");
             }
 
@@ -382,6 +382,23 @@ public ResponseEntity<String> addOrUpdateReview(
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/isAble")
+    public ResponseEntity<String> isAbleToReview(
+            @RequestParam String username,
+            @RequestParam String restaurantName
+    ) {
+        try{
+            System.out.println("user : " + username);
+            System.out.println("restaurant : " + restaurantName);
+            if (!mizDooniService.isReservationTimePassed(username, restaurantName)) {
+                return ResponseEntity.status(400).body("You need to have a past reservation to post a review");
+            }
+            return ResponseEntity.ok().body("Able to review.");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Failed: " + e.getMessage());
         }
     }
 

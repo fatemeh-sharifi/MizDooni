@@ -38,10 +38,6 @@ function Review(props) {
                 }
             }
         ).catch((error) => {
-            if (error.message === "Request failed with status code 400") {
-                event.preventDefault();
-                setAllowed(false);
-            }
             console.log(error);
         });
     }
@@ -73,6 +69,25 @@ function Review(props) {
 
         return stars;
     }
+
+    function isAble(){
+        const params = {username : UserInfo.username , restaurantName : props.restaurant.name};
+        console.log("params : ", params);
+        axios.get("http://localhost:8080/isAble", {params  : params}).then(
+            (response)=>{
+                console.log(response.data);
+            }
+        ).catch((error)=>{
+            if (error.message === "Request failed with status code 400") {
+                setAllowed(false);
+            }
+        })
+    }
+
+    useEffect(()=>{
+        setAllowed(true);
+        isAble();
+    }, [])
 
     return (
         <div>
@@ -153,7 +168,7 @@ function Review(props) {
                                     {!allowed && <p className="reviewErr mb-0 mt-3 mx-3">You had no reservation at {props.restaurant && props.restaurant.name} Restaurant before.</p>}
                                 </div>
                                 <div className="modal-footer align-items-center">
-                                    <button type="button" data-bs-dismiss={allowed ? "modal" : undefined} disabled={!foodQualityRating || !serviceRating || !overallRating || !ambienceRating || !allowed} className={`btn submitReview w-100 mx-3 ${(!foodQualityRating || !serviceRating || !overallRating || !ambienceRating || !allowed) ? 'disabled' : ''}`} onClick={handleSubmitReview}>Submit Review</button>
+                                    <button type="button" data-bs-dismiss= "modal" disabled={!foodQualityRating || !serviceRating || !overallRating || !ambienceRating || !allowed} className={`btn submitReview w-100 mx-3 ${(!foodQualityRating || !serviceRating || !overallRating || !ambienceRating || !allowed) ? 'disabled' : ''}`} onClick={handleSubmitReview}>Submit Review</button>
                                     <button type="button" className="btn cancleBtn closeBtn w-100 mx-3" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>

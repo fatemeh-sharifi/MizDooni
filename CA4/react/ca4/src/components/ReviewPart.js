@@ -27,7 +27,7 @@ function ReviewPart(props) {
         const date = new Date(dateString);
         const options = { month: 'long', day: 'numeric', year: 'numeric' };
         return date.toLocaleDateString('en-US', options);
-      }
+    }
 
     function renderStars(rating) {
         const stars = [];
@@ -64,14 +64,14 @@ function ReviewPart(props) {
                         <p className="comment-text">{props.comment}</p>
                     </div>
                 </div>
-                <div className="date-star d-flex flex-wrap justify-content-end">
-                    <div className="stars flex-shrink-0">
+                <div className="date-star flex-shrink-0 flex-column gap-4 d-flex flex-wrap justify-content-start">
+                    <div className="stars ms-auto flex-shrink-0">
                         {renderStars(props.overallRate)}
                     </div>
                     <p className="comment-date flex-shrink-0">
                         {props.dateTime ? (
                             "Dined on " + formatDate(String(props.dateTime))
-                        ) :(
+                        ) : (
                             "Dined on " + formatDate(new Date())
                         )}
                     </p>
