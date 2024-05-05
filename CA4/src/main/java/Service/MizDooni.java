@@ -131,7 +131,7 @@ public class MizDooni {
         time = timeWithZeroMinutes;
         System.out.println(date);
         System.out.println(time);
-        Reservation reservation = new Reservation(user.getUsername(), restaurant.getName(), 1, generateReservationNumber(), date, time);
+        Reservation reservation = new Reservation(user.getUsername(), restaurant.getName(), 1, generateReservationNumber(), date, time, 388006555, 4);
         user.addReservation(reservation);
         restaurant.addReservation(reservation);
         users.set(6, user);
@@ -147,7 +147,7 @@ public class MizDooni {
         timeWithZeroMinutes = time.withMinute(0);
         time = timeWithZeroMinutes;
         System.out.println(date);
-        reservation = new Reservation(user.getUsername(), restaurant.getName(), 1, generateReservationNumber(), date, time);
+        reservation = new Reservation(user.getUsername(), restaurant.getName(), 1, generateReservationNumber(), date, time, 388006555, 4);
         user.addReservation(reservation);
         restaurant.addReservation(reservation);
         users.set(6, user);
@@ -473,8 +473,7 @@ private int generateReservationNumber() {
         double serviceAvg = (serviceRate + (((restaurant.getServiceAvg() * (sizeOfFeedbacks))) ))/ (sizeOfFeedbacks + 1);
         serviceAvg = Math.round(serviceAvg * 100) / 100.0;
         double ambianceAvg = Math.round(((ambianceRate + ((restaurant.getAmbianceAvg()*(sizeOfFeedbacks))))/(sizeOfFeedbacks+1))*100)/100.0;
-        double overallAvg = Math.round((overallRate + ((restaurant.getOverallAvg()*(sizeOfFeedbacks))))/(sizeOfFeedbacks+1)*100)/100.0;
-//        double overallAvg = (ambianceRate + restaurant.getOverallAvg())/feedbacks.size();
+        double overallAvg = Math.round(((overallRate + (restaurant.getOverallAvg()*(sizeOfFeedbacks)))/(sizeOfFeedbacks+1))*100)/100.0;
         restaurant.updateRatingsAvg(foodAvg,serviceAvg,ambianceAvg,overallAvg);
     }
 
