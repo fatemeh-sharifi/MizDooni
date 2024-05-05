@@ -159,8 +159,8 @@ public class MizDooni {
             List<Table> fetchedTables = objectMapper.readValue(tablesResponse.getEntity().getContent(), new TypeReference<List<Table>>() {});
 
             // Match each table with the corresponding restaurant
-            for (Table table : fetchedTables) {
-                for (Restaurant rest : restaurants) {
+            for (Restaurant rest : restaurants) {
+                for (Table table : fetchedTables) {
                     if (rest.getName().equals(table.getRestaurantName())) {
                         // Convert restaurant start time from string to integer representing the hour
                         int openingHour = Integer.parseInt(rest.getStartTime().split(":")[0]);
@@ -170,17 +170,23 @@ public class MizDooni {
                         table.setClosingTime(closingHour);
                         table.makeTimeSlots();
                         // Update reservation status for each table based on restaurant reservations
-                        for (Reservation  reserv: restaurant.getReservations()) {
+                        for (Reservation  reserv: rest.getReservations()) {
                             if (reserv.getTableNumber() == table.getTableNumber()) {
                                 // Update reservation status for the corresponding time slot
                                 table.getReservations().add(reserv);
                             }
                         }
-                        restaurant.getTables().add(table);
+
+                        rest.getTables().add(table);
+                        System.out.println(table.getRestaurantName());
+                        System.out.println(table.getTableNumber());
+                        System.out.println(rest.getName());
+
                         tables.add(table);
-                        break; // Assuming restaurant names are unique, no need to continue searching
+
                     }
                 }
+                System.out.println(rest.getTables());
             }
         } finally {
             tablesResponse.close();
@@ -457,11 +463,18 @@ private int generateReservationNumber() {
 
     public void updateRestaurantRatings(String restaurantName, double foodRate,
                                         double serviceRate, double ambianceRate,double overallRate){
-        Restaurant restaurant = this.getRestaurantByName(restaurantName);
-        double foodAvg = (foodRate + restaurant.getFoodAvg())/feedbacks.size();
-        double serviceAvg = (serviceRate + restaurant.getServiceAvg())/feedbacks.size();
-        double ambianceAvg = (ambianceRate + restaurant.getAmbianceAvg())/feedbacks.size();
-        double overallAvg = (ambianceRate + restaurant.getOverallAvg())/feedbacks.size();
+        Restaurant restaurant = getRestaurantByName(restaurantName);
+        int sizeOfFeedbacks = restaurant.getFeedbacks().size()-1;
+        System.out.println(restaurant.getFoodAvg());
+        System.out.println(sizeOfFeedbacks);
+        System.out.println(foodRate);
+        double foodAvg = (foodRate + (restaurant.getFoodAvg()*(sizeOfFeedbacks)))/(sizeOfFeedbacks+1);
+        foodAvg = Math.round(foodAvg * 100) / 100.0;
+        double serviceAvg = (serviceRate + (((restaurant.getServiceAvg() * (sizeOfFeedbacks))) ))/ (sizeOfFeedbacks + 1);
+        serviceAvg = Math.round(serviceAvg * 100) / 100.0;
+        double ambianceAvg = Math.round(((ambianceRate + ((restaurant.getAmbianceAvg()*(sizeOfFeedbacks))))/(sizeOfFeedbacks+1))*100)/100.0;
+        double overallAvg = Math.round((overallRate + ((restaurant.getOverallAvg()*(sizeOfFeedbacks))))/(sizeOfFeedbacks+1)*100)/100.0;
+//        double overallAvg = (ambianceRate + restaurant.getOverallAvg())/feedbacks.size();
         restaurant.updateRatingsAvg(foodAvg,serviceAvg,ambianceAvg,overallAvg);
     }
 
@@ -653,8 +666,29 @@ private int generateReservationNumber() {
         for(Restaurant restaurant : restaurants){
             if(restaurant.getId() == id){
                 finalRestaurant = restaurant;
+                break;
             }
         }
         return finalRestaurant;
+    }
+    public void updateUsers(User user){
+        int i = 0;
+        for (User tmp: users){
+            if(tmp.getUsername().equals(user.getUsername())){
+                users.set(i, user);
+                break;
+            }
+            i = i + 1;
+        }
+    }
+    public void updateRestaurants(Restaurant restaurant){
+        int i = 0;
+        for (Restaurant tmp: restaurants){
+            if(tmp.getName().equals(restaurant.getName())){
+                restaurants.set(i, restaurant);
+                break;
+            }
+            i = i + 1;
+        }
     }
 }
