@@ -74,33 +74,49 @@ function Home() {
             });
     }
 
+    // function getSameLocation() {
+    //     const params = { username: UserInfo.username }
+    //     axios.get("http://localhost:8080/topRestaurants", null, { params: params }).then(
+    //         (response) => {
+    //             console.log("same loc :", response.data);
+    //             setSameLocation(response.data);
+    //         },
+    //         (error) => {
+    //             Swal.fire({
+    //                 icon: error,
+    //                 title: error.response.data.message.split(":")[1],
+    //                 text: "Please try again.",
+    //             })
+    //         }
+    //     )
+    //         .catch((error) => {
+    //             console.log(error);
+    //         });
+    // }
     function getSameLocation() {
-        const params = { username: UserInfo.username }
-        axios.get("http://localhost:8080/topRestaurants", null, { params: params }).then(
-            (response) => {
+        const params = { username: UserInfo.username };
+        axios.get("http://localhost:8080/topRestaurants", { params: params })
+            .then((response) => {
                 console.log("same loc :", response.data);
                 setSameLocation(response.data);
-            },
-            (error) => {
+            })
+            .catch((error) => {
                 Swal.fire({
-                    icon: error,
+                    icon: 'error',
                     title: error.response.data.message.split(":")[1],
                     text: "Please try again.",
-                })
-            }
-        )
-            .catch((error) => {
-                console.log(error);
+                });
             });
     }
 
     function handleSearch(event) {
         event.preventDefault();
         const params = { name: selectedName || '', type: selectedType || '', city: selectedLocation || '' }
-        axios.get("http://localhost:8080/restaurants",null, {params : params}).then(
+        axios.get("http://localhost:8080/restaurants", null, {params : params}).then(
             (response) => {
                 if (response.status === 200) {
                     console.log("search : ", response.data);
+                    console.log("HI")
                     navigate("/searchResualt", { state: { data : response.data, name : params.name, type : params.type , city : params.city} });
                 }
             },
