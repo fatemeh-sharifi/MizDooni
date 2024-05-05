@@ -12,7 +12,9 @@ import lombok.Setter;
 public class Reservation {
     private String username;
     private String restaurantName;
+    private int restaurantId;
     private int tableNumber;
+    private int tableSeat;
     private LocalDate date;
     private LocalTime time;
 
@@ -20,12 +22,14 @@ public class Reservation {
 
     public Reservation() {
     }
-    public Reservation(String userName, String restaurantName, int tableNumber,int reservationNumber, LocalDate date, LocalTime time) {
+    public Reservation(String userName, String restaurantName, int tableNumber,int reservationNumber, LocalDate date, LocalTime time, int restaurantId ,int tableSeat) {
         this.username = userName;
         this.restaurantName = restaurantName;
         this.tableNumber = tableNumber;
         this.date = date;
         this.time = time;
         this.reservationNumber = reservationNumber;
+        this.restaurantId = restaurantId;
+        this.tableSeat = tableSeat;
     }
 }
