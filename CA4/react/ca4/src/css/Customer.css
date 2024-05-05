@@ -143,3 +143,7 @@ body{
     color: white !important;
     background-color: #ED3545 !important;
 }
+
+.closeBtn.disabled {
+    background-color: #D9D9D9;
+}

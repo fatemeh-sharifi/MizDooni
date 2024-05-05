@@ -52,46 +52,15 @@ function Login() {
                     text: "Sign in failed! Please try again.",
                 });
             }
-        ).catch((error)=>{
+        ).catch((error) => {
             console.log(error);
         })
     }
 
-    // function handleSignIn(event) {
-    //     event.preventDefault();
-    //     const params = { username: username, password: password };
-    //     axios.post("http://localhost:8080/login", params).then(
-    //         (response) => {
-    //             if (response.status === 200) {
-    //                 axios.get("http://localhost:8080/users/" + String(username)).then(
-    //                     (response) => {
-    //                         UserInfo.SetAllInfo(response.data);
-    //                         navigate("/")
-    //                     },
-    //                     (error) => {
-    //                         Swal.fire({
-    //                             icon: error,
-    //                             title: error.response.data.message.split(":")[1],
-    //                             text: "Sign in failed! Please try again.",
-    //                         })
-    //                     }
-    //                 )
-    //             }
-    //         },
-    //         (error) => {
-    //             Swal.fire({
-    //                 icon: error,
-    //                 title: error.response.data.message.split(":")[1],
-    //                 text: "Sign in failed! Please try again.",
-    //             });
-    //         }
-    //     )
-    // }
-
     function handleSignUp(event) {
         event.preventDefault();
-        const params = { username: username, password: password, email: email, city: city, country: country, role:role };
-        axios.post("http://localhost:8080/signup", null, {params: params}).then(
+        const params = { username: username, password: password, email: email, city: city, country: country, role: role };
+        axios.post("http://localhost:8080/signup", null, { params: params }).then(
             (response) => {
                 if (response.status === 200) {
                     UserInfo.SetAllInfo(response.data);
@@ -135,25 +104,19 @@ function Login() {
                     <input className="form-control w-100 mb-4" type="text" placeholder="City" onChange={(e) => setCity(e.target.value)} />
                     <input className="form-control w-100 mb-4" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                     <div className="d-flex justify-content-around mb-4">
-                    <p className="me-2">I'm a new</p>
-                    
-                        <div className="form-check form-check-inline" onClick={()=>{setRole('manager');console.log(role)}} style={{backgroundColor:role==='manager'?'red':'white'}}>
-                            <input className="form-check-input" type="radio" name="userType" id="manager" value="manager" onChange={() => setRole('manager')} />
-                            <label className="form-check-label" htmlFor="manager">Manager</label>
+                        <p className="me-2">I'm a new</p>
+                        <div className="form-check">
+                            <input className="form-check-input" type="checkbox" name="userType" id="manager" checked={role === 'manager'} onClick={() => { setRole('manager') }}/>
+                            <label className="form-check-label" htmlFor="manager">
+                                Manager
+                            </label>
                         </div>
-                        <div className="form-check form-check-inline" onClick={()=>{setRole('client');console.log(role)}} style={{backgroundColor:role==='client'?'red':'white'}}>
-                            <input className="form-check-input" type="radio" name="userType" id="customer" value="customer" defaultChecked onChange={() => setRole('client')} />
-                            <label className="form-check-label" htmlFor="customer">Customer</label>
+                        <div className="form-check">
+                            <input className="form-check-input" type="checkbox" name="userType" id="client" checked={role === 'client'} onClick={() => { setRole('client') }}/>
+                            <label className="form-check-label" htmlFor="client">
+                                Client
+                            </label>
                         </div>
-                        {/* <p className="me-2">I'm a new</p>
-                        <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="radio" name="userType" id="manager" value="manager" />
-                            <label className="form-check-label" htmlFor="manager">Manager</label>
-                        </div>
-                        <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="radio" name="userType" id="customer" value="customer" defaultChecked />
-                            <label className="form-check-label" htmlFor="customer">Customer</label>
-                        </div> */}
                     </div>
                     <button className="btn btn-primary mb-4 w-100 bg-danger border-0" onClick={handleSignUp}>Sign up</button>
                 </div>
