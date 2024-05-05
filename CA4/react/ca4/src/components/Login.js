@@ -13,6 +13,7 @@ function Login() {
     const [email, setEmail] = useState('');
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
+    const [role, setRole] = useState('');
     const navigate = useNavigate();
     const UserInfo = useContext(UserContext);
     const handleJustifyClick = (value) => {
@@ -89,8 +90,8 @@ function Login() {
 
     function handleSignUp(event) {
         event.preventDefault();
-        const params = { username: username, password: password, email: email, city: city, country: country };
-        axios.post("http://localhost:8080/signup", params).then(
+        const params = { username: username, password: password, email: email, city: city, country: country, role:role };
+        axios.post("http://localhost:8080/signup", null, {params: params}).then(
             (response) => {
                 if (response.status === 200) {
                     UserInfo.SetAllInfo(response.data);
@@ -134,7 +135,17 @@ function Login() {
                     <input className="form-control w-100 mb-4" type="text" placeholder="City" onChange={(e) => setCity(e.target.value)} />
                     <input className="form-control w-100 mb-4" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                     <div className="d-flex justify-content-around mb-4">
-                        <p className="me-2">I'm a new</p>
+                    <p className="me-2">I'm a new</p>
+                    
+                        <div className="form-check form-check-inline" onClick={()=>{setRole('manager');console.log(role)}} style={{backgroundColor:role==='manager'?'red':'white'}}>
+                            <input className="form-check-input" type="radio" name="userType" id="manager" value="manager" onChange={() => setRole('manager')} />
+                            <label className="form-check-label" htmlFor="manager">Manager</label>
+                        </div>
+                        <div className="form-check form-check-inline" onClick={()=>{setRole('client');console.log(role)}} style={{backgroundColor:role==='client'?'red':'white'}}>
+                            <input className="form-check-input" type="radio" name="userType" id="customer" value="customer" defaultChecked onChange={() => setRole('client')} />
+                            <label className="form-check-label" htmlFor="customer">Customer</label>
+                        </div>
+                        {/* <p className="me-2">I'm a new</p>
                         <div className="form-check form-check-inline">
                             <input className="form-check-input" type="radio" name="userType" id="manager" value="manager" />
                             <label className="form-check-label" htmlFor="manager">Manager</label>
@@ -142,7 +153,7 @@ function Login() {
                         <div className="form-check form-check-inline">
                             <input className="form-check-input" type="radio" name="userType" id="customer" value="customer" defaultChecked />
                             <label className="form-check-label" htmlFor="customer">Customer</label>
-                        </div>
+                        </div> */}
                     </div>
                     <button className="btn btn-primary mb-4 w-100 bg-danger border-0" onClick={handleSignUp}>Sign up</button>
                 </div>
