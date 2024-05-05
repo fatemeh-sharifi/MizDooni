@@ -116,7 +116,6 @@ function Home() {
             (response) => {
                 if (response.status === 200) {
                     console.log("search : ", response.data);
-                    console.log("HI")
                     navigate("/searchResualt", { state: { data : response.data, name : params.name, type : params.type , city : params.city} });
                 }
             },

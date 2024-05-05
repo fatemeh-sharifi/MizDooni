@@ -54,9 +54,9 @@ function Restaurant() {
 
 
 
-    function handleTimeChange(time, number) {
+    function handleTimeChange(time) {
         setSelectedTime(time);
-        setSelectedTable(number);
+        console.log("selected time : ", selectedTime);
     }
 
 
@@ -65,16 +65,25 @@ function Restaurant() {
         function getAvailableTimes() {
             const params = { date: selectedDate, numberOfPeople: selectedPeople, restaurantName: restaurant.name };
             console.log("params : ", params);
-            axios.get("http://localhost:8080/availableTimes", null, { params: params }).then(
+            axios.get("http://localhost:8080/availableTimes", { params: params }).then(
                 (response) => {
                     if (response.status === 200) {
-                        setAvailableTimes(response.data);
-                    }
-                    else {
-                        setMaxLimit(response.data);
+                        const { availableTimes, table } = response.data;
+                        setMaxLimit(null);
+                        setAvailableTimes(availableTimes);
+                        // console.log(table);
+                        setSelectedTable(table.tableNumber);
+                        console.log("available times :",availableTimes);
+                        console.log("selected table : ", selectedTable);
                     }
                 }
             ).catch((error) => {
+                if (error.message === "Request failed with status code 400") {
+                    const twoDaysAfter = new Date();
+                    twoDaysAfter.setDate(twoDaysAfter.getDate() + 2);
+                    const formattedDate = twoDaysAfter.toISOString().split('T')[0];
+                    setMaxLimit(formattedDate);
+                }
                 console.log(error);
             });
         }
@@ -93,6 +102,18 @@ function Restaurant() {
     //     setRestaurant(null);
     //     getRestaurant();
     // }, []);
+
+    function convertToAmPm(time) {
+        if (time === 12) {
+            return '12:00 PM';
+        } else if (time === 0 || time === 24) {
+            return '12:00 AM';
+        } else if (time < 12) {
+            return time + ':00 AM';
+        } else {
+            return (time - 12) + ':00 PM';
+        }
+    }
 
     return (
         <div>
@@ -116,26 +137,26 @@ function Restaurant() {
                             <p className="selection w-100 d-flex align-items-center">
                                 For
                                 <select className="form-select mx-1" value={selectedPeople}
-                                        onChange={handleSelectedPeople}>
-                                    <option value="p1" selected>1</option>
-                                    <option value="p2">2</option>
-                                    <option value="p3">3</option>
-                                    <option value="p4">4</option>
-                                    <option value="p5">5</option>
-                                    <option value="p6">6</option>
-                                    <option value="p7">7</option>
-                                    <option value="p8">8</option>
-                                    <option value="p9">9</option>
-                                    <option value="p10">10</option>
+                                    onChange={handleSelectedPeople}>
+                                    <option value="1" selected>1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
                                 </select>
                                 people, on date
                                 <input type="date" name="date" id="date" className="calendar ms-2 px-2"
-                                       value={selectedDate} onChange={handleSelectedDate}/>
+                                    value={selectedDate} onChange={handleSelectedDate} />
                             </p>
                             {availableTimes && availableTimes.length > 0 && (
                                 <p className="time-title">Available Times</p>
                             )}
-                            <div>
+                            <div className="d-flex flex-wrap">
                                 {(availableTimes && !maxLimit) && (
                                     availableTimes.map((timeData, index) => (
                                         <div className="time-checkbox text-center">
@@ -143,11 +164,11 @@ function Restaurant() {
                                                 <input
                                                     type="radio"
                                                     name="time"
-                                                    value={timeData.time}
-                                                    onChange={() => handleTimeChange(timeData.time, timeData.number)}
-                                                    checked={selectedTime === timeData.time}
+                                                    value={timeData}
+                                                    onChange={() => handleTimeChange(timeData)}
+                                                    checked={selectedTime === timeData}
                                                 />
-                                                <span>{timeData.time}</span>
+                                                <span>{convertToAmPm(timeData)}</span>
                                             </label>
                                         </div>
                                     ))
@@ -169,10 +190,10 @@ function Restaurant() {
                                         )
                                     )
                                 )}
-                            <button type="button" disabled={!availableTimes || maxLimit}
-                                    className={`final-reserve text-white ${(!availableTimes || maxLimit) ? 'disabled' : ''}`}
-                                    onClick={handleReservation} data-bs-toggle="modal" data-bs-target="#completeModal">
-                                {(maxLimit || !selectedDate || !selectedPeople) ? (
+                            <button type="button" disabled={!availableTimes || maxLimit ||!selectedTime}
+                                className={`final-reserve text-white ${(!availableTimes || maxLimit || !selectedTime) ? 'disabled' : ''}`}
+                                onClick={handleReservation} data-bs-toggle="modal" data-bs-target="#completeModal">
+                                {(maxLimit || !selectedDate || !selectedPeople || !selectedTime) ? (
                                     "Select a date"
                                 ) : (
                                     "Complete the Reservation"
@@ -223,13 +244,13 @@ function Restaurant() {
                             {/*    </div>*/}
                             {/*</div>*/}
                             <div className="modal fade" id="completeModal" tabIndex="-1"
-                                 aria-labelledby="completeModalLabel" aria-hidden="true">
+                                aria-labelledby="completeModalLabel" aria-hidden="true">
                                 <div className="modal-dialog modal-dialog-centered">
                                     <div className="modal-content">
                                         <div className="modal-header">
                                             <h5 className="modal-title" id="completeModalLabel">Reservation Detail</h5>
                                             <button type="button" className="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
+                                                aria-label="Close"></button>
                                         </div>
                                         <div className="modal-body mb-4">
                                             <div className="d-flex flex-column">
@@ -256,7 +277,7 @@ function Restaurant() {
                                         </div>
                                         <div className="modal-footer align-items-center">
                                             <button type="button" className="btn closeBtn w-100 mx-3"
-                                                    data-bs-dismiss="modal">Close
+                                                data-bs-dismiss="modal">Close
                                             </button>
                                         </div>
                                     </div>

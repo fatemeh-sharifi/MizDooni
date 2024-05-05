@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -77,10 +79,14 @@ public class Table {
     }
     public List<Integer> getAvailableTimes(LocalDate date) {
         List<Integer> availableTimes = new ArrayList<>();
+        LocalTime currentTime = LocalTime.now();
         // Iterate through each time slot
         for (int i = openingTime; i <= closingTime; i++) {
             // Check if the slot is available
-            if (isTimeSlotAvailable(i, date)) {
+            LocalTime timeSlot = LocalTime.of(i, 0);
+
+            // Check if the time slot is after the current time
+            if (isTimeSlotAvailable(i, date) && timeSlot.isAfter(currentTime)) {
                 availableTimes.add(i);
             }
         }

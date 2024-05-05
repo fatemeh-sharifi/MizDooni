@@ -286,33 +286,49 @@ public ResponseEntity<String> addOrUpdateReview(
             System.out.println(year +" " + month +" " + day);
 //            LocalDate selectedDate = selectedDate.toLocalDate();
             LocalDate today = LocalDate.now();
+            System.out.println("today : "+ today);
             LocalDate maxAllowedDate = today.plusDays(2); // Maximum allowed date is two days after today
             if (selectedDate.isAfter(maxAllowedDate)) {
                 return ResponseEntity.badRequest().body(null); // Date exceeds maximum allowed
             }
-
+            System.out.println("1");
+            System.out.println("restaurantname :" + restaurantName);
             // Retrieve the restaurant
             Restaurant restaurant = mizDooniService.getRestaurantByName(restaurantName);
+            System.out.println("2");
             if (restaurant == null) {
                 return ResponseEntity.notFound().build(); // Restaurant not found
             }
-
+            System.out.println("3");
             // Sort tables based on the difference between their capacity and the required number of people
             List<Table> sortedTables = new ArrayList<>(restaurant.getTables());
             sortedTables.sort(Comparator.comparingInt(t -> Math.abs(t.getSeatsNumber() - numberOfPeople)));
-
+            System.out.println("4");
+            for (Table table : sortedTables) {
+                System.out.println("Table Number: " + table.getTableNumber());
+                System.out.println("Restaurant Name: " + table.getRestaurantName());
+                System.out.println("Manager Username: " + table.getManagerUsername());
+                System.out.println("Seats Number: " + table.getSeatsNumber());
+                System.out.println("Opening Time: " + table.getOpeningTime());
+                System.out.println("Closing Time: " + table.getClosingTime());
+                // Print other details as needed
+                System.out.println();
+            }
+            System.out.println("5");
             // Find the first available time for the sorted tables
             List<Integer> availableTimes = new ArrayList<>();
             Table availableTable = null;
             for (Table table : sortedTables) {
                 List<Integer> tableAvailableTimes = table.getAvailableTimes(selectedDate);
+
                 if (tableAvailableTimes != null && !tableAvailableTimes.isEmpty()) {
                     availableTimes = tableAvailableTimes;
                     availableTable = table;
                     break;
                 }
             }
-
+            System.out.println("available table : " +availableTable.getTableNumber());
+            System.out.println("available times : " +availableTimes);
             if (availableTable == null) {
                 return ResponseEntity.notFound().build(); // No available times found
             }
