@@ -18,6 +18,8 @@ public class Reservation {
     private LocalDate date;
     private LocalTime time;
 
+    boolean calnceled;
+
     private int reservationNumber;
 
     public Reservation() {
@@ -31,5 +33,6 @@ public class Reservation {
         this.reservationNumber = reservationNumber;
         this.restaurantId = restaurantId;
         this.tableSeat = tableSeat;
+        this.calnceled = false;
     }
 }
