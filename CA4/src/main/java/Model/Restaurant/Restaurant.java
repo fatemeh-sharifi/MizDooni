@@ -67,6 +67,12 @@ public class Restaurant {
 
     public void addReservation(Reservation reservation) {
         reservations.add(reservation);
+        for(Table table : tables){
+            if(table.getTableNumber() == reservation.getTableNumber()){
+                table.addReservation(reservation);
+                break;
+            }
+        }
     }
 
     public boolean doesReserveExists(String username){

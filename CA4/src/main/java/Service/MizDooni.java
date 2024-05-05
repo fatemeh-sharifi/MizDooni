@@ -713,14 +713,23 @@ private int generateReservationNumber() {
     }
 
     public void addReservation( String username,String restaurantName,int tableNumber,String date,String time){
+        System.out.println("1");
         Restaurant restaurant = getRestaurantByName(restaurantName);
+        System.out.println("2");
         User user = getUserByUsername(username);
+        System.out.println("3");
         LocalDate lDate = LocalDate.parse(date);
-        LocalTime lTime = LocalTime.parse(time);
+        System.out.println("4");
+        LocalTime lTime = LocalTime.parse(time+":00");
+        System.out.println("5");
         Table table = restaurant.getTableByNumber(tableNumber);
+        System.out.println("6");
         Reservation reservation = new Reservation(user.getUsername(), restaurant.getName(), tableNumber, generateReservationNumber(), lDate, lTime,restaurant.getId(), table.getSeatsNumber());
+        System.out.println("7");
         user.addReservation(reservation);
+        System.out.println("8");
         restaurant.addReservation(reservation);
+        System.out.println("9");
     }
     public void updateUsers(User user){
         int i = 0;

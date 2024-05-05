@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../App";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useParams } from "react-router-dom";
+import { useAsyncError, useParams } from "react-router-dom";
 import "../css/restaurant.css"
 import Review from "./Review";
 import RestaurantProfile from "./RestaurantProfile";
@@ -17,6 +17,7 @@ function Restaurant() {
     const [selectedTable, setSelectedTable] = useState('');
     const [modalShow, setModalShow] = useState(false);
     const [maxLimit, setMaxLimit] = useState('');
+    const [reserved, setReserved] = useState(false);
     const UserInfo = useContext(UserContext);
     const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
@@ -42,10 +43,13 @@ function Restaurant() {
 
     function handleReservation() {
         // setModalShow(true);
-        const params = { username: UserInfo.username, time: selectedTime, table: selectedTable, restaurantId: id };
-        axios.post("http://localhost:8080/reservation", null, { params: params }).then(
+        const params = { username: UserInfo.username, time: selectedTime, tableNumber: selectedTable, date: selectedDate, restaurantName : restaurant.name };
+        axios.post("http://localhost:8080/addReservation", null, { params: params }).then(
             (response) => {
                 console.log(response.data);
+                setReserved(true);
+                selectedTime(null);
+                selectedTable(null);
             }
         ).catch((error) => {
             console.log(error);
@@ -71,10 +75,8 @@ function Restaurant() {
                         const { availableTimes, table } = response.data;
                         setMaxLimit(null);
                         setAvailableTimes(availableTimes);
-                        // console.log(table);
                         setSelectedTable(table.tableNumber);
-                        console.log("available times :",availableTimes);
-                        console.log("selected table : ", selectedTable);
+                        setReserved(false);
                     }
                 }
             ).catch((error) => {
@@ -90,7 +92,7 @@ function Restaurant() {
         if (selectedPeople && selectedDate) {
             getAvailableTimes();
         }
-    }, [selectedPeople, selectedDate]);
+    }, [selectedPeople, selectedDate,reserved]);
 
     useEffect(() => {
         setRestaurant(null);
@@ -199,50 +201,6 @@ function Restaurant() {
                                     "Complete the Reservation"
                                 )}
                             </button>
-                            {/* {modalShow && (
-                                <CompleteReservation
-                                    tableNumber={selectedTable}
-                                    time={selectedTime}
-                                    address={restaurant.address}
-                                />
-                            )} */}
-                            {/*<div className="modal fade" id="completeModal" tabindex="-1"*/}
-                            {/*     aria-labelledby="completeModalLabel" aria-hidden="true">*/}
-                            {/*    <div className="modal-dialog modal-dialog-centered">*/}
-                            {/*        <div className="modal-content">*/}
-                            {/*            <div className="modal-header">*/}
-                            {/*                <h5 className="modal-title" id="completeModalLabel">Reservation Detail</h5>*/}
-                            {/*                <button type="button" className="btn-close" data-bs-dismiss="modal"*/}
-                            {/*                        aria-label="Close"></button>*/}
-                            {/*            </div>*/}
-                            {/*            <div className="modal-body mb-4">*/}
-                            {/*                <div className="d-flex flex-column">*/}
-                            {/*                    <p className="text-muted note mb-5">Note: Please Arrive at Least 15*/}
-                            {/*                        Minutes Early.</p>*/}
-                            {/*                    <div className="reservDetails mx-3">*/}
-                            {/*                        <div className="d-flex justify-content-between">*/}
-                            {/*                            <p>Table Number</p>*/}
-                            {/*                            <p>{selectedTable}</p>*/}
-                            {/*                        </div>*/}
-                            {/*                        <div className="d-flex justify-content-between">*/}
-                            {/*                            <p>Time</p>*/}
-                            {/*                            <p>{selectedTime}</p>*/}
-                            {/*                        </div>*/}
-                            {/*                        <div className="d-flex justify-content-start">*/}
-                            {/*                            <p>Address</p>*/}
-                            {/*                        </div>*/}
-                            {/*                    </div>*/}
-                            {/*                    <p className="text-muted addressDetail mx-3">{restaurant.address.country}, {restaurant.address.city}, {restaurant.address.street}</p>*/}
-                            {/*                </div>*/}
-                            {/*            </div>*/}
-                            {/*            <div className="modal-footer align-items-center">*/}
-                            {/*                <button type="button" className="btn closeBtn w-100 mx-3"*/}
-                            {/*                        data-bs-dismiss="modal">Close*/}
-                            {/*                </button>*/}
-                            {/*            </div>*/}
-                            {/*        </div>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
                             <div className="modal fade" id="completeModal" tabIndex="-1"
                                 aria-labelledby="completeModalLabel" aria-hidden="true">
                                 <div className="modal-dialog modal-dialog-centered">
@@ -263,13 +221,12 @@ function Restaurant() {
                                                     </div>
                                                     <div className="d-flex justify-content-between">
                                                         <p>Time</p>
-                                                        <p>{selectedTime}</p>
+                                                        <p>{convertToAmPm(selectedTime)}</p>
                                                     </div>
                                                     <div className="d-flex justify-content-start">
                                                         <p>Address</p>
                                                     </div>
                                                 </div>
-                                                {/* Conditionally render the address details */}
                                                 {restaurant && restaurant.address && (
                                                     <p className="text-muted addressDetail mx-3">{restaurant.address.country}, {restaurant.address.city}, {restaurant.address.street}</p>
                                                 )}
@@ -283,7 +240,6 @@ function Restaurant() {
                                     </div>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                 </div>
