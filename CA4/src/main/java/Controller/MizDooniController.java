@@ -402,5 +402,31 @@ public ResponseEntity<String> addOrUpdateReview(
         }
     }
 
+    @GetMapping("/reservations/{username}")
+    public ResponseEntity<List<Reservation>> findUserReservations(@PathVariable String username) {
+        try {
+            List<Reservation> userReservations = mizDooniService.getUserReservations(username);
+            return ResponseEntity.ok().body(userReservations);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null); // Return 400 if there's an error
+        }
+    }
+
+    @PostMapping("/cancelReservation")
+    public ResponseEntity<String> cancelReservation(
+            @RequestParam String username,
+            @RequestParam String restaurantName,
+            @RequestParam int tableNumber,
+            @RequestParam int reservationNumber
+    ) {
+        try {
+            mizDooniService.cancelReservation(username,restaurantName,tableNumber,reservationNumber);
+            return ResponseEntity.ok().body("Canceled successfully");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
 }
 

@@ -114,4 +114,12 @@ public class Table {
         this.seatsNumber = seatsNumber;
         this.reservations = new ArrayList<>();
     }
+
+    public void cancelReservation(int reservationNumber){
+        for(Reservation resrv : reservations){
+            if(resrv.getReservationNumber() == reservationNumber){
+                resrv.setCalnceled(true);
+            }
+        }
+    }
 }

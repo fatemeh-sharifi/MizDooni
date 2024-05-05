@@ -9,6 +9,8 @@ import Protected from "./components/Protected";
 import Home from "./components/Home";
 import SearchResult from "./components/SearchResult";
 import Restaurant from "./components/Restaurant";
+import ProtectedClient from "./components/ProtectedClient";
+import Customer from "./components/Customer";
 export const UserContext = createContext({});
 
 function App() {
@@ -42,6 +44,7 @@ function App() {
           <Route path="/" element={<Protected isLoggedIn={user.loggedIn}><Home /></Protected>} />
           <Route path="/searchResualt" element={<Protected isLoggedIn={user.loggedIn}><SearchResult /></Protected>} />
           <Route path="/restaurant/:id" element={<Protected isLoggedIn={user.loggedIn}><Restaurant /></Protected>} />
+          <Route path="/reservations" element={<Protected isLoggedIn={user.loggedIn}><ProtectedClient><Customer /></ProtectedClient></Protected>} />
         </Routes>
         <Footer/>
         </UserContext.Provider>

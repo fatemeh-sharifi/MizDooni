@@ -127,4 +127,19 @@ public class Restaurant {
         return null; // Table not found
     }
 
+    public void cancelReservation(int reservationNumber, int tableNumber){
+        for(Reservation resrv : reservations){
+            if(resrv.getReservationNumber() == reservationNumber){
+                resrv.setCalnceled(true);
+                break;
+            }
+        }
+
+        for(Table table : tables){
+            if(table.getTableNumber() == tableNumber){
+                table.cancelReservation(reservationNumber);
+            }
+        }
+    }
+
 }

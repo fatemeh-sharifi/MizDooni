@@ -848,4 +848,16 @@ private int generateReservationNumber() {
 //        updateUsers(user);
 //        updateRestaurants(restaurant);
     }
+
+    public List<Reservation> getUserReservations(String username){
+        User user = getUserByUsername(username);
+        return user.getReservations();
+    }
+
+    public void cancelReservation(String username,String restaurantName,int tableNumber, int reservationNumber){
+        Restaurant restaurant = getRestaurantByName(restaurantName);
+        User user = getUserByUsername(username);
+        user.cancelReservation(reservationNumber);
+        restaurant.cancelReservation(reservationNumber, tableNumber);
+    }
 }

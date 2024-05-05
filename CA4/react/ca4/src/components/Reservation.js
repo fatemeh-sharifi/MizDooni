@@ -17,15 +17,17 @@ function Reservation(props) {
         setAgree(event.target.checked);
     }
 
-    function handleCancel(){
-        const params = { username: UserInfo.username, tableNumber: props.tableNumber,
-                restaurantName : props.name ,time: props.time,date: props.date};
+    function handleCancel() {
+        const params = {
+            username: UserInfo.username, tableNumber: props.tableNumber,
+            restaurantName: props.name, ReservationNumber : props.ReservationNumber
+        };
 
-        axios.post("http://localhost:8080/cancelReservation", null , {params : params}).then(
+        axios.post("http://localhost:8080/cancelReservation", null, { params: params }).then(
             (response) => {
                 props.setIsCanceled(true);
             }
-        ).catch((error)=>{
+        ).catch((error) => {
             console.log(error);
         })
     }
@@ -93,56 +95,56 @@ function Reservation(props) {
                 </div>
             </div>
             <div className="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true" >
-                        <div className="modal-dialog modal-dialog-centered">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title" id="addReviewModalLabel">Add Review for <span className="modalRestaurantName">{props.restaurant && props.restaurant.name}</span></h5>
-                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div className="modal-body">
-                                    <div className="d-flex flex-column">
-                                        <p className="text-muted note mb-5">Note: Reviews can only be made by diners who have eaten at this restaurant </p>
-                                        <div className="reservDetails mx-3">
-                                            <Rating
-                                                name={"Food Quality"}
-                                                rating={foodQualityRating}
-                                                setRating={setFoodQualityRating}
-                                            />
-                                            <Rating
-                                                name={"Service"}
-                                                rating={serviceRating}
-                                                setRating={setServiceRating}
-                                            />
-                                            <Rating
-                                                name={"Ambience"}
-                                                rating={ambienceRating}
-                                                setRating={setAmbienceRating}
-                                            />
-                                            <Rating
-                                                name={"Overall"}
-                                                rating={overallRating}
-                                                setRating={setOverallRating}
-                                            />
-                                            <div className="d-flex align-items-center justify-content-start mb-2">
-                                                <p className="mb-0">Comment</p>
-                                            </div>
-                                        </div>
-                                        <textarea
-                                            className="form-control w-100"
-                                            rows="5"
-                                            placeholder="Type your review..."
-                                            value={comment}
-                                            onChange={(e) => setComment(e.target.value)}
-                                        ></textarea>
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="addReviewModalLabel">Add Review for <span className="modalRestaurantName">{props.restaurant && props.restaurant.name}</span></h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="d-flex flex-column">
+                                <p className="text-muted note mb-5">Note: Reviews can only be made by diners who have eaten at this restaurant </p>
+                                <div className="reservDetails mx-3">
+                                    <Rating
+                                        name={"Food Quality"}
+                                        rating={foodQualityRating}
+                                        setRating={setFoodQualityRating}
+                                    />
+                                    <Rating
+                                        name={"Service"}
+                                        rating={serviceRating}
+                                        setRating={setServiceRating}
+                                    />
+                                    <Rating
+                                        name={"Ambience"}
+                                        rating={ambienceRating}
+                                        setRating={setAmbienceRating}
+                                    />
+                                    <Rating
+                                        name={"Overall"}
+                                        rating={overallRating}
+                                        setRating={setOverallRating}
+                                    />
+                                    <div className="d-flex align-items-center justify-content-start mb-2">
+                                        <p className="mb-0">Comment</p>
                                     </div>
                                 </div>
-                                <div className="modal-footer align-items-center">
-                                    <button type="button" data-bs-dismiss= "modal" disabled={!foodQualityRating || !serviceRating || !overallRating || !ambienceRating } className={`btn submitReview w-100 mx-3 ${(!foodQualityRating || !serviceRating || !overallRating || !ambienceRating ) ? 'disabled' : ''}`} onClick={handleSubmitReview}>Submit Review</button>
-                                    <button type="button" className="btn cancleBtn closeBtn w-100 mx-3" data-bs-dismiss="modal">Cancel</button>
-                                </div>
+                                <textarea
+                                    className="form-control w-100"
+                                    rows="5"
+                                    placeholder="Type your review..."
+                                    value={comment}
+                                    onChange={(e) => setComment(e.target.value)}
+                                ></textarea>
                             </div>
                         </div>
+                        <div className="modal-footer align-items-center">
+                            <button type="button" data-bs-dismiss="modal" disabled={!foodQualityRating || !serviceRating || !overallRating || !ambienceRating} className={`btn submitReview w-100 mx-3 ${(!foodQualityRating || !serviceRating || !overallRating || !ambienceRating) ? 'disabled' : ''}`} onClick={handleSubmitReview}>Submit Review</button>
+                            <button type="button" className="btn cancleBtn closeBtn w-100 mx-3" data-bs-dismiss="modal">Cancel</button>
+                        </div>
                     </div>
+                </div>
+            </div>
         </div>
     );
 }

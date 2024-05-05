@@ -25,26 +25,30 @@ function Customer() {
         getReservations();
     }, [isCanceld])
 
-    function isPassedReservation(date,time){
-        const reservationDateTime = new Date(date + ' ' +time); 
-        const currentTime = new Date(); 
-         return currentTime > reservationDateTime;
+    function isPassedReservation(date, time) {
+        const reservationDateTime = new Date(date + ' ' + time);
+        const currentTime = new Date();
+        return currentTime > reservationDateTime;
     }
 
-    function createReservation(reservation, index) {
+    function createReservation(reservation, index, isLast) {
         return (
-            <Reservation
-                key={index}
-                date={reservation.date}
-                time = {reservation.time}
-                id={reservation.restaurantId}
-                name={reservation.restaurantName}
-                tableNumber={reservation.tableNumber}
-                canceled = {reservation.canceled}
-                after = {isPassedReservation(reservation.date,reservation.time)}
-                seatNumber = {reservation.tableSeat}
-                setIsCanceled = {setIsCanceled}
-            />
+            <div>
+                <Reservation
+                    key={index}
+                    date={reservation.date}
+                    time={reservation.time}
+                    id={reservation.restaurantId}
+                    name={reservation.restaurantName}
+                    tableNumber={reservation.tableNumber}
+                    canceled={reservation.canceled}
+                    after={isPassedReservation(reservation.date, reservation.time)}
+                    seatNumber={reservation.tableSeat}
+                    setIsCanceled={setIsCanceled}
+                    reservationNumber = {reservation.reservationNumber}
+                />
+                {!isLast && <hr/>}
+            </div>
         );
     }
 
@@ -62,8 +66,7 @@ function Customer() {
                     <p class="title mx-4">My Reservations</p>
                 </div>
             </div>
-            {reservations && reservations.map(createReservation)}
-            <hr />
+            {reservations && reservations.map((reservation, index) => createReservation(reservation, index, index === reservations.length - 1))}            <hr />
         </div>
     );
 }
