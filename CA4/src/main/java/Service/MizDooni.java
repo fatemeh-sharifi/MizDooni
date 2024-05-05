@@ -400,12 +400,42 @@ private int generateReservationNumber() {
     }
 
     private void removeFeedback(String username, String restaurantName){
-        for(int i =0; i < feedbacks.size();i++){
-            if(feedbacks.get(i).getRestaurantName()== restaurantName && feedbacks.get(i).getUsername()==username){
-                feedbacks.remove(i);
-                break;
+        int restaurant_index, user_index;
+        restaurant_index = -1;
+        user_index = -1;
+        int restaurant_counter =0;
+        int user_counter = 0;
+        int restaurant_feedback_index = -1;
+        int user_feedback_index = -1;
+        int feedbackCounter = 0;
+        for(Feedback feedback: feedbacks){
+            for (Restaurant restaurant: restaurants){
+              if(restaurant.getName().equals(feedback.getRestaurantName())){
+                  restaurant_index = restaurant_counter;
+                  break;
+              }
+                restaurant_counter = restaurant_counter+ 1;
+            }
+            for(User user: users){
+                if(user.getUsername().equals(feedback.getUsername())){
+                    user_index = user_counter;
+                    break;
+                }
+                user_counter = user_counter + 1;
+            }
+            feedbackCounter = feedbackCounter + 1;
+        }
+        if(restaurant_counter != -1){
+            for(int i =0; i < feedbacks.size();i++){
+                if(feedbacks.get(i).getRestaurantName()== restaurantName && feedbacks.get(i).getUsername()==username){
+                    feedbacks.remove(i);
+//                    TODO
+                    restaurants.get(restaurant_index).getFeedbacks().remove(i);
+                    break;
+                }
             }
         }
+
     }
 
     public boolean isLoggedIn(){
@@ -635,10 +665,19 @@ private int generateReservationNumber() {
         }
     }
     public User signUp(String username, String password, String email, String role, String city, String country) throws SuperException {
-        if (findUserByUsername(username) != null) {
-            throw new SuperException(ExceptionMessages.USERNAME_ALREADY_EXISTS_EXCEPTION_MESSAGE);
+//        if (findUserByUsername(username) != null) {
+//            throw new SuperException(ExceptionMessages.USERNAME_ALREADY_EXISTS_EXCEPTION_MESSAGE);
+//        }
+        User u = null;
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                u =  user;
+            }
         }
 
+        if (u != null){
+            throw new SuperException(ExceptionMessages.USERNAME_ALREADY_EXISTS_EXCEPTION_MESSAGE);
+        }
         AddressUser addressUser = new AddressUser();
         addressUser.setCity(city);
         addressUser.setCountry(country);
@@ -703,4 +742,107 @@ private int generateReservationNumber() {
             i = i + 1;
         }
     }
+    public void retractReview(Feedback existingReview, double newFoodRate, double newServiceRate, double newAmbianceRate, double newOverallRate, String newComment) {
+//        for(int i = 0; i < users.size()-1)
+        System.out.println('k');
+        for (User user : users) {
+            if (user.getUsername().equals(existingReview.getUsername())) {
+                List<Feedback> userFeedbacks = user.getFeedbacks();
+                Iterator<Feedback> iterator = userFeedbacks.iterator();
+                while (iterator.hasNext()) {
+                    Feedback feedback = iterator.next();
+                    if (feedback.equals(existingReview)) {
+                        // Remove the existing review's comment from the user's feedbacks
+                        iterator.remove();
+                        break; // Assuming review IDs are unique, no need to continue searching
+                    }
+                }
+                System.out.println(user.getFeedbacks());
+                // Update the user's feedbacks list
+                user.setFeedbacks(userFeedbacks);
+                System.out.println(user.getFeedbacks());
+
+                break; // Assuming usernames are unique, no need to continue searching
+            }
+        }
+
+        for (Restaurant restaurant : restaurants) {
+            if (restaurant.getName().equals(existingReview.getRestaurantName())) {
+                List<Feedback> userFeedbacks = restaurant.getFeedbacks();
+                Iterator<Feedback> iterator = userFeedbacks.iterator();
+                while (iterator.hasNext()) {
+                    Feedback feedback = iterator.next();
+                    if (feedback.equals(existingReview)) {
+                        // Remove the existing review's comment from the user's feedbacks
+                        iterator.remove();
+                        break; // Assuming review IDs are unique, no need to continue searching
+                    }
+                }
+                System.out.println(restaurant.getFeedbacks());
+                // Update the user's feedbacks list
+                restaurant.setFeedbacks(userFeedbacks);
+                System.out.println(restaurant.getFeedbacks());
+
+                break; // Assuming usernames are unique, no need to continue searching
+            }
+        }
+
+        // Retrieve the user and restaurant associated with the review
+//        User user = getUserByUsername(existingReview.getUsername());
+//        Restaurant restaurant = getRestaurantByName(existingReview.getRestaurantName());
+//
+//        // Find the existing review
+//        Feedback previousReview = null;
+//        for (Feedback review : user.getFeedbacks()) {
+//            if (review.equals(existingReview)) {
+//                previousReview = review;
+//                break;
+//            }
+//        }
+//
+//        if (previousReview == null) {
+//            // The existing review was not found
+//            return;
+//        }
+//
+//        // Retrieve the previous ratings and comment
+//        double previousFoodRate = previousReview.getFoodRate();
+//        double previousServiceRate = previousReview.getServiceRate();
+//        double previousAmbianceRate = previousReview.getAmbianceRate();
+//        double previousOverallRate = previousReview.getOverallRate();
+////        String previousComment = previousReview.getComment();
+//
+//        // Calculate the mean ratings without considering the existing review
+//        int totalReviews = restaurant.getFeedbacks().size(); // Exclude the existing review
+//        double meanFoodRate = (restaurant.getFoodAvg() * totalReviews - previousFoodRate + newFoodRate) / totalReviews;
+//        double meanServiceRate = (restaurant.getServiceAvg() * totalReviews - previousServiceRate + newServiceRate) / totalReviews;
+//        double meanAmbianceRate = (restaurant.getAmbianceAvg() * totalReviews - previousAmbianceRate + newAmbianceRate) / totalReviews;
+//        double meanOverallRate = (restaurant.getOverallAvg() * totalReviews - previousOverallRate + newOverallRate) / totalReviews;
+//
+//        // Update the restaurant ratings
+//        restaurant.setFoodAvg(meanFoodRate);
+//        restaurant.setServiceAvg(meanServiceRate);
+//        restaurant.setAmbianceAvg(meanAmbianceRate);
+//        restaurant.setOverallAvg(meanOverallRate);
+//
+//        // Update the existing review with the new comment and adjusted ratings
+//        previousReview.setFoodRate(newFoodRate);
+//        previousReview.setServiceRate(newServiceRate);
+//        previousReview.setAmbianceRate(newAmbianceRate);
+//        previousReview.setOverallRate(newOverallRate);
+//        previousReview.setComment(newComment);
+//
+//
+//        int index = -1;
+//        for(int i = 0; i < users.size()-1; i++){
+//            if(user.getFeedbacks().get(i).getRestaurantName().equals(restaurant.getName())){
+//                index = i;
+//                break;
+//            }
+//        }
+//        // Update the user and restaurant in the database
+//        updateUsers(user);
+//        updateRestaurants(restaurant);
+    }
+
 }

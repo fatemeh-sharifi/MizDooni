@@ -190,14 +190,11 @@ public ResponseEntity<String> addOrUpdateReview(
         @RequestParam(required = false) String comment
 ) {
     try {
-        // Check if username and restaurantName are provided
-        if (username == null || restaurantName == null) {
-            return ResponseEntity.status(400).body("Username and restaurantName are required parameters");
-        }
 
         // Retrieve user and restaurant
         User user = mizDooniService.getUserByUsername(username);
         Restaurant restaurant = mizDooniService.getRestaurantByName(restaurantName);
+
 
         // If either user or restaurant not found, return bad request
         if (user == null || restaurant == null) {
@@ -210,8 +207,17 @@ public ResponseEntity<String> addOrUpdateReview(
                 return ResponseEntity.status(400).body("You need to have a past reservation to post a review");
             }
 
+
             // Create or update feedback
             Feedback feedback = new Feedback(username, restaurantName, foodRate, serviceRate, ambianceRate, overallRate, comment, LocalDateTime.now());
+            for(Feedback feedback1: restaurant.getFeedbacks()){
+                System.out.println(feedback1);
+                if(feedback1.getUsername().equals(feedback.getUsername())){
+                    //retract
+                    mizDooniService.retractReview(feedback1,foodRate, serviceRate, ambianceRate, overallRate, comment);
+                    break;
+                }
+            }
             mizDooniService.updateFeedback(feedback);
 
             // Update restaurant ratings
@@ -355,6 +361,24 @@ public ResponseEntity<String> addOrUpdateReview(
             return ResponseEntity.ok().body("reservation successfully added.");
         } catch (Exception e) {
             return ResponseEntity.status(400).body("Failed to add/update review: " + e.getMessage());
+        }
+    }
+    @PostMapping("/signup")
+    public ResponseEntity<String> signUp(
+            @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam String email,
+            @RequestParam String role,
+            @RequestParam String city,
+            @RequestParam String country
+    ) {
+        try {
+            System.out.println(username+ password+ email+ role+ city+ country);
+            mizDooniService.signUp(username, password, email, role, city, country);
+            return ResponseEntity.ok().body("User registered successfully");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
