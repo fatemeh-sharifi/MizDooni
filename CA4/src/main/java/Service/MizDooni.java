@@ -665,10 +665,19 @@ private int generateReservationNumber() {
         }
     }
     public User signUp(String username, String password, String email, String role, String city, String country) throws SuperException {
-        if (findUserByUsername(username) != null) {
-            throw new SuperException(ExceptionMessages.USERNAME_ALREADY_EXISTS_EXCEPTION_MESSAGE);
+//        if (findUserByUsername(username) != null) {
+//            throw new SuperException(ExceptionMessages.USERNAME_ALREADY_EXISTS_EXCEPTION_MESSAGE);
+//        }
+        User u = null;
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                u =  user;
+            }
         }
 
+        if (u != null){
+            throw new SuperException(ExceptionMessages.USERNAME_ALREADY_EXISTS_EXCEPTION_MESSAGE);
+        }
         AddressUser addressUser = new AddressUser();
         addressUser.setCity(city);
         addressUser.setCountry(country);

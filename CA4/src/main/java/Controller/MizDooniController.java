@@ -347,6 +347,24 @@ public ResponseEntity<String> addOrUpdateReview(
             return ResponseEntity.status(400).body("Failed to add/update review: " + e.getMessage());
         }
     }
+    @PostMapping("/signup")
+    public ResponseEntity<String> signUp(
+            @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam String email,
+            @RequestParam String role,
+            @RequestParam String city,
+            @RequestParam String country
+    ) {
+        try {
+            System.out.println(username+ password+ email+ role+ city+ country);
+            mizDooniService.signUp(username, password, email, role, city, country);
+            return ResponseEntity.ok().body("User registered successfully");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 
 }
 
