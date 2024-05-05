@@ -45,6 +45,29 @@ public class MizDooniController {
         return responseEntity;
     }
 
+    @GetMapping("/restaurants/by_type/{type_name}")
+    public ResponseEntity<List<Restaurant>> findRestaurants_by_type(
+            @PathVariable(required = false) String type_name,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) String name
+    ) {
+        try {
+            System.out.println(type_name);
+            List<Restaurant> allRestaurants = mizDooniService.getRestaurants();
+            List<Restaurant> filteredRestaurants = allRestaurants.stream()
+                    .filter(restaurant -> type_name == null || restaurant.getType().equalsIgnoreCase(type_name))
+                    .filter(restaurant -> city == null || restaurant.getAddress().getCity().equalsIgnoreCase(city))
+                    .filter(restaurant -> country == null || restaurant.getAddress().getCountry().equalsIgnoreCase(country))
+                    .filter(restaurant -> name == null || restaurant.getName().equalsIgnoreCase(name))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok().body(filteredRestaurants);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
     @GetMapping("/restaurants")
     public ResponseEntity<List<Restaurant>> findRestaurants(
             @RequestParam(required = false) String type,
@@ -192,11 +215,17 @@ public ResponseEntity<String> addOrUpdateReview(
             mizDooniService.updateFeedback(feedback);
 
             // Update restaurant ratings
-            mizDooniService.updateRestaurantRatings(restaurantName, foodRate, serviceRate, ambianceRate, overallRate);
 
             // Update user feedbacks
+//            System.out.println("HIIIIIIII");
+            System.out.println(restaurant.getFeedbacks());
             user.getFeedbacks().add(feedback);
+            restaurant.getFeedbacks().add(feedback);
+            mizDooniService.updateUsers(user);
+            mizDooniService.updateRestaurants(restaurant);
+            System.out.println(restaurant.getFeedbacks());
 
+            mizDooniService.updateRestaurantRatings(restaurantName, foodRate, serviceRate, ambianceRate, overallRate);
             return ResponseEntity.ok("Review added/updated successfully");
         } else {
             // If only username and restaurantName are provided, return 200 indicating it's allowed
