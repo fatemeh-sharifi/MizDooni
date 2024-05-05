@@ -14,8 +14,9 @@ function Review(props) {
     const [comment, setComment] = useState("");
     const [allowed, setAllowed] = useState(true);
     const UserInfo = useContext(UserContext);
+    const [showModal, setShowModal] = useState(false);
 
-    function handleSubmitReview() {
+    function handleSubmitReview(event) {
         axios.post("http://localhost:8080/reviews", null, {
             params: {
                 username: UserInfo.username,
@@ -31,28 +32,16 @@ function Review(props) {
                 console.log(response);
                 if (response.status === 200) {
                     // setShowModal(false);
+                    // document.getElementById('addReviewModal').hide()
+                    setShowModal(false);
                     props.setReviewSubmitted(true);
                 }
             }
         ).catch((error) => {
-            console.log(error);
-        });
-    }
-        useEffect(() => {
-        setAllowed(true);
-        isAble();
-    }, [])
-
-    function isAble() {
-        const params = { username: UserInfo.username, restaurantName: props.restaurant.name }
-        axios.post("http://localhost:8080/reviews", params).then(
-            (response) => {
-                console.log(response);
-                if (response.status !== 200) {
-                    setAllowed(false);
-                }
+            if (error.message === "Request failed with status code 400") {
+                event.preventDefault();
+                setAllowed(false);
             }
-        ).catch((error) => {
             console.log(error);
         });
     }
@@ -118,14 +107,14 @@ function Review(props) {
                 <div className="d-flex justify-content-between">
                     <p className="reviews-num">{props.restaurant && props.restaurant.feedbacks.length} Reviews</p>
                     <button className="add-btn text-white" data-bs-toggle="modal" data-bs-target="#addReviewModal">Add Review</button>
-                    <div className="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+                    <div className="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true" style={{ display: showModal ? 'block' : 'none' }}>
                         <div className="modal-dialog modal-dialog-centered">
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title" id="addReviewModalLabel">Add Review for <span className="modalRestaurantName">{props.restaurant && props.restaurant.name}</span></h5>
                                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div className="modal-body mb-4">
+                                <div className="modal-body">
                                     <div className="d-flex flex-column">
                                         <p className="text-muted note mb-5">Note: Reviews can only be made by diners who have eaten at this restaurant </p>
                                         <div className="reservDetails mx-3">
@@ -161,9 +150,10 @@ function Review(props) {
                                             onChange={(e) => setComment(e.target.value)}
                                         ></textarea>
                                     </div>
+                                    {!allowed && <p className="reviewErr mb-0 mt-3 mx-3">You had no reservation at {props.restaurant && props.restaurant.name} Restaurant before.</p>}
                                 </div>
                                 <div className="modal-footer align-items-center">
-                                    <button type="button" disabled={!foodQualityRating || !serviceRating || !overallRating || !ambienceRating || !allowed} className="btn submitReview w-100 mx-3" onClick={handleSubmitReview}>Submit Review</button>
+                                    <button type="button" data-bs-dismiss={allowed ? "modal" : undefined} disabled={!foodQualityRating || !serviceRating || !overallRating || !ambienceRating || !allowed} className={`btn submitReview w-100 mx-3 ${(!foodQualityRating || !serviceRating || !overallRating || !ambienceRating || !allowed) ? 'disabled' : ''}`} onClick={handleSubmitReview}>Submit Review</button>
                                     <button type="button" className="btn cancleBtn closeBtn w-100 mx-3" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
