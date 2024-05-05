@@ -34,7 +34,7 @@ function Card(props) {
     }
 
     function convertToAMPM(time) {
-        const [hours, minutes] = time.split(":");
+        const hours = time.split(":")[0];
         let hour = parseInt(hours);
         const ampm = hour >= 12 ? 'PM' : 'AM';
         hour = hour % 12 || 12;

@@ -121,14 +121,7 @@ body{
     margin-left: -12px;
 }
 
-.footer-part{
-    background-color: #ED3545;
-    font-size: 14px;
-    font-weight: 700;
-    margin-top: 120px;
-}
-
-.footer-text{
-    padding: 14px;
-    margin: 0;
+.searchRes{
+    color: #303030;
+    font-size: 16px;
 }
