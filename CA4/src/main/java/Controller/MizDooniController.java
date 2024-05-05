@@ -189,14 +189,11 @@ public ResponseEntity<String> addOrUpdateReview(
         @RequestParam(required = false) String comment
 ) {
     try {
-        // Check if username and restaurantName are provided
-        if (username == null || restaurantName == null) {
-            return ResponseEntity.status(400).body("Username and restaurantName are required parameters");
-        }
 
         // Retrieve user and restaurant
         User user = mizDooniService.getUserByUsername(username);
         Restaurant restaurant = mizDooniService.getRestaurantByName(restaurantName);
+
 
         // If either user or restaurant not found, return bad request
         if (user == null || restaurant == null) {
@@ -209,8 +206,17 @@ public ResponseEntity<String> addOrUpdateReview(
                 return ResponseEntity.status(400).body("You need to have a past reservation to post a review");
             }
 
+
             // Create or update feedback
             Feedback feedback = new Feedback(username, restaurantName, foodRate, serviceRate, ambianceRate, overallRate, comment, LocalDateTime.now());
+            for(Feedback feedback1: restaurant.getFeedbacks()){
+                System.out.println(feedback1);
+                if(feedback1.getUsername().equals(feedback.getUsername())){
+                    //retract
+                    mizDooniService.retractReview(feedback1,foodRate, serviceRate, ambianceRate, overallRate, comment);
+                    break;
+                }
+            }
             mizDooniService.updateFeedback(feedback);
 
             // Update restaurant ratings

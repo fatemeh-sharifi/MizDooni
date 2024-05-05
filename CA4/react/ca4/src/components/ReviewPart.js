@@ -23,6 +23,11 @@ function ReviewPart(props) {
 
         return `${months[monthIndex]} ${day}, ${year}`;
     }
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = { month: 'long', day: 'numeric', year: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+      }
 
     function renderStars(rating) {
         const stars = [];
@@ -65,7 +70,7 @@ function ReviewPart(props) {
                     </div>
                     <p className="comment-date flex-shrink-0">
                         {props.dateTime ? (
-                            "Dined on " + String(props.dateTime)
+                            "Dined on " + formatDate(String(props.dateTime))
                         ) :(
                             "Dined on " + formatDate(new Date())
                         )}
