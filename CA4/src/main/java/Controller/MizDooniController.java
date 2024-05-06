@@ -223,7 +223,6 @@ public ResponseEntity<String> addOrUpdateReview(
             // Update restaurant ratings
 
             // Update user feedbacks
-//            System.out.println("HIIIIIIII");
             System.out.println(restaurant.getFeedbacks());
             user.getFeedbacks().add(feedback);
             restaurant.getFeedbacks().add(feedback);
@@ -282,59 +281,17 @@ public ResponseEntity<String> addOrUpdateReview(
             @RequestParam String date
     ) {
         try {
-//            System.out.println(date);
             // Validate the date
             LocalDate selectedDate = LocalDate.parse(date);
-//            System.out.println(selectedDate);
-            int year = selectedDate.getYear();
-            int month = selectedDate.getMonthValue();
-            int day = selectedDate.getDayOfMonth();
-//            System.out.println(year +" " + month +" " + day);
-//            LocalDate selectedDate = selectedDate.toLocalDate();
             LocalDate today = LocalDate.now();
-//            System.out.println("today : "+ today);
             LocalDate maxAllowedDate = today.plusDays(2); // Maximum allowed date is two days after today
             if (selectedDate.isAfter(maxAllowedDate)) {
                 return ResponseEntity.badRequest().body(null); // Date exceeds maximum allowed
             }
-//            System.out.println("1");
-//            System.out.println("restaurantname :" + restaurantName);
-            // Retrieve the restaurant
-            Restaurant restaurant = mizDooniService.getRestaurantByName(restaurantName);
-//            System.out.println("2");
-            if (restaurant == null) {
-                return ResponseEntity.notFound().build(); // Restaurant not found
-            }
-//            System.out.println("3");
-            // Sort tables based on the difference between their capacity and the required number of people
-            List<Table> sortedTables = new ArrayList<>(restaurant.getTables());
-            sortedTables.sort(Comparator.comparingInt(t -> Math.abs(t.getSeatsNumber() - numberOfPeople)));
-//            System.out.println("4");
-//            for (Table table : sortedTables) {
-//                System.out.println("Table Number: " + table.getTableNumber());
-//                System.out.println("Restaurant Name: " + table.getRestaurantName());
-//                System.out.println("Manager Username: " + table.getManagerUsername());
-//                System.out.println("Seats Number: " + table.getSeatsNumber());
-//                System.out.println("Opening Time: " + table.getOpeningTime());
-//                System.out.println("Closing Time: " + table.getClosingTime());
-//                // Print other details as needed
-//                System.out.println();
-//            }
-//            System.out.println("5");
-            // Find the first available time for the sorted tables
-            List<Integer> availableTimes = new ArrayList<>();
-            Table availableTable = null;
-            for (Table table : sortedTables) {
-                List<Integer> tableAvailableTimes = table.getAvailableTimes(selectedDate);
 
-                if (tableAvailableTimes != null && !tableAvailableTimes.isEmpty()) {
-                    availableTimes = tableAvailableTimes;
-                    availableTable = table;
-                    break;
-                }
-            }
-            System.out.println("available table : " +availableTable.getTableNumber());
-            System.out.println("available times : " +availableTimes);
+            Map<String, Object> availability = mizDooniService.getAvailableTimes(restaurantName,numberOfPeople,selectedDate);
+            List<Integer> availableTimes = (List<Integer>) availability.get("availableTimes");
+            Table availableTable = (Table) availability.get("availableTable");
             if (availableTable == null) {
                 return ResponseEntity.notFound().build(); // No available times found
             }
@@ -359,7 +316,6 @@ public ResponseEntity<String> addOrUpdateReview(
         try{
 
             System.out.println("new Reservation");
-            System.out.println("usernaem " + username + "restaurant anem" + restaurantName + "table number "+tableNumber + "date " + date + "time " + time);
             mizDooniService.addReservation(username,restaurantName,tableNumber,date,time);
             return ResponseEntity.ok().body("reservation successfully added.");
         } catch (Exception e) {
@@ -367,7 +323,7 @@ public ResponseEntity<String> addOrUpdateReview(
         }
     }
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(
+    public ResponseEntity<User> signUp(
             @RequestParam String username,
             @RequestParam String password,
             @RequestParam String email,
@@ -376,9 +332,8 @@ public ResponseEntity<String> addOrUpdateReview(
             @RequestParam String country
     ) {
         try {
-            System.out.println(username+ password+ email+ role+ city+ country);
-            mizDooniService.signUp(username, password, email, role, city, country);
-            return ResponseEntity.ok().body("User registered successfully");
+            User user =  mizDooniService.signUp(username, password, email, role, city, country);
+            return ResponseEntity.ok().body(user);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(null);
@@ -391,8 +346,6 @@ public ResponseEntity<String> addOrUpdateReview(
             @RequestParam String restaurantName
     ) {
         try{
-            System.out.println("user : " + username);
-            System.out.println("restaurant : " + restaurantName);
             if (!mizDooniService.isReservationTimePassed(username, restaurantName)) {
                 return ResponseEntity.status(400).body("You need to have a past reservation to post a review");
             }
@@ -405,7 +358,6 @@ public ResponseEntity<String> addOrUpdateReview(
     @GetMapping("/reservations")
     public ResponseEntity<List<Reservation>> findUserReservations(@RequestParam String username) {
         try {
-            System.out.println("get reservs username : "+ username);
             List<Reservation> userReservations = mizDooniService.getUserReservations(username);
             return ResponseEntity.ok().body(userReservations);
         } catch (Exception e) {

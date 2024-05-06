@@ -68,7 +68,7 @@ function Reservation(props) {
                     <p className={`rest-name ${props.reservation.canceled ? 'canceled' : ''}`}  >{props.reservation.restaurantName}</p>
                 </Link>
                 <p className={`table-number ${props.reservation.canceled ? 'canceled disableReserv' : ''} ${props.after ? 'disable' : ''}`}>Table-{props.reservation.tableNumber}</p>
-                <p className={`number-seats ${props.reservation.canceled ? 'canceled disableReserv' : ''} ${props.after ? 'disable' : ''}`}>{props.reservation.seatNumber} Seats</p>
+                <p className={`number-seats ${props.reservation.canceled ? 'canceled disableReserv' : ''} ${props.after ? 'disable' : ''}`}>{props.reservation.tableSeat} Seats</p>
             </div>
             {!props.after ? (
                 <button className={`reserve-action flex-shrink-0 text-end  ${props.reservation.canceled ? 'btnDisabled' : ''}`} 

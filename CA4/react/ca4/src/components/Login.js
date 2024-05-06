@@ -63,6 +63,7 @@ function Login() {
         axios.post("http://localhost:8080/signup", null, { params: params }).then(
             (response) => {
                 if (response.status === 200) {
+                    console.log("signup : ", response.data);
                     UserInfo.SetAllInfo(response.data);
                     navigate("/")
                 }

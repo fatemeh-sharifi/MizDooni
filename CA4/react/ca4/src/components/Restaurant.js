@@ -43,13 +43,11 @@ function Restaurant() {
 
     function handleReservation() {
         // setModalShow(true);
-        const params = { username: UserInfo.username, time: selectedTime, tableNumber: selectedTable, date: selectedDate, restaurantName : restaurant.name };
+        const params = { username: UserInfo.username, time: selectedTime, tableNumber: selectedTable, date: selectedDate, restaurantName: restaurant.name };
         axios.post("http://localhost:8080/addReservation", null, { params: params }).then(
             (response) => {
                 console.log(response.data);
                 setReserved(true);
-                selectedTime(null);
-                selectedTable(null);
             }
         ).catch((error) => {
             console.log(error);
@@ -92,7 +90,7 @@ function Restaurant() {
         if (selectedPeople && selectedDate) {
             getAvailableTimes();
         }
-    }, [selectedPeople, selectedDate,reserved]);
+    }, [selectedPeople, selectedDate, reserved]);
 
     useEffect(() => {
         setRestaurant(null);
@@ -115,6 +113,11 @@ function Restaurant() {
         } else {
             return (time - 12) + ':00 PM';
         }
+    }
+
+    function handleReset() {
+        setSelectedTime(null);
+        setSelectedTable(null);
     }
 
     return (
@@ -192,7 +195,7 @@ function Restaurant() {
                                         )
                                     )
                                 )}
-                            <button type="button" disabled={!availableTimes || maxLimit ||!selectedTime}
+                            <button type="button" disabled={!availableTimes || maxLimit || !selectedTime}
                                 className={`final-reserve text-white ${(!availableTimes || maxLimit || !selectedTime) ? 'disabled' : ''}`}
                                 onClick={handleReservation} data-bs-toggle="modal" data-bs-target="#completeModal">
                                 {(maxLimit || !selectedDate || !selectedPeople || !selectedTime) ? (
@@ -234,7 +237,7 @@ function Restaurant() {
                                         </div>
                                         <div className="modal-footer align-items-center">
                                             <button type="button" className="btn closeBtn w-100 mx-3"
-                                                data-bs-dismiss="modal">Close
+                                                data-bs-dismiss="modal" onClick={handleReset}>Close
                                             </button>
                                         </div>
                                     </div>

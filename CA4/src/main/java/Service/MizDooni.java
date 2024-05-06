@@ -25,6 +25,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -451,18 +452,6 @@ private int generateReservationNumber() {
         return null;
     }
 
-//    public String login(User user){
-//        this.loggedInUser = user;
-//        String URL ;
-//        if(isManager(user.getUsername())){
-//            URL = "manager_home.jsp";
-//        }
-//        else{
-//            URL = "client_home.jsp";
-//        }
-//        return URL;
-//    }
-
     public boolean doesUserHaveReserve(String username, String restaurantName){
         for(Restaurant restaurant: restaurants){
             if(restaurant.getName().equals(restaurantName) && restaurant.doesReserveExists(username)){
@@ -665,9 +654,6 @@ private int generateReservationNumber() {
         }
     }
     public User signUp(String username, String password, String email, String role, String city, String country) throws SuperException {
-//        if (findUserByUsername(username) != null) {
-//            throw new SuperException(ExceptionMessages.USERNAME_ALREADY_EXISTS_EXCEPTION_MESSAGE);
-//        }
         User u = null;
         for (User user : users) {
             if (user.getUsername().equals(username)) {
@@ -788,65 +774,6 @@ private int generateReservationNumber() {
                 break; // Assuming usernames are unique, no need to continue searching
             }
         }
-
-
-
-        // Retrieve the user and restaurant associated with the review
-//        User user = getUserByUsername(existingReview.getUsername());
-//        Restaurant restaurant = getRestaurantByName(existingReview.getRestaurantName());
-//
-//        // Find the existing review
-//        Feedback previousReview = null;
-//        for (Feedback review : user.getFeedbacks()) {
-//            if (review.equals(existingReview)) {
-//                previousReview = review;
-//                break;
-//            }
-//        }
-//
-//        if (previousReview == null) {
-//            // The existing review was not found
-//            return;
-//        }
-//
-//        // Retrieve the previous ratings and comment
-//        double previousFoodRate = previousReview.getFoodRate();
-//        double previousServiceRate = previousReview.getServiceRate();
-//        double previousAmbianceRate = previousReview.getAmbianceRate();
-//        double previousOverallRate = previousReview.getOverallRate();
-////        String previousComment = previousReview.getComment();
-//
-//        // Calculate the mean ratings without considering the existing review
-//        int totalReviews = restaurant.getFeedbacks().size(); // Exclude the existing review
-//        double meanFoodRate = (restaurant.getFoodAvg() * totalReviews - previousFoodRate + newFoodRate) / totalReviews;
-//        double meanServiceRate = (restaurant.getServiceAvg() * totalReviews - previousServiceRate + newServiceRate) / totalReviews;
-//        double meanAmbianceRate = (restaurant.getAmbianceAvg() * totalReviews - previousAmbianceRate + newAmbianceRate) / totalReviews;
-//        double meanOverallRate = (restaurant.getOverallAvg() * totalReviews - previousOverallRate + newOverallRate) / totalReviews;
-//
-//        // Update the restaurant ratings
-//        restaurant.setFoodAvg(meanFoodRate);
-//        restaurant.setServiceAvg(meanServiceRate);
-//        restaurant.setAmbianceAvg(meanAmbianceRate);
-//        restaurant.setOverallAvg(meanOverallRate);
-//
-//        // Update the existing review with the new comment and adjusted ratings
-//        previousReview.setFoodRate(newFoodRate);
-//        previousReview.setServiceRate(newServiceRate);
-//        previousReview.setAmbianceRate(newAmbianceRate);
-//        previousReview.setOverallRate(newOverallRate);
-//        previousReview.setComment(newComment);
-//
-//
-//        int index = -1;
-//        for(int i = 0; i < users.size()-1; i++){
-//            if(user.getFeedbacks().get(i).getRestaurantName().equals(restaurant.getName())){
-//                index = i;
-//                break;
-//            }
-//        }
-//        // Update the user and restaurant in the database
-//        updateUsers(user);
-//        updateRestaurants(restaurant);
     }
 
     public List<Reservation> getUserReservations(String username){
@@ -859,5 +786,31 @@ private int generateReservationNumber() {
         User user = getUserByUsername(username);
         user.cancelReservation(reservationNumber);
         restaurant.cancelReservation(reservationNumber, tableNumber);
+    }
+
+    public Map<String, Object> getAvailableTimes(String restaurantName, int numberOfPeople, LocalDate selectedDate){
+
+        // Retrieve the restaurant
+        Restaurant restaurant = getRestaurantByName(restaurantName);
+        // Sort tables based on the difference between their capacity and the required number of people
+        List<Table> sortedTables = new ArrayList<>(restaurant.getTables());
+        sortedTables.sort(Comparator.comparingInt(t -> Math.abs(t.getSeatsNumber() - numberOfPeople)));
+        // Find the first available time for the sorted tables
+        List<Integer> availableTimes = new ArrayList<>();
+        Table availableTable = null;
+        for (Table table : sortedTables) {
+            List<Integer> tableAvailableTimes = table.getAvailableTimes(selectedDate);
+
+            if (tableAvailableTimes != null && !tableAvailableTimes.isEmpty()) {
+                availableTimes = tableAvailableTimes;
+                availableTable = table;
+                break;
+            }
+        }
+
+        Map<String, Object> availability = new HashMap<>();
+        availability.put("availableTimes", availableTimes);
+        availability.put("availableTable", availableTable);
+        return availability;
     }
 }
