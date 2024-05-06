@@ -16,6 +16,7 @@ export const UserContext = createContext({});
 function App() {
 
   const user = UserInfo();
+  console.log(user);
   return (
     <div>
       <Router>
@@ -44,7 +45,7 @@ function App() {
           <Route path="/" element={<Protected isLoggedIn={user.loggedIn}><Home /></Protected>} />
           <Route path="/searchResualt" element={<Protected isLoggedIn={user.loggedIn}><SearchResult /></Protected>} />
           <Route path="/restaurant/:id" element={<Protected isLoggedIn={user.loggedIn}><Restaurant /></Protected>} />
-          <Route path="/reservations" element={<Protected isLoggedIn={user.loggedIn}><ProtectedClient><Customer /></ProtectedClient></Protected>} />
+          <Route path="/reservations" element={<Protected isLoggedIn={user.loggedIn}><ProtectedClient role={user.role}><Customer /></ProtectedClient></Protected>} />
         </Routes>
         <Footer/>
         </UserContext.Provider>

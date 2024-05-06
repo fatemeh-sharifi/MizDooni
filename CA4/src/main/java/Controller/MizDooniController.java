@@ -402,9 +402,10 @@ public ResponseEntity<String> addOrUpdateReview(
         }
     }
 
-    @GetMapping("/reservations/{username}")
-    public ResponseEntity<List<Reservation>> findUserReservations(@PathVariable String username) {
+    @GetMapping("/reservations")
+    public ResponseEntity<List<Reservation>> findUserReservations(@RequestParam String username) {
         try {
+            System.out.println("get reservs username : "+ username);
             List<Reservation> userReservations = mizDooniService.getUserReservations(username);
             return ResponseEntity.ok().body(userReservations);
         } catch (Exception e) {

@@ -11,8 +11,10 @@ function Customer() {
     const [isCanceld, setIsCanceled] = useState(false);
 
     function getReservations() {
-        axios.get("https://localhost:8080/reservations/" + String(UserInfo.username)).then(
+        const params = { username: UserInfo.username }
+        axios.get("http://localhost:8080/reservations", { params: params }).then(
             (response) => {
+                console.log("reservations : ", response.data);
                 setReservations(response.data);
             }
         ).catch((error) => {
@@ -23,6 +25,7 @@ function Customer() {
     useEffect(() => {
         setReservations(null);
         getReservations();
+        setIsCanceled(false);
     }, [isCanceld])
 
     function isPassedReservation(date, time) {
@@ -31,39 +34,55 @@ function Customer() {
         return currentTime > reservationDateTime;
     }
 
+    // function createReservation(reservation, index, isLast) {
+    //     return (
+    //         <div>
+    //             <Reservation
+    //                 key={index}
+    //                 date={reservation.date}
+    //                 time={reservation.time}
+    //                 id={reservation.restaurantId}
+    //                 name={reservation.restaurantName}
+    //                 tableNumber={reservation.tableNumber}
+    //                 canceled={reservation.canceled}
+    //                 after={isPassedReservation(reservation.date, reservation.time)}
+    //                 seatNumber={reservation.tableSeat}
+    //                 isCanceld = {isCanceld}
+    //                 setIsCanceled={setIsCanceled}
+    //                 reservationNumber = {reservation.reservationNumber}
+    //             />
+    //             {!isLast && <hr/>}
+    //         </div>
+    //     );
+    // }
+
     function createReservation(reservation, index, isLast) {
         return (
             <div>
-                <Reservation
+                {reservation && <Reservation
                     key={index}
-                    date={reservation.date}
-                    time={reservation.time}
-                    id={reservation.restaurantId}
-                    name={reservation.restaurantName}
-                    tableNumber={reservation.tableNumber}
-                    canceled={reservation.canceled}
+                    reservation={reservation}
                     after={isPassedReservation(reservation.date, reservation.time)}
-                    seatNumber={reservation.tableSeat}
+                    isCanceld={isCanceld}
                     setIsCanceled={setIsCanceled}
-                    reservationNumber = {reservation.reservationNumber}
-                />
-                {!isLast && <hr/>}
+                />}
+                {!isLast && <hr />}
             </div>
         );
     }
 
     return (
-        <div class="container main-part">
-            <div class="mail-part d-flex justify-content-between align-items-center mx-1">
-                <p class="mail-text mx-4">Your reservations are also emailed to <a href="#">{UserInfo.email}</a> </p>
-                <div>
-                    <p class="address mx-4">Address: {UserInfo.address.city}, {UserInfo.address.country}</p>
-                    <button type="button" className="logout text-white" onClick={() => { UserInfo.setLoggedIn(false) }}>Logout</button>
+        <div className="container w-100 p-0 main-part-customer">
+            <div className="mail-part d-flex justify-content-between align-items-center mx-1">
+                <p className="mail-text mx-4">Your reservations are also emailed to <a href="#">{UserInfo.email}</a> </p>
+                <div className="d-flex flex-wrap gap-1">
+                    <p className="address ">Address: {UserInfo.address.city}, {UserInfo.address.country}</p>
+                    <button type="button" className="logout text-white me-3" onClick={() => { UserInfo.setLoggedIn(false) }}>Logout</button>
                 </div>
             </div>
-            <div class="table-par mx-1 mt-5">
-                <div class="table-header d-flex align-items-center">
-                    <p class="title mx-4">My Reservations</p>
+            <div className="table-par mx-1 mt-4">
+                <div className="table-header d-flex align-items-center">
+                    <p className="title mx-4">My Reservations</p>
                 </div>
             </div>
             {reservations && reservations.map((reservation, index) => createReservation(reservation, index, index === reservations.length - 1))}            <hr />

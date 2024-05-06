@@ -118,7 +118,7 @@ public class Table {
     public void cancelReservation(int reservationNumber){
         for(Reservation resrv : reservations){
             if(resrv.getReservationNumber() == reservationNumber){
-                resrv.setCalnceled(true);
+                resrv.setCanceled(true);
             }
         }
     }

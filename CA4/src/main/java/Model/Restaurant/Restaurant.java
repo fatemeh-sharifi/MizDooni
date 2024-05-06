@@ -130,7 +130,7 @@ public class Restaurant {
     public void cancelReservation(int reservationNumber, int tableNumber){
         for(Reservation resrv : reservations){
             if(resrv.getReservationNumber() == reservationNumber){
-                resrv.setCalnceled(true);
+                resrv.setCanceled(true);
                 break;
             }
         }

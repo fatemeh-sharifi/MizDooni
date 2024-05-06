@@ -17,14 +17,17 @@ function Reservation(props) {
         setAgree(event.target.checked);
     }
 
-    function handleCancel() {
+    function handleCancel(reservationNumber, tableNumber, name) {
         const params = {
-            username: UserInfo.username, tableNumber: props.tableNumber,
-            restaurantName: props.name, ReservationNumber : props.ReservationNumber
+            username: UserInfo.username, tableNumber: tableNumber,
+            restaurantName: name, reservationNumber: reservationNumber
         };
+
+        console.log("cancel params :", params)
 
         axios.post("http://localhost:8080/cancelReservation", null, { params: params }).then(
             (response) => {
+                console.log(response.data)
                 props.setIsCanceled(true);
             }
         ).catch((error) => {
@@ -36,7 +39,7 @@ function Reservation(props) {
         axios.post("http://localhost:8080/reviews", null, {
             params: {
                 username: UserInfo.username,
-                restaurantName: props.name,
+                restaurantName: props.reservation.restaurantName,
                 foodRate: foodQualityRating,
                 serviceRate: serviceRating,
                 ambianceRate: ambienceRating,
@@ -51,54 +54,64 @@ function Reservation(props) {
             console.log(error);
         });
     }
+
+    function extractHourAndMinute (timeString) {
+        const [hour, minute] = timeString.split(':');
+        return `${hour}:${minute}`;
+    };
+
     return (
-        <div class="reserve d-flex justify-content-between align-items-center">
-            <div class="d-flex justify-content-between w-75">
-                <p class={`date ${props.canceled ? 'canceled' : ''} ${props.after ? 'disable' : ''}`}>{props.date} {props.time}</p>
-                <Link to={'/restaurant/' + String(props.id)}>
-                    <p class={`rest-name ${props.canceled ? 'canceled' : ''}`}  >{props.name}</p>
+        <div className="reserve d-flex justify-content-between align-items-center">
+            <div className="d-flex justify-content-between w-75">
+                <p className={`date ${props.reservation.canceled ? 'canceled disableReserv' : ''} ${props.after ? 'disable' : ''}`}>{props.reservation.date} {extractHourAndMinute(props.reservation.time)}</p>
+                <Link to={'/restaurant/' + String(props.reservation.restaurantId)}>
+                    <p className={`rest-name ${props.reservation.canceled ? 'canceled' : ''}`}  >{props.reservation.restaurantName}</p>
                 </Link>
-                <p class={`table-number ${props.canceled ? 'canceled' : ''} ${props.after ? 'disable' : ''}`}>Table-{props.tableNumber}</p>
-                <p class={`number-seats ${props.canceled ? 'canceled' : ''} ${props.after ? 'disable' : ''}`}>{props.seatNumber} Seats</p>
+                <p className={`table-number ${props.reservation.canceled ? 'canceled disableReserv' : ''} ${props.after ? 'disable' : ''}`}>Table-{props.reservation.tableNumber}</p>
+                <p className={`number-seats ${props.reservation.canceled ? 'canceled disableReserv' : ''} ${props.after ? 'disable' : ''}`}>{props.reservation.seatNumber} Seats</p>
             </div>
             {!props.after ? (
-                <button class="reserve-action flex-shrink-0 text-end" data-bs-toggle="modal" data-bs-target="#cancelModal">Cancel</button>
+                <button className={`reserve-action flex-shrink-0 text-end  ${props.reservation.canceled ? 'btnDisabled' : ''}`} 
+                disabled={props.reservation.canceled} data-bs-toggle="modal" 
+                data-bs-target={"#cancelModal"+props.reservation.reservationNumber}>Cancel</button>
             ) : (
-                <button class="reserve-action flex-shrink-0" data-bs-toggle="modal" data-bs-target="#addReviewModal">Add Comment</button>
+                <button className="reserve-action flex-shrink-0" data-bs-toggle="modal" 
+                data-bs-target={"#addReviewModal"+props.reservation.reservationNumber}>Add Comment</button>
             )}
-            <div className="modal fade" id="cancelModal" tabIndex="-1"
+            <div className="modal fade" id={"cancelModal"+props.reservation.reservationNumber} tabIndex="-1"
                 aria-labelledby="cancelModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="cancelModalLabel">Cancel Reservation at <span className="modalRestaurantName">{props.name}</span></h5>
+                            <h5 className="modal-title" id="cancelModalLabel">Cancel Reservation at <span className="modalRestaurantName">{props.reservation.restaurantName}</span></h5>
                             <button type="button" className="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
                         <div className="modal-body mb-4">
                             <div className="d-flex flex-column">
                                 <p className="text-muted note mb-5">Note: Once you hit the Cancel button, your reserve will be canceled.</p>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onChange={handleCheckboxChange} />
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                <div className="form-check">
+                                    <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" onChange={handleCheckboxChange} />
+                                    <label className="form-check-label" htmlFor="flexCheckDefault">
                                         I agree
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div className="modal-footer align-items-center">
-                            <button type="button" disabled={!agree} className={`btn closeBtn w-100 mx-3 ${!agree ? 'disabled' : ''}`} onClick={handleCancel}
+                            <button type="button" disabled={!agree} className={`btn closeBtn w-100 mx-3 ${!agree ? 'disabled' : ''}`}
+                                onClick={() => props.reservation && handleCancel(props.reservation.reservationNumber, props.reservation.tableNumber, props.reservation.restaurantName)} 
                                 data-bs-dismiss="modal">Cancel
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true" >
+            <div className="modal fade" id={"addReviewModal"+props.reservation.reservationNumber} tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true" >
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="addReviewModalLabel">Add Review for <span className="modalRestaurantName">{props.restaurant && props.restaurant.name}</span></h5>
+                            <h5 className="modal-title" id="addReviewModalLabel">Add Review for <span className="modalRestaurantName">{props.reservation && props.reservation.restaurantName}</span></h5>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">

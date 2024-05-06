@@ -18,7 +18,7 @@ public class Reservation {
     private LocalDate date;
     private LocalTime time;
 
-    boolean calnceled;
+    boolean canceled;
 
     private int reservationNumber;
 
@@ -33,6 +33,6 @@ public class Reservation {
         this.reservationNumber = reservationNumber;
         this.restaurantId = restaurantId;
         this.tableSeat = tableSeat;
-        this.calnceled = false;
+        this.canceled = false;
     }
 }

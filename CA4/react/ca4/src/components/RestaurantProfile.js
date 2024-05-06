@@ -18,7 +18,7 @@ function RestaurantProfile(props) {
     return (
         <div className="alidaei col-lg-8 col-xl-6 pe-2">
             <img src={props.img} alt="restaurant-img" className="restaurant-img" />
-            <div className="title">
+            <div className="title-restaurant">
                 <div className="head-part d-flex justify-content-between">
                     <p className={`restaurant-title ${props.title.length > 20 ? 'long' : ''}`}>{props.title}</p>
                     {isOpen(props.start, props.end) ? (

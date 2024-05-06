@@ -172,7 +172,7 @@ function Home() {
     return (
         <div>
             <div className="img-background ">
-                <div className="main-part">
+                <div className="main-part-home">
                     <img src="img/Logo.svg" alt="logo-img" className="logo-img" />
                     <form className="d-flex justify-content-between searchForm">
                         <select className="form-select" value={selectedLocation} onChange={handleLocationChange}>
