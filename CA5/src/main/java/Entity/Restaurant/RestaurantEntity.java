@@ -29,7 +29,8 @@ public class RestaurantEntity {
     @Column(name = "end_time", nullable = false)
     private String endTime;
 
-    @Column(nullable = false)
+    @Lob
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @OneToOne(cascade = CascadeType.ALL)
