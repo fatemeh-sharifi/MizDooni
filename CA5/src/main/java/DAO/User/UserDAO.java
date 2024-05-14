@@ -1,4 +1,4 @@
-package DAO;
+package DAO.User;
 
 import Entity.User.UserEntity;
 import jakarta.persistence.EntityManager;
