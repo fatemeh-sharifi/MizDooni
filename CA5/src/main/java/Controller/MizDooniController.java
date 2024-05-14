@@ -1,5 +1,7 @@
 package Controller;
 
+import DAO.Restaurant.RestaurantDAO;
+import Entity.Restaurant.RestaurantEntity;
 import Model.Address.AddressUser;
 import Model.Feedback.Feedback;
 import Model.Reservation.Reservation;
@@ -31,6 +33,7 @@ public class MizDooniController {
 
     @Autowired
     private UserRepository userRepository;
+    private RestaurantDAO restaurantDAO;
 
     @GetMapping("/users")
     public ResponseEntity<List<Entity.User.UserEntity>> getAllUsers() {
@@ -91,26 +94,41 @@ public class MizDooniController {
         }
     }
 
-    @GetMapping("/restaurants")
-    public ResponseEntity<List<Restaurant>> findRestaurants(
-            @RequestParam(required = false) String type,
-            @RequestParam(required = false) String city,
-            @RequestParam(required = false) String country,
-            @RequestParam(required = false) String name
-    ) {
-        try {
-            List<Restaurant> allRestaurants = mizDooniService.getRestaurants();
-            List<Restaurant> filteredRestaurants = allRestaurants.stream()
-                    .filter(restaurant -> type == null || restaurant.getType().equalsIgnoreCase(type))
-                    .filter(restaurant -> city == null || restaurant.getAddress().getCity().equalsIgnoreCase(city))
-                    .filter(restaurant -> country == null || restaurant.getAddress().getCountry().equalsIgnoreCase(country))
-                    .filter(restaurant -> name == null || restaurant.getName().equalsIgnoreCase(name))
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok().body(filteredRestaurants);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+//    @GetMapping("/restaurants")
+//    public ResponseEntity<List<Restaurant>> findRestaurants(
+//            @RequestParam(required = false) String type,
+//            @RequestParam(required = false) String city,
+//            @RequestParam(required = false) String country,
+//            @RequestParam(required = false) String name
+//    ) {
+//        try {
+//            List<Restaurant> allRestaurants = mizDooniService.getRestaurants();
+//            List<Restaurant> filteredRestaurants = allRestaurants.stream()
+//                    .filter(restaurant -> type == null || restaurant.getType().equalsIgnoreCase(type))
+//                    .filter(restaurant -> city == null || restaurant.getAddress().getCity().equalsIgnoreCase(city))
+//                    .filter(restaurant -> country == null || restaurant.getAddress().getCountry().equalsIgnoreCase(country))
+//                    .filter(restaurant -> name == null || restaurant.getName().equalsIgnoreCase(name))
+//                    .collect(Collectors.toList());
+//            return ResponseEntity.ok().body(filteredRestaurants);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//    }
+@GetMapping("/restaurants")
+public ResponseEntity<List<RestaurantEntity>> findRestaurants(
+        @RequestParam(required = false) String type,
+        @RequestParam(required = false) String city,
+        @RequestParam(required = false) String country,
+        @RequestParam(required = false) String name
+) {
+    try {
+        List<RestaurantEntity> filteredRestaurants = restaurantDAO.findRestaurants(type, city, country, name);
+        return ResponseEntity.ok().body(filteredRestaurants);
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(null);
     }
+}
+
     @GetMapping("/restaurants/{id}")
     public ResponseEntity<Restaurant> findRestaurantById(@PathVariable int id) {
         try {
