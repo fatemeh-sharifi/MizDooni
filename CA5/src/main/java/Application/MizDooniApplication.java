@@ -33,8 +33,8 @@ import org.springframework.web.filter.CorsFilter;
 import java.io.IOException;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"Service", "Controller", "Repositories"})
-@EnableJpaRepositories(basePackages = {"Repositories"})
+@ComponentScan(basePackages = {"Service", "Controller", "Repository"})
+@EnableJpaRepositories(basePackages = {"Repository"})
 @EntityScan(basePackages = {"Entity"})
 public class MizDooniApplication {
 

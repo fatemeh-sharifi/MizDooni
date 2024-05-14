@@ -1,7 +1,7 @@
 package Service;
 
 import Entity.User.UserEntity;
-import Repositories.UserRepository;
+import Repository.User.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.methods.CloseableHttpResponse;

@@ -6,7 +6,7 @@ import Model.Reservation.Reservation;
 import Model.Restaurant.Restaurant;
 import Model.Table.Table;
 import Model.User.User;
-import Repositories.UserRepository;
+import Repository.User.UserRepository;
 import Response.AvailableTimeResponse;
 import Service.MizDooni;
 import org.springframework.beans.factory.annotation.Autowired;
