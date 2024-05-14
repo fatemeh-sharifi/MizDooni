@@ -1,7 +1,6 @@
 package Entity.User;
 
 import Entity.Address.AddressUserEntity;
-import Entity.Feedback.FeedbackEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +31,7 @@ public class UserEntity {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressUserEntity address;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private FeedbackEntity feedback;
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private FeedbackEntity feedback;
 
 }
