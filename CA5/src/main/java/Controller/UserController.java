@@ -6,7 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import Model.User.User;
 import Model.Address.AddressUser;
-import Service.MizDooni;
+import Service.Mizdooni.MizDooni;
 import java.util.regex.Pattern;
 import java.util.List;
 

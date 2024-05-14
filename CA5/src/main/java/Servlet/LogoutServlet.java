@@ -1,6 +1,6 @@
 package Servlet;
 
-import Service.MizDooni;
+import Service.Mizdooni.MizDooni;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

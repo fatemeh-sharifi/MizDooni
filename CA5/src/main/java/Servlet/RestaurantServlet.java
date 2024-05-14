@@ -1,13 +1,10 @@
 package Servlet;
 import Controller.FeedbackController;
 import Model.Exception.ExceptionMessages;
-import Service.MizDooni;
+import Service.Mizdooni.MizDooni;
 import java.time.LocalDateTime;
 import Model.Feedback.Feedback;
-import Model.Reservation.Reservation;
 import Model.Restaurant.Restaurant;
-import Model.Table.Table;
-import Model.User.User;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,7 +12,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(name = "RestaurantServlet", urlPatterns = "/restaurants/*")
 public class RestaurantServlet extends HttpServlet {

@@ -1,6 +1,6 @@
 package Servlet;
 
-import Service.MizDooni;
+import Service.Mizdooni.MizDooni;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;

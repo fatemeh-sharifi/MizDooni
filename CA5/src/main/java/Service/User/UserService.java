@@ -1,4 +1,4 @@
-package Service;
+package Service.User;
 
 import Entity.User.UserEntity;
 import Repository.User.UserRepository;
@@ -38,10 +38,6 @@ public class UserService {
             } finally {
                 usersResponse.close();
             }
-//            String usersString = Request.makeGetRequest(HOST + USERS_ENDPOINT);
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            List<UserEntity> userList = objectMapper.readValue(usersString, new TypeReference<>() {});
-//            userRepository.saveAll(userList);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

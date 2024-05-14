@@ -1,4 +1,4 @@
-<%@page import="Service.MizDooni"%>
+<%@page import="Service.Mizdooni.MizDooni"%>
 <!DOCTYPE html>
 <html lang="en">
 

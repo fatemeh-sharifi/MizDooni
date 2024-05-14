@@ -1,6 +1,6 @@
 package Servlet;
 
-import Service.MizDooni;
+import Service.Mizdooni.MizDooni;
 import Model.Table.Table;
 import Model.Restaurant.Restaurant;
 import jakarta.servlet.ServletException;

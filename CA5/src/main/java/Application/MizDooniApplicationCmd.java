@@ -1,7 +1,7 @@
 package Application;
 
 import Controller.CommandHndlr;
-import Service.MizDooni;
+import Service.Mizdooni.MizDooni;
 
 public class MizDooniApplicationCmd {
     public static void main(String[] args) throws Exception {

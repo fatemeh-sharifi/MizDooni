@@ -1,14 +1,9 @@
 package Entity.Restaurant;
 
-import Entity.Table.TableEntity;
 import Entity.Address.AddressRestaurantEntity;
-import Entity.Reservation.ReservationEntity;
-import Entity.Feedback.FeedbackEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import jakarta.persistence.*;
-import java.util.List;
-import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -41,35 +36,34 @@ public class RestaurantEntity {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressRestaurantEntity address;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<TableEntity> tables;
-
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<ReservationEntity> reservations;
-
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<FeedbackEntity> feedbacks;
-
-    @Column(name = "service_avg")
-    private double serviceAvg;
-
-    @Column(name = "food_avg")
-    private double foodAvg;
-
-    @Column(name = "ambiance_avg")
-    private double ambianceAvg;
-
-    @Column(name = "overall_avg")
-    private double overallAvg;
+//    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+//    private List<TableEntity> tables;
+//
+//    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+//    private List<ReservationEntity> reservations;
+//
+//    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+//    private List<FeedbackEntity> feedbacks;
+//
+//    @Column(name = "service_avg")
+//    private double serviceAvg;
+//
+//    @Column(name = "food_avg")
+//    private double foodAvg;
+//
+//    @Column(name = "ambiance_avg")
+//    private double ambianceAvg;
+//
+//    @Column(name = "overall_avg")
+//    private double overallAvg;
 
     @Column
     private String image;
 
     public RestaurantEntity() {
-        this.tables = new ArrayList<>();
-        this.reservations = new ArrayList<>();
-        this.feedbacks = new ArrayList<>();
+//        this.tables = new ArrayList<>();
+//        this.reservations = new ArrayList<>();
+//        this.feedbacks = new ArrayList<>();
     }
 
-    // Constructors, getters, and setters omitted for brevity
 }

@@ -3,7 +3,7 @@ package Controller;
 import Model.Exception.ExceptionMessages;
 import Model.Exception.SuperException;
 import Model.User.User;
-import Service.MizDooni;
+import Service.Mizdooni.MizDooni;
 
 public class AuthenticationController {
     private MizDooni mizDooni = MizDooni.getInstance();

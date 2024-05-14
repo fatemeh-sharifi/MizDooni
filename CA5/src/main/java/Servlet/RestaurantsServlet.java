@@ -1,6 +1,6 @@
 package Servlet;
 
-import Service.MizDooni;
+import Service.Mizdooni.MizDooni;
 import Model.User.User;
 import Model.Exception.ExceptionMessages;
 import Model.Exception.SuperException;

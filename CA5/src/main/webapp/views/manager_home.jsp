@@ -1,4 +1,4 @@
-<%@ page import="Service.MizDooni" %>
+<%@ page import="Service.Mizdooni.MizDooni" %>
 <%@ page import="java.util.List" %>
 <%@ page import="Model.Restaurant.Restaurant" %>
 <%@ page import="Model.Table.Table" %>

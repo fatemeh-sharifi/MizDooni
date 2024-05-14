@@ -5,7 +5,7 @@ import Model.Exception.SuperException;
 import Model.Feedback.Feedback;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import Service.MizDooni;
+import Service.Mizdooni.MizDooni;
 
 import java.time.LocalDateTime;
 

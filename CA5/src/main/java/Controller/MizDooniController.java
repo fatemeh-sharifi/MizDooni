@@ -10,7 +10,7 @@ import Model.Table.Table;
 import Model.User.User;
 import Repository.User.UserRepository;
 import Response.AvailableTimeResponse;
-import Service.MizDooni;
+import Service.Mizdooni.MizDooni;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +33,7 @@ public class MizDooniController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
     private RestaurantDAO restaurantDAO;
 
     @GetMapping("/users")

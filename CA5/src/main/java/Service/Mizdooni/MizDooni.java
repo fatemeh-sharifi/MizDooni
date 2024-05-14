@@ -1,19 +1,15 @@
-package Service;
-import java.io.File;
+package Service.Mizdooni;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-import Controller.AuthenticationController;
 import Model.Table.Table;
 import Model.Address.AddressUser;
 import Model.Exception.ExceptionMessages;
 import Model.Exception.SuperException;
 import Model.Reservation.Reservation;
-import Model.Table.Table;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
@@ -25,9 +21,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Getter
 @Setter

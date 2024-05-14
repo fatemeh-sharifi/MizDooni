@@ -1,6 +1,6 @@
 //package Application;
 //
-//import Service.MizDooni;
+//import Service.Mizdooni.MizDooni;
 //import org.springframework.boot.SpringApplication;
 //import org.springframework.boot.autoconfigure.SpringBootApplication;
 //import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -33,7 +33,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.io.IOException;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"Service", "Controller", "Repository"})
+@ComponentScan(basePackages = {"Service", "Controller", "Repository", "Entity", "DAO"})
 @EnableJpaRepositories(basePackages = {"Repository"})
 @EntityScan(basePackages = {"Entity"})
 public class MizDooniApplication {

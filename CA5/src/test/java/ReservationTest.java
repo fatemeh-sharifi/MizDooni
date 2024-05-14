@@ -3,7 +3,7 @@ import Controller.UserController;
 import Model.Exception.ExceptionMessages;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.*;
-import Service.MizDooni;
+import Service.Mizdooni.MizDooni;
 
 import static org.junit.jupiter.api.Assertions.*;
 
