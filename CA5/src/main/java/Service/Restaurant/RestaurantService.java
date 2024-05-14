@@ -20,20 +20,33 @@ public class RestaurantService {
     private final String HOST = "http://91.107.137.117:55";
     private final String RESTAURANTS_ENDPOINT = "/restaurants";
 
-    public RestaurantService(RestaurantRepository restaurantRepository) {
+    public RestaurantService ( RestaurantRepository restaurantRepository ) {
         this.restaurantRepository = restaurantRepository;
         this.fetchAndSaveRestaurantsFromApi();
     }
 
-    public void fetchAndSaveRestaurantsFromApi() {
+    public void fetchAndSaveRestaurantsFromApi ( ) {
         try {
             CloseableHttpClient httpClient = HttpClients.createDefault();
             String restaurantsEndpoint = HOST + RESTAURANTS_ENDPOINT;
             CloseableHttpResponse restaurantsResponse = httpClient.execute(new HttpGet(restaurantsEndpoint));
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
-                List<RestaurantEntity> fetchedRestaurants = objectMapper.readValue(restaurantsResponse.getEntity().getContent(), new TypeReference<List<RestaurantEntity>>() {});
-                restaurantRepository.saveAll(fetchedRestaurants);
+                List<RestaurantEntity> fetchedRestaurants = objectMapper.readValue(restaurantsResponse.getEntity().getContent(), new TypeReference<List<RestaurantEntity>>() {
+                });
+                for (RestaurantEntity fetchedRestaurant : fetchedRestaurants) {
+                    fetchedRestaurant.generateId();
+                    System.out.println(fetchedRestaurant.getId());
+                    RestaurantEntity existingRestaurant = restaurantRepository.findById(fetchedRestaurant.getId());
+                    if (existingRestaurant == null) {
+                        restaurantRepository.save(fetchedRestaurant);
+                    } else {
+                        // Handle existing user case if needed
+                        // For example, update existing user details
+                        // existingUser.setName(fetchedUser.getName());
+                        // userRepository.save(existingUser);
+                    }
+                }
             } finally {
                 restaurantsResponse.close();
             }
@@ -41,4 +54,5 @@ public class RestaurantService {
             throw new RuntimeException(e);
         }
     }
+
 }

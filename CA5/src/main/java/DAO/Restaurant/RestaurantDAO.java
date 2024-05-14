@@ -94,12 +94,9 @@ public class RestaurantDAO {
     @PersistenceContext
     private EntityManager entityManager;
 
+
     public void saveOrUpdate(RestaurantEntity restaurant) {
         entityManager.merge(restaurant);
-    }
-
-    public RestaurantEntity getById(Long id) {
-        return entityManager.find(RestaurantEntity.class, id);
     }
 
     public void delete(RestaurantEntity restaurant) {
@@ -109,7 +106,9 @@ public class RestaurantDAO {
     public List<RestaurantEntity> getAllRestaurants() {
         return entityManager.createQuery("SELECT r FROM RestaurantEntity r", RestaurantEntity.class).getResultList();
     }
-
+    public RestaurantEntity findById(int id) {
+        return entityManager.find(RestaurantEntity.class, id);
+    }
     public List<RestaurantEntity> findRestaurants(String type, String city, String country, String name) {
         StringBuilder queryString = new StringBuilder("SELECT r FROM RestaurantEntity r WHERE 1=1");
         if (type != null) {

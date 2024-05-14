@@ -11,7 +11,7 @@ import lombok.Setter;
 @Table(name = "restaurants")
 public class RestaurantEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false)
@@ -65,6 +65,11 @@ public class RestaurantEntity {
 //        this.tables = new ArrayList<>();
 //        this.reservations = new ArrayList<>();
 //        this.feedbacks = new ArrayList<>();
+    }
+    // Add a method to generate the ID value based on attributes
+    public void generateId() {
+        String uniqueString = this.name + this.managerUsername + this.address.getCity() + this.address.getCountry();
+        this.id = Math.abs(uniqueString.hashCode());
     }
 
 }
