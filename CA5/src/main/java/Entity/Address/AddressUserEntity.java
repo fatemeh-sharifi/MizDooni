@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "user_address")
 public class AddressUserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

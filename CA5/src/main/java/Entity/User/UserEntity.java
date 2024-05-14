@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
+//@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +26,12 @@ public class UserEntity {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "role", unique = false, nullable = false)
+    @Column(name = "role", nullable = false)
     private String role;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressUserEntity address;
 
 }
+
