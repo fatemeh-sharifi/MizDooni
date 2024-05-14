@@ -31,7 +31,4 @@ public class UserEntity {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressUserEntity address;
 
-//    @OneToOne(mappedBy = "username", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private FeedbackEntity feedback;
-
 }

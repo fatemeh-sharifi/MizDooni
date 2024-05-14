@@ -32,9 +32,20 @@ public class UserService {
             CloseableHttpResponse usersResponse = httpClient.execute(new HttpGet(usersEndpoint));
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
-                List<UserEntity> fetchedUsers = objectMapper.readValue(usersResponse.getEntity().getContent(), new TypeReference<List<UserEntity>>() {
-                });
-                userRepository.saveAll(fetchedUsers);
+                List<UserEntity> fetchedUsers = objectMapper.readValue(usersResponse.getEntity().getContent(), new TypeReference<List<UserEntity>>() {});
+
+                // Check if each fetched user already exists in the database before saving
+                for (UserEntity fetchedUser : fetchedUsers) {
+                    UserEntity existingUser = userRepository.findByUsername(fetchedUser.getUsername());
+                    if (existingUser == null) {
+                        userRepository.save(fetchedUser);
+                    } else {
+                        // Handle existing user case if needed
+                        // For example, update existing user details
+                        // existingUser.setName(fetchedUser.getName());
+                        // userRepository.save(existingUser);
+                    }
+                }
             } finally {
                 usersResponse.close();
             }
