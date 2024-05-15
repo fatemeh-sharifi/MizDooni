@@ -3,6 +3,9 @@ package Routers;
 import Entity.Reservation.ReservationEntity;
 import Model.Reservation.Reservation;
 import Repository.Reservation.ReservationRepository;
+import Repository.Restaurant.RestaurantRepository;
+import Repository.Table.TableRepository;
+import Repository.User.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,12 @@ import java.util.List;
 public class ReservationService {
     @Autowired
     ReservationRepository reservationRepository;
+    @Autowired
+    ClientRepository clientRepository;
+    @Autowired
+    RestaurantRepository restaurantRepository;
+    @Autowired
+    TableRepository tableRepository;
 
     @GetMapping("/reservations")
     public ResponseEntity<List<Reservation>> findUserReservations ( @RequestParam String username ) {
@@ -107,11 +116,32 @@ public class ReservationService {
             LocalTime reservationTime = LocalTime.parse(time);
 
             // Call the service method to add the reservation
-            mizDooniService.addReservation(username, restaurantName, tableNumber, reservationDate, reservationTime);
+            addReservation(username, restaurantName, tableNumber, reservationDate, reservationTime);
 
             return ResponseEntity.ok().body("Reservation successfully added.");
         } catch (Exception e) {
             return ResponseEntity.status(400).body("Failed to add reservation: " + e.getMessage());
+        }
+    }
+    public boolean addReservation(String username, String restaurantName, int tableNumber, LocalDate reservationDate, LocalTime reservationTime) {
+        try {
+            // Assuming you have a ReservationEntity class and ReservationRepository interface
+            // Create a new ReservationEntity object
+            ReservationEntity reservation = new ReservationEntity();
+            reservation.setUser(clientRepository.findByUsername(username));
+            reservation.setRestaurant(restaurantRepository.findByName(restaurantName));
+            reservation.setTable(tableRepository.findByIdAndRestaurantName((long) tableNumber, restaurantName));
+            reservation.setDate(reservationDate);
+            reservation.setTime(reservationTime);
+            reservation.setCanceled(false);
+            reservation.setTableSeat(tableRepository.findByIdAndRestaurantName((long) tableNumber, restaurantName).getSeatsNumber());
+            reservationRepository.save(reservation);
+            return true;
+        } catch (Exception e) {
+            // Log any exceptions that occur during the reservation creation process
+            e.printStackTrace();
+            // Return false if an exception occurs during the process
+            return false;
         }
     }
 
