@@ -1,6 +1,7 @@
 package Entity.Table;
 
 import Entity.Restaurant.RestaurantEntity;
+import Entity.User.ManagerEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,34 +13,26 @@ import lombok.Setter;
 public class TableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "id", unique = true, nullable = false)
+    private long id;
 
-    @Column(name = "table_number", nullable = false)
-    private int tableNumber;
+    @ManyToOne
+    @JoinColumn(name = "restaurant_name", nullable = false)
+    private RestaurantEntity restaurant;
 
-//    @ManyToOne
-//    @JoinColumn(name = "restaurant_id", nullable = false)
-//    private RestaurantEntity restaurant;
-
-    @Column(name = "manager_username", nullable = false)
-    private String managerUsername;
+    @ManyToOne
+    @JoinColumn(name = "manager_username", nullable = false)
+    private ManagerEntity manager;
 
     @Column(name = "seats_number", nullable = false)
     private int seatsNumber;
 
-//    @OneToMany(mappedBy = "table", cascade = CascadeType.ALL)
-//    private List<ReservationEntity> reservations;
-
-//    public TableEntity() {
-//        this.reservations = new ArrayList<>();
-//    }
     public TableEntity(){}
 
-    public TableEntity(int tableNumber, RestaurantEntity restaurant, String managerUsername, int seatsNumber) {
-        this.tableNumber = tableNumber;
-//        this.restaurant = restaurant;
-        this.managerUsername = managerUsername;
+    public TableEntity(RestaurantEntity restaurant, ManagerEntity manager, int seatsNumber) {
+        this.restaurant = restaurant;
+        this.manager = manager;
         this.seatsNumber = seatsNumber;
-//        this.reservations = new ArrayList<>();
+
     }
 }

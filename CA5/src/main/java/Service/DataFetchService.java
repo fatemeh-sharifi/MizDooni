@@ -2,13 +2,16 @@ package Service;
 
 import DTO.Feedback.FeedbackDTO;
 import DTO.Restaurant.RestaurantDTO;
+import DTO.Table.TableDTO;
 import Entity.Feedback.FeedbackEntity;
 import Entity.Restaurant.RestaurantEntity;
+import Entity.Table.TableEntity;
 import Entity.User.ClientEntity;
 import Entity.User.ManagerEntity;
 import Entity.User.UserEntity;
 import Repository.Feedback.FeedbackRepository;
 import Repository.Restaurant.RestaurantRepository;
+import Repository.Table.TableRepository;
 import Repository.User.ClientRepository;
 import Repository.User.ManagerRepository;
 import Repository.User.UserRepository;
@@ -35,24 +38,58 @@ public class DataFetchService {
     private final RestaurantRepository restaurantRepository;
     private final FeedbackRepository feedbackRepository;
     private final FeedbackService feedbackService;
-
+    private final TableRepository tableRepository;
     @Autowired
-    public DataFetchService( UserRepository userRepository, ManagerRepository managerRepository, ClientRepository clientRepository, RestaurantRepository restaurantRepository, FeedbackRepository feedbackRepository, FeedbackService feedbackService ) {
+    public DataFetchService( UserRepository userRepository, ManagerRepository managerRepository, ClientRepository clientRepository, RestaurantRepository restaurantRepository, FeedbackRepository feedbackRepository, FeedbackService feedbackService, TableRepository tableRepository ) {
         this.userRepository = userRepository;
         this.managerRepository = managerRepository;
         this.clientRepository = clientRepository;
         this.restaurantRepository = restaurantRepository;
         this.feedbackRepository = feedbackRepository;
         this.feedbackService = feedbackService;
+        this.tableRepository = tableRepository;
     }
 
     public void fetchUsersAndRestaurantsFromApi() {
         fetchAndSaveUsersFromApi();
         fetchAndSaveRestaurantsFromApi();
         fetchFeedbacksFromApi();
+        fetchAndSaveTablesFromApi();
         System.out.println("__________________ FETCHING IS FINISHED_________________");
     }
 
+    private void fetchAndSaveTablesFromApi(){
+        try{
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            String tablesEndpoint = "http://91.107.137.117:55/tables";
+            CloseableHttpResponse tablesResponse = httpClient.execute(new HttpGet(tablesEndpoint));
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                List<TableDTO> fetchedTables = objectMapper.readValue(tablesResponse.getEntity().getContent(), new TypeReference<>() {});
+                for (TableDTO fetchedTable : fetchedTables) {
+                    TableEntity tableEntity = new TableEntity();
+                    tableEntity.setManager(managerRepository.findByUsername(fetchedTable.getManagerUsername()));
+                    tableEntity.setRestaurant(restaurantRepository.findByName(fetchedTable.getRestaurantName()));
+                    tableEntity.setSeatsNumber(fetchedTable.getSeatsNumber());
+                    saveTable(tableEntity);
+                }
+            } finally {
+                tablesResponse.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error fetching tables from API: " + e.getMessage());
+        }
+    }
+    private void saveTable(TableEntity fetchedTable) {
+        TableEntity existingTable = tableRepository.findByIdAndRestaurantName(fetchedTable.getId(), fetchedTable.getRestaurant().getName());
+        if (existingTable == null) {
+            tableRepository.save(fetchedTable);
+        } else {
+            // If the restaurant already exists, you may want to update it instead of saving again
+            // For simplicity, I'm just printing a message here
+            System.out.println("Table already exists: " + fetchedTable.getId());
+        }
+    }
     private void fetchAndSaveUsersFromApi() {
         try {
             CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -175,13 +212,10 @@ public class DataFetchService {
             feedbackEntity.setCustomer(clientRepository.findByUsername(fetchedFeedback.getUsername()));
             feedbackEntity.setComment(fetchedFeedback.getComment());
             feedbackEntity.setAmbianceRate(fetchedFeedback.getAmbianceRate());
-
             // Fetch the restaurant entity by its name
             RestaurantEntity restaurantEntity = restaurantRepository.findByName(fetchedFeedback.getRestaurantName());
-
             // Set the fetched feedback's restaurant reference
             feedbackEntity.setRestaurant(restaurantEntity);
-
             feedbackEntity.setServiceRate(fetchedFeedback.getServiceRate());
             feedbackEntity.setDateTime(fetchedFeedback.getDateTime());
             feedbackEntity.setFoodRate(fetchedFeedback.getFoodRate());
