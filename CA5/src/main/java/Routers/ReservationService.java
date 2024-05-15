@@ -1,12 +1,16 @@
 package Routers;
 
+import DTO.AvailableTimeResponse;
 import Entity.Reservation.ReservationEntity;
+import Entity.Restaurant.RestaurantEntity;
+import Entity.Table.TableEntity;
 import Model.Reservation.Reservation;
 import Repository.Reservation.ReservationRepository;
 import Repository.Restaurant.RestaurantRepository;
 import Repository.Table.TableRepository;
 import Repository.User.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 
 @RestController
 public class ReservationService {
@@ -143,6 +147,96 @@ public class ReservationService {
             // Return false if an exception occurs during the process
             return false;
         }
+    }
+
+    @GetMapping("/availableTimes")
+    public ResponseEntity<AvailableTimeResponse> availableTimes(
+            @RequestParam String restaurantName,
+            @RequestParam int numberOfPeople,
+            @RequestParam String date
+    ) {
+        try {
+            // Validate the date
+            LocalDate selectedDate = LocalDate.parse(date);
+            LocalDate today = LocalDate.now();
+            LocalDate maxAllowedDate = today.plusDays(2); // Maximum allowed date is two days after today
+            if (selectedDate.isAfter(maxAllowedDate)) {
+                return ResponseEntity.badRequest().body(null); // Date exceeds maximum allowed
+            }
+
+            // Retrieve available times from the service
+            Map<String, Object> availability = getAvailableTimes(restaurantName, numberOfPeople, selectedDate);
+            List<Integer> availableTimes = (List<Integer>) availability.get("availableTimes");
+            TableEntity availableTable = (TableEntity) availability.get("availableTable");
+
+            if (availableTable == null) {
+                return ResponseEntity.notFound().build(); // No available times found
+            }
+
+            // Construct and return the response
+            AvailableTimeResponse response = new AvailableTimeResponse(availableTimes, availableTable);
+            return ResponseEntity.ok(response);
+
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().body(null); // Invalid date format
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Failed to retrieve available times
+        }
+    }
+    public Map<String, Object> getAvailableTimes(String restaurantName, int numberOfPeople, LocalDate selectedDate) {
+        Map<String, Object> availability = new HashMap<>();
+        try {
+            // Retrieve the restaurant
+            RestaurantEntity restaurant = restaurantRepository.findByName(restaurantName);
+            if (restaurant == null) {
+                return availability; // Return empty availability if restaurant not found
+            }
+
+            // Sort tables based on the difference between their capacity and the required number of people
+            List<TableEntity> sortedTables = new ArrayList<>(tableRepository.findByRestaurantName(restaurantName));
+            sortedTables.sort(Comparator.comparingInt(t -> Math.abs(t.getSeatsNumber() - numberOfPeople)));
+
+            // Find the first available time for the sorted tables
+            List<Integer> availableTimes = new ArrayList<>();
+            TableEntity availableTable = null;
+
+            // Get reservations for the selected date
+            List<ReservationEntity> reservations = reservationRepository.findReservationsInRestaurantOnDate(restaurantName, selectedDate);
+
+            for (TableEntity table : sortedTables) {
+                String start = table.getRestaurant().getStartTime();
+                String end = table.getRestaurant().getEndTime();
+                String[] parts = start.split(":");
+                int start_hour = Integer.parseInt(parts[0]);
+                parts = end.split(":");
+                int end_hour = Integer.parseInt(parts[0]);
+                List<Integer> tableAvailableTimes = new ArrayList<>();
+                for (int i = start_hour; i <= end_hour; i++) {
+                    tableAvailableTimes.add(i);
+                }
+
+                // Remove times of reserved tables
+                for (ReservationEntity reservation : reservations) {
+                    if (reservation.getTable().getId() == table.getId()) {
+                        tableAvailableTimes.remove(reservation.getTime().getHour());
+                    }
+                }
+
+                if (!tableAvailableTimes.isEmpty()) {
+                    availableTimes = tableAvailableTimes;
+                    availableTable = table;
+                    break;
+                }
+            }
+
+            // Populate the availability map
+            availability.put("availableTimes", availableTimes);
+            availability.put("availableTable", availableTable);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return availability;
     }
 
 }

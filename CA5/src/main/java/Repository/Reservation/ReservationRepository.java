@@ -36,6 +36,14 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
             @Param("currentDate") LocalDate currentDate,
             @Param("currentTime") LocalTime currentTime
     );
+    @Query("SELECT r FROM ReservationEntity r " +
+            "WHERE r.restaurant.name = :restaurantName " +
+            "AND r.date = :date")
+    List<ReservationEntity> findReservationsInRestaurantOnDate(
+            @Param("restaurantName") String restaurantName,
+            @Param("date") LocalDate date
+    );
+
     @Modifying
     @Transactional
     @Query("DELETE FROM ReservationEntity r WHERE r.user.username = :username AND r.restaurant.name = :restaurantName AND r.table.id = :tableNumber AND r.reservationNumber = :reservationNumber")

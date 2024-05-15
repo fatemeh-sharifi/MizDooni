@@ -310,23 +310,23 @@ public class MizDooniController {
         }
     }
 
-    @PostMapping("/addReservation")
-    public ResponseEntity<String> reservations(
-            @RequestParam String username,
-            @RequestParam String restaurantName,
-            @RequestParam int tableNumber,
-            @RequestParam String date,
-            @RequestParam String time
-    ) {
-        try{
-
-            System.out.println("new Reservation");
-            mizDooniService.addReservation(username,restaurantName,tableNumber,date,time);
-            return ResponseEntity.ok().body("reservation successfully added.");
-        } catch (Exception e) {
-            return ResponseEntity.status(400).body("Failed to addreservation: " + e.getMessage());
-        }
-    }
+//    @PostMapping("/addReservation")
+//    public ResponseEntity<String> reservations(
+//            @RequestParam String username,
+//            @RequestParam String restaurantName,
+//            @RequestParam int tableNumber,
+//            @RequestParam String date,
+//            @RequestParam String time
+//    ) {
+//        try{
+//
+//            System.out.println("new Reservation");
+//            mizDooniService.addReservation(username,restaurantName,tableNumber,date,time);
+//            return ResponseEntity.ok().body("reservation successfully added.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(400).body("Failed to addreservation: " + e.getMessage());
+//        }
+//    }
 //    @PostMapping("/signup")
 //    public ResponseEntity<User> signUp(
 //            @RequestParam String username,
