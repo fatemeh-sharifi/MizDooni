@@ -1,7 +1,6 @@
 package Controller;
 
 import DAO.Restaurant.RestaurantDAO;
-import Model.Reservation.Reservation;
 import Model.Restaurant.Restaurant;
 import Model.Table.Table;
 import Repository.User.UserRepository;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -277,10 +275,10 @@ public class MizDooniController {
 //    }
 //}
 
-    @GetMapping("/tables")
-    public ResponseEntity<ArrayList<Table>> tables(){
-        return ResponseEntity.ok(mizDooniService.getTables());
-    }
+//    @GetMapping("/tables")
+//    public ResponseEntity<ArrayList<Table>> tables(){
+//        return ResponseEntity.ok(mizDooniService.getTables());
+//    }
     @GetMapping("/availableTimes")
     public ResponseEntity<AvailableTimeResponse> availableTimes(
             @RequestParam String restaurantName,
@@ -347,46 +345,46 @@ public class MizDooniController {
 //        }
 //    }
 
-    @GetMapping("/isAble")
-    public ResponseEntity<String> isAbleToReview(
-            @RequestParam String username,
-            @RequestParam String restaurantName
-    ) {
-        try{
-            if (!mizDooniService.isReservationTimePassed(username, restaurantName)) {
-                return ResponseEntity.status(400).body("You need to have a past reservation to post a review");
-            }
-            return ResponseEntity.ok().body("Able to review.");
-        } catch (Exception e) {
-            return ResponseEntity.status(400).body("Failed: " + e.getMessage());
-        }
-    }
+//    @GetMapping("/isAble")
+//    public ResponseEntity<String> isAbleToReview(
+//            @RequestParam String username,
+//            @RequestParam String restaurantName
+//    ) {
+//        try{
+//            if (!mizDooniService.isReservationTimePassed(username, restaurantName)) {
+//                return ResponseEntity.status(400).body("You need to have a past reservation to post a review");
+//            }
+//            return ResponseEntity.ok().body("Able to review.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(400).body("Failed: " + e.getMessage());
+//        }
+//    }
 
-    @GetMapping("/reservations")
-    public ResponseEntity<List<Reservation>> findUserReservations(@RequestParam String username) {
-        try {
-            List<Reservation> userReservations = mizDooniService.getUserReservations(username);
-            return ResponseEntity.ok().body(userReservations);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null); // Return 400 if there's an error
-        }
-    }
+//    @GetMapping("/reservations")
+//    public ResponseEntity<List<Reservation>> findUserReservations(@RequestParam String username) {
+//        try {
+//            List<Reservation> userReservations = mizDooniService.getUserReservations(username);
+//            return ResponseEntity.ok().body(userReservations);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(null); // Return 400 if there's an error
+//        }
+//    }
 
-    @PostMapping("/cancelReservation")
-    public ResponseEntity<String> cancelReservation(
-            @RequestParam String username,
-            @RequestParam String restaurantName,
-            @RequestParam int tableNumber,
-            @RequestParam int reservationNumber
-    ) {
-        try {
-            mizDooniService.cancelReservation(username,restaurantName,tableNumber,reservationNumber);
-            return ResponseEntity.ok().body("Canceled successfully");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
+//    @PostMapping("/cancelReservation")
+//    public ResponseEntity<String> cancelReservation(
+//            @RequestParam String username,
+//            @RequestParam String restaurantName,
+//            @RequestParam int tableNumber,
+//            @RequestParam int reservationNumber
+//    ) {
+//        try {
+//            mizDooniService.cancelReservation(username,restaurantName,tableNumber,reservationNumber);
+//            return ResponseEntity.ok().body("Canceled successfully");
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//    }
 
 }
 

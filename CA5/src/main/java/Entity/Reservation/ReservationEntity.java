@@ -1,6 +1,8 @@
 package Entity.Reservation;
 
 import Entity.Restaurant.RestaurantEntity;
+import Entity.Table.TableEntity;
+import Entity.User.ClientEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,20 +17,29 @@ import java.time.LocalTime;
 public class ReservationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "reservation_number", unique = true, nullable = false)
+    private long reservationNumber;
 
-    @Column(name = "username", nullable = false)
-    private String username;
+//    @Column(name = "username", nullable = false)
+//    private String username;
+    @ManyToOne
+    @JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
+    private ClientEntity user;
 
-    @Column(name = "restaurant_name", nullable = false)
-    private String restaurantName;
+//    @Column(name = "restaurant_name", nullable = false)
+//    private String restaurantName;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id", nullable = false)
+    @JoinColumn(name = "restaurant_name", referencedColumnName = "name", nullable = false)
     private RestaurantEntity restaurant;
 
-    @Column(name = "table_number", nullable = false)
-    private int tableNumber;
+
+//    @Column(name = "table_number", nullable = false)
+//    private int tableNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "table_id", referencedColumnName = "id")
+    private TableEntity table;
 
     @Column(name = "table_seat", nullable = false)
     private int tableSeat;
@@ -42,21 +53,21 @@ public class ReservationEntity {
     @Column(name = "canceled", nullable = false)
     private boolean canceled;
 
-    @Column(name = "reservation_number", nullable = false)
-    private int reservationNumber;
 
     public ReservationEntity() {
     }
 
-    public ReservationEntity(String username, String restaurantName, int tableNumber, int reservationNumber, LocalDate date, LocalTime time, RestaurantEntity restaurant, int tableSeat) {
-        this.username = username;
-        this.restaurantName = restaurantName;
-        this.tableNumber = tableNumber;
-        this.reservationNumber = reservationNumber;
+    public boolean getCanceled ( ){
+        return canceled;
+    }
+    public ReservationEntity(ClientEntity user, RestaurantEntity restaurant, TableEntity table, LocalDate date, LocalTime time, int reservationNumber) {
+        this.user = user;
+        this.restaurant = restaurant;
+        this.table = table;
         this.date = date;
         this.time = time;
-        this.restaurant = restaurant;
-        this.tableSeat = tableSeat;
+        this.reservationNumber = reservationNumber;
         this.canceled = false;
     }
+
 }

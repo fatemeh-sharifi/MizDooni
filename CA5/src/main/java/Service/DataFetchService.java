@@ -4,12 +4,14 @@ import DTO.Feedback.FeedbackDTO;
 import DTO.Restaurant.RestaurantDTO;
 import DTO.Table.TableDTO;
 import Entity.Feedback.FeedbackEntity;
+import Entity.Reservation.ReservationEntity;
 import Entity.Restaurant.RestaurantEntity;
 import Entity.Table.TableEntity;
 import Entity.User.ClientEntity;
 import Entity.User.ManagerEntity;
 import Entity.User.UserEntity;
 import Repository.Feedback.FeedbackRepository;
+import Repository.Reservation.ReservationRepository;
 import Repository.Restaurant.RestaurantRepository;
 import Repository.Table.TableRepository;
 import Repository.User.ClientRepository;
@@ -26,7 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -39,8 +43,9 @@ public class DataFetchService {
     private final FeedbackRepository feedbackRepository;
     private final FeedbackService feedbackService;
     private final TableRepository tableRepository;
+    private final ReservationRepository reservationRepository;
     @Autowired
-    public DataFetchService( UserRepository userRepository, ManagerRepository managerRepository, ClientRepository clientRepository, RestaurantRepository restaurantRepository, FeedbackRepository feedbackRepository, FeedbackService feedbackService, TableRepository tableRepository ) {
+    public DataFetchService( UserRepository userRepository, ManagerRepository managerRepository, ClientRepository clientRepository, RestaurantRepository restaurantRepository, FeedbackRepository feedbackRepository, FeedbackService feedbackService, TableRepository tableRepository, ReservationRepository reservationRepository ) {
         this.userRepository = userRepository;
         this.managerRepository = managerRepository;
         this.clientRepository = clientRepository;
@@ -48,13 +53,70 @@ public class DataFetchService {
         this.feedbackRepository = feedbackRepository;
         this.feedbackService = feedbackService;
         this.tableRepository = tableRepository;
+        this.reservationRepository = reservationRepository;
     }
 
+    public void fetchReservationsLocal(){
+
+        ClientEntity userEntity = clientRepository.findByUsername("Mostafa_Ebrahimi");
+        RestaurantEntity restaurantEntity = restaurantRepository.findByName("The Commoner");
+
+        // First reservation
+        LocalDate date1 = LocalDate.now().minusDays(2); // Assuming the reservation is for yesterday
+        LocalTime time1 = LocalTime.now().withMinute(0); // Set the minutes to zero
+
+// Check if a reservation already exists for the given user, restaurant, date, and time
+        ReservationEntity existingReservation1 = reservationRepository.findByUserAndRestaurantAndDateTime(
+                userEntity.getUsername(), restaurantEntity.getName(), date1, time1);
+
+        if (existingReservation1 == null) {
+            ReservationEntity reservationEntity1 = new ReservationEntity();
+            reservationEntity1.setUser(userEntity);
+            reservationEntity1.setRestaurant(restaurantEntity);
+            reservationEntity1.setDate(date1);
+            reservationEntity1.setTime(time1);
+            reservationEntity1.setCanceled(false); // Assuming the reservation is not canceled
+            reservationEntity1.setTableSeat(4);
+            long i = 1;
+            reservationEntity1.setTable(tableRepository.findByIdAndRestaurantName(i, "The Commoner"));
+            // Save the first reservationEntity using your ReservationRepository
+            reservationRepository.save(reservationEntity1);
+        } else {
+            System.out.println("A reservation already exists for user Mostafa_Ebrahimi at The Commoner on " + date1 + " at " + time1);
+        }
+
+// Second reservation
+        LocalDate date2 = LocalDate.now().plusDays(1); // Assuming the reservation is for tomorrow
+        LocalTime time2 = LocalTime.now().withMinute(0); // Set the minutes to zero
+
+// Check if a reservation already exists for the given user, restaurant, date, and time
+        ReservationEntity existingReservation2 = reservationRepository.findByUserAndRestaurantAndDateTime(
+                userEntity.getUsername(), restaurantEntity.getName(), date2, time2);
+
+        if (existingReservation2 == null) {
+            ReservationEntity reservationEntity2 = new ReservationEntity();
+            reservationEntity2.setUser(userEntity);
+            reservationEntity2.setRestaurant(restaurantEntity);
+            reservationEntity2.setDate(date2);
+            reservationEntity2.setTime(time2);
+            reservationEntity2.setCanceled(false); // Assuming the reservation is not canceled
+            // Save the second reservationEntity using your ReservationRepository
+            reservationEntity2.setTableSeat(5);
+            long i = 2;
+            reservationEntity2.setTable(tableRepository.findByIdAndRestaurantName(i, reservationEntity2.getRestaurant().getName()));
+            reservationRepository.save(reservationEntity2);
+        } else {
+            System.out.println("A reservation already exists for user Mostafa_Ebrahimi at The Commoner on " + date2 + " at " + time2);
+        }
+
+
+    }
     public void fetchUsersAndRestaurantsFromApi() {
         fetchAndSaveUsersFromApi();
         fetchAndSaveRestaurantsFromApi();
         fetchFeedbacksFromApi();
         fetchAndSaveTablesFromApi();
+        fetchReservationsLocal();
         System.out.println("__________________ FETCHING IS FINISHED_________________");
     }
 
