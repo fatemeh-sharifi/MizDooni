@@ -1,6 +1,5 @@
 package Routers;
 
-import Entity.Address.AddressRestaurantEntity;
 import Entity.Restaurant.RestaurantEntity;
 import Repository.Address.AddressRestaurantRepository;
 import Repository.Restaurant.RestaurantRepository;
@@ -11,7 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class RestaurantService {
@@ -74,23 +76,23 @@ public class RestaurantService {
     @Autowired
     private AddressRestaurantRepository addressRestaurantRepository;
 
-    public Map<String, Set<String>> getCountriesAndCities() {
-        List<AddressRestaurantEntity> addresses = addressRestaurantRepository.findAll();
-        Map<String, Set<String>> countryCityMap = new HashMap<>();
+    public Map<String, List<String>> getCountriesAndCities() {
+        List<Object[]> countryCityPairs = addressRestaurantRepository.findDistinctCountriesAndCities();
+        Map<String, List<String>> countryCityMap = new HashMap<>();
 
-        for (AddressRestaurantEntity address : addresses) {
-            String country = address.getCountry();
-            String city = address.getCity();
+        for (Object[] pair : countryCityPairs) {
+            String country = (String) pair[0];
+            String city = (String) pair[1];
 
-            countryCityMap.computeIfAbsent(country, k -> new HashSet<>()).add(city);
+            countryCityMap.computeIfAbsent(country, k -> new ArrayList<>()).add(city);
         }
 
         return countryCityMap;
     }
     @GetMapping("/location")
-    public ResponseEntity<Map<String, Set<String>>> findRestaurantsLocation() {
+    public ResponseEntity<Map<String, List<String>>> findRestaurantsLocation() {
         try {
-            Map<String, Set<String>> countryCityMap = getCountriesAndCities();
+            Map<String, List<String>> countryCityMap = getCountriesAndCities();
             return ResponseEntity.ok().body(countryCityMap);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
