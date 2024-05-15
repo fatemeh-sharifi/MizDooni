@@ -6,7 +6,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "managers")
-@PrimaryKeyJoinColumn(name = "id")
+@PrimaryKeyJoinColumn(name = "username")
 public class ManagerEntity extends UserEntity {
     // Additional manager-specific attributes
 }

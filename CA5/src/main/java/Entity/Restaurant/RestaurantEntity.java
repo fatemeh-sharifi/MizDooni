@@ -1,41 +1,53 @@
 package Entity.Restaurant;
 
 import Entity.Address.AddressRestaurantEntity;
+import Entity.User.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-@Entity
-@Table(name = "restaurants")
-public class RestaurantEntity {
-    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Getter
+    @Setter
+    @Entity
+    @Table(name = "restaurants")
+    public class RestaurantEntity {
 
-    @Column(nullable = false)
-    private String name;
+//        @GeneratedValue(strategy = GenerationType.IDENTITY)
+//        @Id
+        @Column()
+        private int id;
 
-    @Column(name = "manager_username", nullable = false)
-    private String managerUsername;
+        @Id
+        @Column(nullable = false, unique = true)
+        private String name;
 
-    @Column(nullable = false)
-    private String type;
+        @Column(nullable = false)
+        private String type;
 
-    @Column(name = "start_time", nullable = false)
-    private String startTime;
+        @Column(name = "start_time", nullable = false)
+        private String startTime;
 
-    @Column(name = "end_time", nullable = false)
-    private String endTime;
+        @Column(name = "end_time", nullable = false)
+        private String endTime;
 
-    @Lob
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String description;
+        @Lob
+        @Column(nullable = false, columnDefinition = "TEXT")
+        private String description;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private AddressRestaurantEntity address;
+        @OneToOne(cascade = CascadeType.ALL)
+        @JoinColumn(name = "address_id", referencedColumnName = "id")
+        private AddressRestaurantEntity address;
+
+        @Column()
+        private String image;
+
+        @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+        @JoinColumn(name = "manager_username", referencedColumnName = "username")
+        private UserEntity manager;
+
+//        @Column(name = "manager_username", nullable = false)
+//        private String managerUsername;
+
 
 //    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
 //    private List<TableEntity> tables;
@@ -58,17 +70,15 @@ public class RestaurantEntity {
 //    @Column(name = "overall_avg")
 //    private double overallAvg;
 
-    @Column
-    private String image;
-
     public RestaurantEntity() {
+
 //        this.tables = new ArrayList<>();
 //        this.reservations = new ArrayList<>();
 //        this.feedbacks = new ArrayList<>();
     }
     // Add a method to generate the ID value based on attributes
     public void generateId() {
-        String uniqueString = this.name + this.managerUsername + this.address.getCity() + this.address.getCountry();
+        String uniqueString = this.name + this.address.getCity() + this.address.getCountry();
         this.id = Math.abs(uniqueString.hashCode());
     }
 

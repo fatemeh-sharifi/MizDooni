@@ -11,8 +11,10 @@ import lombok.Setter;
 public class AddressUserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
+    @Column()
     private String country;
+    @Column()
     private String city;
 
     public AddressUserEntity() {

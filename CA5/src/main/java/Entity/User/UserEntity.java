@@ -12,11 +12,12 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.JOINED)
 //@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class UserEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
 
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "id")
+//    private Long id;
+
+    @Id
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
@@ -29,7 +30,7 @@ public class UserEntity {
     @Column(name = "role", nullable = false)
     private String role;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressUserEntity address;
 
