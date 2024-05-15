@@ -1,5 +1,7 @@
 package Entity.Feedback;
 
+import Entity.Restaurant.RestaurantEntity;
+import Entity.User.ClientEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,11 +17,13 @@ public class FeedbackEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
-    private String username;
+    @ManyToOne
+    @JoinColumn(name = "customer_username", referencedColumnName = "username")
+    private ClientEntity customer;
 
-    @Column(name = "restaurant_name")
-    private String restaurantName;
+    @ManyToOne
+    @JoinColumn(name = "restaurant_name", referencedColumnName = "name")
+    private RestaurantEntity restaurant;
 
     @Column(name = "food_rate")
     private double foodRate;
@@ -42,9 +46,9 @@ public class FeedbackEntity {
     public FeedbackEntity() {
     }
 
-    public FeedbackEntity(String username, String restaurantName, double foodRate, double serviceRate, double ambianceRate, double overallRate, String comment, LocalDateTime dateTime) {
-        this.username = username;
-        this.restaurantName = restaurantName;
+    public FeedbackEntity( ClientEntity customer, RestaurantEntity restaurant, double foodRate, double serviceRate, double ambianceRate, double overallRate, String comment, LocalDateTime dateTime) {
+        this.customer = customer;
+        this.restaurant = restaurant;
         this.foodRate = foodRate;
         this.serviceRate = serviceRate;
         this.ambianceRate = ambianceRate;

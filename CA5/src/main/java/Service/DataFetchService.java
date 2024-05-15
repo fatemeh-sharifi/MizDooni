@@ -1,10 +1,13 @@
 package Service;
 
+import DTO.Feedback.FeedbackDTO;
 import DTO.Restaurant.RestaurantDTO;
+import Entity.Feedback.FeedbackEntity;
 import Entity.Restaurant.RestaurantEntity;
 import Entity.User.ClientEntity;
 import Entity.User.ManagerEntity;
 import Entity.User.UserEntity;
+import Repository.Feedback.FeedbackRepository;
 import Repository.Restaurant.RestaurantRepository;
 import Repository.User.ClientRepository;
 import Repository.User.ManagerRepository;
@@ -28,18 +31,21 @@ public class DataFetchService {
     private final ManagerRepository managerRepository;
     private final ClientRepository clientRepository;
     private final RestaurantRepository restaurantRepository;
+    private final FeedbackRepository feedbackRepository;
 
     @Autowired
-    public DataFetchService(UserRepository userRepository, ManagerRepository managerRepository, ClientRepository clientRepository, RestaurantRepository restaurantRepository) {
+    public DataFetchService(UserRepository userRepository, ManagerRepository managerRepository, ClientRepository clientRepository, RestaurantRepository restaurantRepository, FeedbackRepository feedbackRepository) {
         this.userRepository = userRepository;
         this.managerRepository = managerRepository;
         this.clientRepository = clientRepository;
         this.restaurantRepository = restaurantRepository;
+        this.feedbackRepository = feedbackRepository;
     }
 
     public void fetchUsersAndRestaurantsFromApi() {
         fetchAndSaveUsersFromApi();
         fetchAndSaveRestaurantsFromApi();
+        fetchFeedbacksFromApi();
     }
 
     private void fetchAndSaveUsersFromApi() {
@@ -126,12 +132,58 @@ public class DataFetchService {
     private void saveRestaurant(RestaurantEntity fetchedRestaurant) {
         RestaurantEntity existingRestaurant = restaurantRepository.findById(fetchedRestaurant.getId());
         if (existingRestaurant == null) {
+
             // If the restaurant doesn't exist in the database, save it
             restaurantRepository.save(fetchedRestaurant);
         } else {
             // If the restaurant already exists, you may want to update it instead of saving again
             // For simplicity, I'm just printing a message here
             System.out.println("Restaurant already exists: " + fetchedRestaurant.getName());
+        }
+    }
+    public void fetchFeedbacksFromApi() {
+        try {
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            String feedbacksEndpoint = "http://91.107.137.117:55/reviews"; // Replace with your actual API endpoint
+            CloseableHttpResponse feedbacksResponse = httpClient.execute(new HttpGet(feedbacksEndpoint));
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                List<FeedbackDTO> fetchedFeedbacks = objectMapper.readValue(feedbacksResponse.getEntity().getContent(), new TypeReference<>() {});
+                for (FeedbackDTO fetchedFeedback : fetchedFeedbacks) {
+
+                    System.out.println(fetchedFeedback.getId());
+                    System.out.println(fetchedFeedback.getRestaurantName());
+                    saveFeedback(fetchedFeedback);
+                }
+            } finally {
+                feedbacksResponse.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error fetching feedbacks from API: " + e.getMessage());
+        }
+    }
+
+    private void saveFeedback( FeedbackDTO fetchedFeedback) {
+        // Check if the feedback already exists in the database
+        FeedbackEntity existingFeedback = feedbackRepository.findByCustomerUsernameAndRestaurantName(
+                fetchedFeedback.getUsername(), fetchedFeedback.getRestaurantName());
+        if (existingFeedback == null) {
+            // If the feedback doesn't exist in the database, save it
+            FeedbackEntity feedbackEntity = new FeedbackEntity();
+            feedbackEntity.setCustomer(clientRepository.findByUsername(fetchedFeedback.getUsername()));
+            feedbackEntity.setComment(fetchedFeedback.getComment());
+            feedbackEntity.setAmbianceRate(fetchedFeedback.getAmbianceRate());
+            feedbackEntity.setRestaurant(restaurantRepository.findByName(fetchedFeedback.getRestaurantName()));
+            feedbackEntity.setServiceRate(fetchedFeedback.getServiceRate());
+            feedbackEntity.setDateTime(fetchedFeedback.getDateTime());
+            feedbackEntity.setFoodRate(fetchedFeedback.getFoodRate());
+            feedbackEntity.setAmbianceRate(fetchedFeedback.getAmbianceRate());
+            feedbackEntity.setOverallRate(fetchedFeedback.getOverallRate());
+            feedbackRepository.save(feedbackEntity);
+        } else {
+            // If the feedback already exists, you may want to update it instead of saving again
+            // For simplicity, I'm just printing a message here
+            System.out.println("Feedback already exists: " + fetchedFeedback.getId());
         }
     }
 }
