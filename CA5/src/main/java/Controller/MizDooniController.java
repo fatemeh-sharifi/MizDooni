@@ -129,22 +129,22 @@ public class MizDooniController {
 //            return ResponseEntity.badRequest().body(null);
 //        }
 //    }
-    @GetMapping("/restaurants/{id}")
-    public ResponseEntity<Restaurant> findRestaurantById(@PathVariable int id) {
-        try {
-            // Retrieve restaurant by ID
-            Restaurant restaurant = mizDooniService.getRestaurantById(id);
-
-            // Check if the restaurant exists
-            if (restaurant != null) {
-                return ResponseEntity.ok().body(restaurant);
-            } else {
-                return ResponseEntity.notFound().build(); // Return 404 if restaurant not found
-            }
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null); // Return 400 if there's an error
-        }
-    }
+//    @GetMapping("/restaurants/{id}")
+//    public ResponseEntity<Restaurant> findRestaurantById(@PathVariable int id) {
+//        try {
+//            // Retrieve restaurant by ID
+//            Restaurant restaurant = mizDooniService.getRestaurantById(id);
+//
+//            // Check if the restaurant exists
+//            if (restaurant != null) {
+//                return ResponseEntity.ok().body(restaurant);
+//            } else {
+//                return ResponseEntity.notFound().build(); // Return 404 if restaurant not found
+//            }
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(null); // Return 400 if there's an error
+//        }
+//    }
 
     @GetMapping("/topRestaurants")
     public ResponseEntity<List<Restaurant>> findTopRestaurants(

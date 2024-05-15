@@ -52,15 +52,24 @@ import java.util.List;
 public interface RestaurantRepository extends JpaRepository<RestaurantEntity, Long> {
     RestaurantEntity findById(int id);
 //    List<RestaurantEntity> findRestaurants( String type, String city, String country, String name);
-    @Query("SELECT r FROM RestaurantEntity r WHERE " +
-            "(:type IS NULL OR r.type = :type) AND " +
-            "(:city IS NULL OR r.address.city = :city) AND " +
-            "(:country IS NULL OR r.address.country = :country) AND " +
-            "(:name IS NULL OR r.name = :name)")
-    List<RestaurantEntity> findRestaurants(
-            String type, String city, String country, String name);
+//    @Query("SELECT r FROM RestaurantEntity r WHERE " +
+//            "(:type IS NULL OR r.type = :type) AND " +
+//            "(:city IS NULL OR r.address.city = :city) AND " +
+//            "(:country IS NULL OR r.address.country = :country) AND " +
+//            "(:name IS NULL OR r.name = :name)")
+//    List<RestaurantEntity> findRestaurants(
+//            String type, String city, String country, String name);
 
     @Query("SELECT r FROM RestaurantEntity r WHERE r.id = :id")
     RestaurantEntity findRestaurantById(@Param("id") int id);
+
+    @Query("SELECT r FROM RestaurantEntity r " +
+            "WHERE (:username IS NULL OR r.address.city = (SELECT u.address.city FROM UserEntity u WHERE u.username = :username)) " +
+            "AND (:username IS NULL OR r.address.country = (SELECT u.address.country FROM UserEntity u WHERE u.username = :username)) " +
+            "AND (:type IS NULL OR r.type = :type) " +
+            "AND (:city IS NULL OR r.address.city = :city) " +
+            "AND (:country IS NULL OR r.address.country = :country)")
+    List<RestaurantEntity> findRestaurants(
+            String username, String type, String city, String country);
 }
 
