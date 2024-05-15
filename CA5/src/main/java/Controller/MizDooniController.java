@@ -19,7 +19,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -146,56 +145,56 @@ public class MizDooniController {
 //        }
 //    }
 
-    @GetMapping("/topRestaurants")
-    public ResponseEntity<List<Restaurant>> findTopRestaurants(
-            @RequestParam(required = false) String username,
-            @RequestParam(required = false) String type,
-            @RequestParam(required = false) String city,
-            @RequestParam(required = false) String country
-    ) {
-        try {
-            List<Restaurant> allRestaurants = mizDooniService.getRestaurants();
-
-            // If username is provided, filter restaurants by user's city and country
-            if (username != null) {
-                User user = mizDooniService.getUserByUsername(username);
-                city = user.getAddress().getCity();
-                country = user.getAddress().getCountry();
-            }
-
-            String finalCity = city;
-            String finalCountry = country;
-            List<Restaurant> filteredRestaurants = allRestaurants.stream()
-                    .filter(restaurant -> type == null || restaurant.getType().equalsIgnoreCase(type))
-                    .filter(restaurant -> finalCity == null || restaurant.getAddress().getCity().equalsIgnoreCase(finalCity))
-                    .filter(restaurant -> finalCountry == null || restaurant.getAddress().getCountry().equalsIgnoreCase(finalCountry))
-                    .collect(Collectors.toList());
-
-            filteredRestaurants.sort(Comparator.comparingDouble(Restaurant::getOverallAvg).reversed());
-            List<Restaurant> topRestaurants = filteredRestaurants.stream().limit(6).collect(Collectors.toList());
-
-            return ResponseEntity.ok().body(topRestaurants);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
-    @GetMapping("/types")
-    public ResponseEntity<List<String>> findRestaurantsTypes(){
-        try{
-            return ResponseEntity.ok().body(mizDooniService.getAllRestaurantTypes());
-        }catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
-    @GetMapping("/location")
-    public ResponseEntity<Map<String, List<String>>> findRestaurantsLocation() {
-        try {
-            Map<String, List<String>> countryCityMap = mizDooniService.getCountriesAndCities();
-            return ResponseEntity.ok().body(countryCityMap);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
+//    @GetMapping("/topRestaurants")
+//    public ResponseEntity<List<Restaurant>> findTopRestaurants(
+//            @RequestParam(required = false) String username,
+//            @RequestParam(required = false) String type,
+//            @RequestParam(required = false) String city,
+//            @RequestParam(required = false) String country
+//    ) {
+//        try {
+//            List<Restaurant> allRestaurants = mizDooniService.getRestaurants();
+//
+//            // If username is provided, filter restaurants by user's city and country
+//            if (username != null) {
+//                User user = mizDooniService.getUserByUsername(username);
+//                city = user.getAddress().getCity();
+//                country = user.getAddress().getCountry();
+//            }
+//
+//            String finalCity = city;
+//            String finalCountry = country;
+//            List<Restaurant> filteredRestaurants = allRestaurants.stream()
+//                    .filter(restaurant -> type == null || restaurant.getType().equalsIgnoreCase(type))
+//                    .filter(restaurant -> finalCity == null || restaurant.getAddress().getCity().equalsIgnoreCase(finalCity))
+//                    .filter(restaurant -> finalCountry == null || restaurant.getAddress().getCountry().equalsIgnoreCase(finalCountry))
+//                    .collect(Collectors.toList());
+//
+//            filteredRestaurants.sort(Comparator.comparingDouble(Restaurant::getOverallAvg).reversed());
+//            List<Restaurant> topRestaurants = filteredRestaurants.stream().limit(6).collect(Collectors.toList());
+//
+//            return ResponseEntity.ok().body(topRestaurants);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//    }
+//    @GetMapping("/types")
+//    public ResponseEntity<List<String>> findRestaurantsTypes(){
+//        try{
+//            return ResponseEntity.ok().body(mizDooniService.getAllRestaurantTypes());
+//        }catch (Exception e) {
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//    }
+//    @GetMapping("/location")
+//    public ResponseEntity<Map<String, List<String>>> findRestaurantsLocation() {
+//        try {
+//            Map<String, List<String>> countryCityMap = mizDooniService.getCountriesAndCities();
+//            return ResponseEntity.ok().body(countryCityMap);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//    }
 
     @GetMapping("/typesCountriesAndCities")
     public ResponseEntity<Map<String, Map<String, List<String>>>> getTypesCountriesAndCities() {

@@ -1,6 +1,8 @@
 package Routers;
 
+import Entity.Address.AddressRestaurantEntity;
 import Entity.Restaurant.RestaurantEntity;
+import Repository.Address.AddressRestaurantRepository;
 import Repository.Restaurant.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class RestaurantService {
@@ -60,4 +62,39 @@ public class RestaurantService {
             return ResponseEntity.badRequest().body(null);
         }
     }
+    @GetMapping("/types")
+    public ResponseEntity<List<String>> findRestaurantsTypes(){
+        try{
+            List<String> types = restaurantRepository.findDistinctTypes();
+            return ResponseEntity.ok().body(types);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+    @Autowired
+    private AddressRestaurantRepository addressRestaurantRepository;
+
+    public Map<String, Set<String>> getCountriesAndCities() {
+        List<AddressRestaurantEntity> addresses = addressRestaurantRepository.findAll();
+        Map<String, Set<String>> countryCityMap = new HashMap<>();
+
+        for (AddressRestaurantEntity address : addresses) {
+            String country = address.getCountry();
+            String city = address.getCity();
+
+            countryCityMap.computeIfAbsent(country, k -> new HashSet<>()).add(city);
+        }
+
+        return countryCityMap;
+    }
+    @GetMapping("/location")
+    public ResponseEntity<Map<String, Set<String>>> findRestaurantsLocation() {
+        try {
+            Map<String, Set<String>> countryCityMap = getCountriesAndCities();
+            return ResponseEntity.ok().body(countryCityMap);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+}
 }

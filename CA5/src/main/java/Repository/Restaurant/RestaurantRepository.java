@@ -88,5 +88,8 @@ public interface RestaurantRepository extends JpaRepository<RestaurantEntity, Lo
             @Param("type") String type,
             @Param("city") String city,
             @Param("country") String country);
+
+    @Query("SELECT DISTINCT r.type FROM RestaurantEntity r")
+    List<String> findDistinctTypes();
 }
 
