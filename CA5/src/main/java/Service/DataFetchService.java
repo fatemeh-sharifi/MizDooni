@@ -49,6 +49,7 @@ public class DataFetchService {
         fetchAndSaveUsersFromApi();
         fetchAndSaveRestaurantsFromApi();
         fetchFeedbacksFromApi();
+        System.out.println("__________________ FETCHING IS FINISHED_________________");
     }
 
     private void fetchAndSaveUsersFromApi() {
@@ -163,7 +164,7 @@ public class DataFetchService {
         }
     }
 
-    private void saveFeedback( FeedbackDTO fetchedFeedback) {
+    private void saveFeedback(FeedbackDTO fetchedFeedback) {
         // Check if the feedback already exists in the database
         FeedbackEntity existingFeedback = feedbackRepository.findByCustomerUsernameAndRestaurantName(
                 fetchedFeedback.getUsername(), fetchedFeedback.getRestaurantName());
@@ -173,12 +174,19 @@ public class DataFetchService {
             feedbackEntity.setCustomer(clientRepository.findByUsername(fetchedFeedback.getUsername()));
             feedbackEntity.setComment(fetchedFeedback.getComment());
             feedbackEntity.setAmbianceRate(fetchedFeedback.getAmbianceRate());
-            feedbackEntity.setRestaurant(restaurantRepository.findByName(fetchedFeedback.getRestaurantName()));
+
+            // Fetch the restaurant entity by its name
+            RestaurantEntity restaurantEntity = restaurantRepository.findByName(fetchedFeedback.getRestaurantName());
+
+            // Set the fetched feedback's restaurant reference
+            feedbackEntity.setRestaurant(restaurantEntity);
+
             feedbackEntity.setServiceRate(fetchedFeedback.getServiceRate());
             feedbackEntity.setDateTime(fetchedFeedback.getDateTime());
             feedbackEntity.setFoodRate(fetchedFeedback.getFoodRate());
             feedbackEntity.setAmbianceRate(fetchedFeedback.getAmbianceRate());
             feedbackEntity.setOverallRate(fetchedFeedback.getOverallRate());
+
             feedbackRepository.save(feedbackEntity);
             feedbackService.updateRestaurantAverages(feedbackEntity);
         } else {
@@ -187,4 +195,5 @@ public class DataFetchService {
             System.out.println("Feedback already exists: " + fetchedFeedback.getId());
         }
     }
+
 }

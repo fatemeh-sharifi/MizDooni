@@ -13,4 +13,6 @@ public interface FeedbackRepository extends JpaRepository<FeedbackEntity, Long> 
     FeedbackEntity findByCustomerUsernameAndRestaurantName(String username, String restaurantName);
 
     List<FeedbackEntity> findByRestaurant ( RestaurantEntity restaurant );
+
+    List<FeedbackEntity> findByRestaurantId ( int id );
 }

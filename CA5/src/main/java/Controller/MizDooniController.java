@@ -332,23 +332,23 @@ public ResponseEntity<String> addOrUpdateReview(
             return ResponseEntity.status(400).body("Failed to addreservation: " + e.getMessage());
         }
     }
-    @PostMapping("/signup")
-    public ResponseEntity<User> signUp(
-            @RequestParam String username,
-            @RequestParam String password,
-            @RequestParam String email,
-            @RequestParam String role,
-            @RequestParam String city,
-            @RequestParam String country
-    ) {
-        try {
-            User user =  mizDooniService.signUp(username, password, email, role, city, country);
-            return ResponseEntity.ok().body(user);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
+//    @PostMapping("/signup")
+//    public ResponseEntity<User> signUp(
+//            @RequestParam String username,
+//            @RequestParam String password,
+//            @RequestParam String email,
+//            @RequestParam String role,
+//            @RequestParam String city,
+//            @RequestParam String country
+//    ) {
+//        try {
+//            User user =  mizDooniService.signUp(username, password, email, role, city, country);
+//            return ResponseEntity.ok().body(user);
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//    }
 
     @GetMapping("/isAble")
     public ResponseEntity<String> isAbleToReview(
