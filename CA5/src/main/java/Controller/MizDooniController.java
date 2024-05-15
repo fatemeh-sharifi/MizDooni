@@ -1,7 +1,6 @@
 package Controller;
 
 import DAO.Restaurant.RestaurantDAO;
-import Entity.Restaurant.RestaurantEntity;
 import Model.Address.AddressUser;
 import Model.Feedback.Feedback;
 import Model.Reservation.Reservation;
@@ -36,21 +35,21 @@ public class MizDooniController {
     @Autowired
     private RestaurantDAO restaurantDAO;
 
-    @GetMapping("/users")
-    public ResponseEntity<List<Entity.User.UserEntity>> getAllUsers() {
-        List<Entity.User.UserEntity> users = userRepository.findAll();
-        return ResponseEntity.ok(users);
-    }
-
-    @GetMapping("/users/{username}")
-    public ResponseEntity<Entity.User.UserEntity> getUserByUsername( @PathVariable String username) {
-        Entity.User.UserEntity user = userRepository.findByUsername(username);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(user);
-        }
-    }
+//    @GetMapping("/users")
+//    public ResponseEntity<List<Entity.User.UserEntity>> getAllUsers() {
+//        List<Entity.User.UserEntity> users = userRepository.findAll();
+//        return ResponseEntity.ok(users);
+//    }
+//
+//    @GetMapping("/users/{username}")
+//    public ResponseEntity<Entity.User.UserEntity> getUserByUsername( @PathVariable String username) {
+//        Entity.User.UserEntity user = userRepository.findByUsername(username);
+//        if (user == null) {
+//            return ResponseEntity.notFound().build();
+//        } else {
+//            return ResponseEntity.ok(user);
+//        }
+//    }
 
 //    @GetMapping("/users")
 //    public ArrayList<User> getAllUsers() {
@@ -115,21 +114,21 @@ public class MizDooniController {
 //            return ResponseEntity.badRequest().body(null);
 //        }
 //    }
-@GetMapping("/restaurants")
-public ResponseEntity<List<RestaurantEntity>> findRestaurants(
-        @RequestParam(required = false) String type,
-        @RequestParam(required = false) String city,
-        @RequestParam(required = false) String country,
-        @RequestParam(required = false) String name
-) {
-    try {
-        List<RestaurantEntity> filteredRestaurants = restaurantDAO.findRestaurants(type, city, country, name);
-        return ResponseEntity.ok().body(filteredRestaurants);
-    } catch (Exception e) {
-        return ResponseEntity.badRequest().body(null);
-    }
-}
 
+//    @GetMapping("/restaurants")
+//    public ResponseEntity<List<RestaurantEntity>> findRestaurants(
+//            @RequestParam(required = false) String type,
+//            @RequestParam(required = false) String city,
+//            @RequestParam(required = false) String country,
+//            @RequestParam(required = false) String name
+//    ) {
+//        try {
+//            List<RestaurantEntity> filteredRestaurants = restaurantDAO.findRestaurants(type, city, country, name);
+//            return ResponseEntity.ok().body(filteredRestaurants);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//    }
     @GetMapping("/restaurants/{id}")
     public ResponseEntity<Restaurant> findRestaurantById(@PathVariable int id) {
         try {

@@ -42,10 +42,25 @@ package Repository.Restaurant;
 
 import Entity.Restaurant.RestaurantEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface RestaurantRepository extends JpaRepository<RestaurantEntity, Long> {
     RestaurantEntity findById(int id);
+//    List<RestaurantEntity> findRestaurants( String type, String city, String country, String name);
+    @Query("SELECT r FROM RestaurantEntity r WHERE " +
+            "(:type IS NULL OR r.type = :type) AND " +
+            "(:city IS NULL OR r.address.city = :city) AND " +
+            "(:country IS NULL OR r.address.country = :country) AND " +
+            "(:name IS NULL OR r.name = :name)")
+    List<RestaurantEntity> findRestaurants(
+            String type, String city, String country, String name);
+
+    @Query("SELECT r FROM RestaurantEntity r WHERE r.id = :id")
+    RestaurantEntity findRestaurantById(@Param("id") int id);
 }
 
