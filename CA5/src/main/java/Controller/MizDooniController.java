@@ -1,11 +1,9 @@
 package Controller;
 
 import DAO.Restaurant.RestaurantDAO;
-import Model.Feedback.Feedback;
 import Model.Reservation.Reservation;
 import Model.Restaurant.Restaurant;
 import Model.Table.Table;
-import Model.User.User;
 import Repository.User.UserRepository;
 import Response.AvailableTimeResponse;
 import Service.Mizdooni.MizDooni;
@@ -15,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -218,67 +215,67 @@ public class MizDooniController {
 //        }
 //    }
 
-@PostMapping("/reviews")
-public ResponseEntity<String> addOrUpdateReview(
-        @RequestParam String username,
-        @RequestParam String restaurantName,
-        @RequestParam(required = false) Double foodRate,
-        @RequestParam(required = false) Double serviceRate,
-        @RequestParam(required = false) Double ambianceRate,
-        @RequestParam(required = false) Double overallRate,
-        @RequestParam(required = false) String comment
-) {
-    try {
-
-        // Retrieve user and restaurant
-        User user = mizDooniService.getUserByUsername(username);
-        Restaurant restaurant = mizDooniService.getRestaurantByName(restaurantName);
-
-
-        // If either user or restaurant not found, return bad request
-        if (user == null || restaurant == null) {
-            return ResponseEntity.status(400).body("User or restaurant not found");
-        }
-
-        // If other parameters are provided, proceed with review update
-        if (foodRate != null && serviceRate != null && ambianceRate != null && overallRate != null && comment != null) {
-            if (!mizDooniService.isReservationTimePassed(username, restaurantName)) {
-                return ResponseEntity.status(400).body("You need to have a past reservation to post a review");
-            }
-
-
-            // Create or update feedback
-            Feedback feedback = new Feedback(username, restaurantName, foodRate, serviceRate, ambianceRate, overallRate, comment, LocalDateTime.now());
-            for(Feedback feedback1: restaurant.getFeedbacks()){
-                System.out.println(feedback1);
-                if(feedback1.getUsername().equals(feedback.getUsername())){
-                    //retract
-                    mizDooniService.retractReview(feedback1,foodRate, serviceRate, ambianceRate, overallRate, comment);
-                    break;
-                }
-            }
-            mizDooniService.updateFeedback(feedback);
-
-            // Update restaurant ratings
-
-            // Update user feedbacks
-            System.out.println(restaurant.getFeedbacks());
-            user.getFeedbacks().add(feedback);
-            restaurant.getFeedbacks().add(feedback);
-            mizDooniService.updateUsers(user);
-            mizDooniService.updateRestaurants(restaurant);
-            System.out.println(restaurant.getFeedbacks());
-
-            mizDooniService.updateRestaurantRatings(restaurantName, foodRate, serviceRate, ambianceRate, overallRate);
-            return ResponseEntity.ok("Review added/updated successfully");
-        } else {
-            // If only username and restaurantName are provided, return 200 indicating it's allowed
-            return ResponseEntity.ok("Review parameters are valid, but review update not requested");
-        }
-    } catch (Exception e) {
-        return ResponseEntity.status(400).body("Failed to add/update review: " + e.getMessage());
-    }
-}
+//@PostMapping("/reviews")
+//public ResponseEntity<String> addOrUpdateReview(
+//        @RequestParam String username,
+//        @RequestParam String restaurantName,
+//        @RequestParam(required = false) Double foodRate,
+//        @RequestParam(required = false) Double serviceRate,
+//        @RequestParam(required = false) Double ambianceRate,
+//        @RequestParam(required = false) Double overallRate,
+//        @RequestParam(required = false) String comment
+//) {
+//    try {
+//
+//        // Retrieve user and restaurant
+//        User user = mizDooniService.getUserByUsername(username);
+//        Restaurant restaurant = mizDooniService.getRestaurantByName(restaurantName);
+//
+//
+//        // If either user or restaurant not found, return bad request
+//        if (user == null || restaurant == null) {
+//            return ResponseEntity.status(400).body("User or restaurant not found");
+//        }
+//
+//        // If other parameters are provided, proceed with review update
+//        if (foodRate != null && serviceRate != null && ambianceRate != null && overallRate != null && comment != null) {
+//            if (!mizDooniService.isReservationTimePassed(username, restaurantName)) {
+//                return ResponseEntity.status(400).body("You need to have a past reservation to post a review");
+//            }
+//
+//
+//            // Create or update feedback
+//            Feedback feedback = new Feedback(username, restaurantName, foodRate, serviceRate, ambianceRate, overallRate, comment, LocalDateTime.now());
+//            for(Feedback feedback1: restaurant.getFeedbacks()){
+//                System.out.println(feedback1);
+//                if(feedback1.getUsername().equals(feedback.getUsername())){
+//                    //retract
+//                    mizDooniService.retractReview(feedback1,foodRate, serviceRate, ambianceRate, overallRate, comment);
+//                    break;
+//                }
+//            }
+//            mizDooniService.updateFeedback(feedback);
+//
+//            // Update restaurant ratings
+//
+//            // Update user feedbacks
+//            System.out.println(restaurant.getFeedbacks());
+//            user.getFeedbacks().add(feedback);
+//            restaurant.getFeedbacks().add(feedback);
+//            mizDooniService.updateUsers(user);
+//            mizDooniService.updateRestaurants(restaurant);
+//            System.out.println(restaurant.getFeedbacks());
+//
+//            mizDooniService.updateRestaurantRatings(restaurantName, foodRate, serviceRate, ambianceRate, overallRate);
+//            return ResponseEntity.ok("Review added/updated successfully");
+//        } else {
+//            // If only username and restaurantName are provided, return 200 indicating it's allowed
+//            return ResponseEntity.ok("Review parameters are valid, but review update not requested");
+//        }
+//    } catch (Exception e) {
+//        return ResponseEntity.status(400).body("Failed to add/update review: " + e.getMessage());
+//    }
+//}
 
     @GetMapping("/tables")
     public ResponseEntity<ArrayList<Table>> tables(){

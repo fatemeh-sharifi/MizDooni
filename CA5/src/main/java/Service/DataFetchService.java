@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -187,6 +188,8 @@ public class DataFetchService {
             feedbackEntity.setAmbianceRate(fetchedFeedback.getAmbianceRate());
             feedbackEntity.setOverallRate(fetchedFeedback.getOverallRate());
 
+            LocalDateTime localDateTime = LocalDateTime.now();
+            feedbackEntity.setDateTime(localDateTime);
             feedbackRepository.save(feedbackEntity);
             feedbackService.updateRestaurantAverages(feedbackEntity);
         } else {

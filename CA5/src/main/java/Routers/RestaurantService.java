@@ -8,13 +8,13 @@ import Model.Restaurant.Restaurant;
 import Repository.Address.AddressRestaurantRepository;
 import Repository.Feedback.FeedbackRepository;
 import Repository.Restaurant.RestaurantRepository;
+import Repository.User.ClientRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +29,8 @@ public class RestaurantService {
     RestaurantRepository restaurantRepository;
     @Autowired
     FeedbackRepository feedbackRepository;
+    @Autowired
+    ClientRepository clientRepository;
 
     public List<Restaurant> getAllRestaurantsWithFeedbacks(List<RestaurantEntity> restaurantEntities) {
         List<Restaurant> restaurantModels = new ArrayList<>();
@@ -189,4 +191,83 @@ public class RestaurantService {
             return ResponseEntity.badRequest().body(null);
         }
     }
+    @Transactional
+    public void updateRestaurantRatings(String restaurantName, Double foodRate, Double serviceRate,
+                                        Double ambianceRate, Double overallRate) {
+        try {
+            RestaurantEntity restaurant = restaurantRepository.findByName(restaurantName);
+
+            if (restaurant != null) {
+                // Fetch feedbacks associated with the restaurant
+                List<FeedbackEntity> feedbacks = feedbackRepository.findByRestaurantId(restaurant.getId());
+
+                System.out.println(restaurant.getFoodAvg());
+                // Update food, service, ambiance, and overall averages
+                double newFoodAvg = calculateNewAverage(restaurant.getFoodAvg(), feedbacks.size(), foodRate);
+                double newServiceAvg = calculateNewAverage(restaurant.getServiceAvg(), feedbacks.size(), serviceRate);
+                double newAmbianceAvg = calculateNewAverage(restaurant.getAmbianceAvg(), feedbacks.size(), ambianceRate);
+                double newOverallAvg = calculateOverallAverage(newFoodAvg, newServiceAvg, newAmbianceAvg);
+
+                // Update restaurant averages
+                restaurant.setFoodAvg(newFoodAvg);
+                restaurant.setServiceAvg(newServiceAvg);
+                restaurant.setAmbianceAvg(newAmbianceAvg);
+                restaurant.setOverallAvg(newOverallAvg);
+
+                // Save the updated restaurant entity
+                restaurantRepository.save(restaurant);
+            }
+        } catch (Exception e) {
+            // Handle any exceptions
+            e.printStackTrace();
+        }
+    }
+
+    // Helper method to calculate new average rating
+    private double calculateNewAverage(double currentAvg, int currentCount, double newRating) {
+        return (currentAvg * currentCount + newRating) / (currentCount + 1);
+    }
+
+    // Helper method to calculate overall average rating
+    private double calculateOverallAverage(double foodAvg, double serviceAvg, double ambianceAvg) {
+        // A simple average of the food, service, and ambiance averages
+        return (foodAvg + serviceAvg + ambianceAvg) / 3.0;
+    }
+    @PostMapping("/reviews")
+    public ResponseEntity<String> addOrUpdateReview(
+            @RequestParam String username,
+            @RequestParam String restaurantName,
+            @RequestParam(required = false) Double foodRate,
+            @RequestParam(required = false) Double serviceRate,
+            @RequestParam(required = false) Double ambianceRate,
+            @RequestParam(required = false) Double overallRate,
+            @RequestParam(required = false) String comment
+    ) {
+        try {
+            // Check if any review parameter is provided
+            if (foodRate == null && serviceRate == null && ambianceRate == null && overallRate == null && comment == null) {
+                return ResponseEntity.ok("Review parameters are valid, but review update not requested");
+            }
+            System.out.println(feedbackRepository.findAll().size());
+            // Update feedback
+
+            FeedbackEntity feedbackEntity = feedbackRepository.findByCustomerUsernameAndRestaurantName(username, restaurantName);
+            if(feedbackEntity == null){
+                LocalDateTime localDateTime = LocalDateTime.now();
+                FeedbackEntity newFeedbackEntity = new FeedbackEntity(clientRepository.findByUsername(username), restaurantRepository.findByName(restaurantName), foodRate, serviceRate, ambianceRate,overallRate, comment, localDateTime);
+                feedbackRepository.save(newFeedbackEntity);
+                updateRestaurantRatings(restaurantName, foodRate, serviceRate, ambianceRate, overallRate);
+            } else {
+                // Update restaurant ratings if all parameters are provided
+                if (foodRate != null && serviceRate != null && ambianceRate != null && overallRate != null && comment != null) {
+                    feedbackRepository.updateExistingFeedback(username, restaurantName, foodRate, serviceRate, ambianceRate, overallRate, comment);
+                    updateRestaurantRatings(restaurantName, foodRate, serviceRate, ambianceRate, overallRate);
+                }
+            }
+            return ResponseEntity.ok("Review added/updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Failed to add/update review: " + e.getMessage());
+        }
+    }
+
 }
