@@ -73,21 +73,20 @@ public interface RestaurantRepository extends JpaRepository<RestaurantEntity, Lo
 //    List<RestaurantEntity> findRestaurants(
 //            String username, String type, String city, String country);
 
-//    @Query("SELECT r, AVG(f.overallRate) AS avgRating FROM RestaurantEntity r " +
-//            "LEFT JOIN r.address a " +
-//            "LEFT JOIN FeedbackEntity f ON r.name = f.restaurant.name " +
-//            "LEFT JOIN UserEntity u ON u.address = a " +
-//            "WHERE (:username IS NULL OR u.username = :username) " +
-//            "AND (:type IS NULL OR r.type = :type) " +
-//            "AND (:city IS NULL OR a.city = :city) " +
-//            "AND (:country IS NULL OR a.country = :country) " +
-//            "GROUP BY r " +
-//            "ORDER BY avgRating DESC")
-//    List<Object[]> findTopRestaurantsWithAvgRating(
-//            @Param("username") String username,
-//            @Param("type") String type,
-//            @Param("city") String city,
-//            @Param("country") String country,
-//            Pageable pageable);
+
+
+    @Query("SELECT r FROM RestaurantEntity r " +
+            "LEFT JOIN AddressRestaurantEntity a ON r.address.id = a.id " +
+            "LEFT JOIN UserEntity u ON r.manager.username = u.username " +
+            "WHERE (:username IS NULL OR (u.username = :username AND u.address.city = a.city AND u.address.country = a.country)) " +
+            "AND (:type IS NULL OR r.type = :type) " +
+            "AND (:city IS NULL OR a.city = :city) " +
+            "AND (:country IS NULL OR a.country = :country) " +
+            "ORDER BY r.overallAvg DESC")
+    List<RestaurantEntity> findTopRestaurants(
+            @Param("username") String username,
+            @Param("type") String type,
+            @Param("city") String city,
+            @Param("country") String country);
 }
 

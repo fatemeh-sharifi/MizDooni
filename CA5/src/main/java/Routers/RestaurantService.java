@@ -17,8 +17,9 @@ public class RestaurantService {
 
     @Autowired
     RestaurantRepository restaurantRepository;
+
     @GetMapping("/restaurants")
-    public ResponseEntity<List<RestaurantEntity>> findRestaurants(
+    public ResponseEntity<List<RestaurantEntity>> findRestaurants (
             @RequestParam(required = false) String type,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String country,
@@ -33,7 +34,7 @@ public class RestaurantService {
     }
 
     @GetMapping("/restaurants/{id}")
-    public ResponseEntity<RestaurantEntity> findRestaurantById( @PathVariable int id) {
+    public ResponseEntity<RestaurantEntity> findRestaurantById ( @PathVariable int id ) {
         try {
             RestaurantEntity restaurant = restaurantRepository.findRestaurantById(id);
             if (restaurant != null) {
@@ -45,25 +46,18 @@ public class RestaurantService {
             return ResponseEntity.badRequest().body(null);
         }
     }
-//    public List<RestaurantEntity> findTopRestaurants(String username, String type, String city, String country) {
-//        List<RestaurantEntity> allRestaurants = restaurantRepository.findRestaurants(username, type, city, country);
-//        List<RestaurantEntity> sortedRestaurants = allRestaurants.stream()
-//                .sorted(Comparator.comparingDouble(RestaurantEntity::).reversed())
-//                .collect(Collectors.toList());
-//        return sortedRestaurants.stream().limit(6).collect(Collectors.toList());
-//    }
-//    @GetMapping("/topRestaurants")
-//    public ResponseEntity<List<RestaurantEntity>> findTopRestaurants(
-//            @RequestParam(required = false) String username,
-//            @RequestParam(required = false) String type,
-//            @RequestParam(required = false) String city,
-//            @RequestParam(required = false) String country
-//    ) {
-//        try {
-//            List<RestaurantEntity> topRestaurants = restaurantRepository.findTopRestaurants(username, type, city, country);
-//            return ResponseEntity.ok().body(topRestaurants);
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body(null);
-//        }
-//    }
+
+    @GetMapping("/topRestaurants")
+    public ResponseEntity<List<RestaurantEntity>> findTopRestaurants (
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String country ) {
+        try {
+            List<RestaurantEntity> topRestaurants = restaurantRepository.findTopRestaurants(username, type, city, country);
+            return ResponseEntity.ok().body(topRestaurants);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }
