@@ -1,7 +1,6 @@
 package Controller;
 
 import DAO.Restaurant.RestaurantDAO;
-import Model.Address.AddressUser;
 import Model.Feedback.Feedback;
 import Model.Reservation.Reservation;
 import Model.Restaurant.Restaurant;
@@ -206,18 +205,18 @@ public class MizDooniController {
 //        }
 //    }
 
-    @PostMapping("/login")
-    public ResponseEntity<User> login(
-            @RequestParam String username,
-            @RequestParam String password
-    ) {
-        try {
-            User validatedUser = mizDooniService.login(username, password);
-            return ResponseEntity.ok().body(validatedUser);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<User> login(
+//            @RequestParam String username,
+//            @RequestParam String password
+//    ) {
+//        try {
+//            User validatedUser = mizDooniService.login(username, password);
+//            return ResponseEntity.ok().body(validatedUser);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//    }
 
 @PostMapping("/reviews")
 public ResponseEntity<String> addOrUpdateReview(
@@ -281,35 +280,6 @@ public ResponseEntity<String> addOrUpdateReview(
     }
 }
 
-    @PostMapping("/signin")
-    public ResponseEntity<User> signIn(
-            @RequestParam String username,
-            @RequestParam String password,
-            @RequestParam String email,
-            @RequestParam String role,
-            @RequestParam String city,
-            @RequestParam String country
-    ) {
-        try {
-            // Check if the username is already taken
-            if (mizDooniService.getUserByUsername(username) != null) {
-                return ResponseEntity.status(400).body(null); // Username already exists, return bad request
-            }
-
-            AddressUser addressUser = new AddressUser();
-            addressUser.setCity(city);
-            addressUser.setCountry(country);
-            // Create a new user object
-            User newUser = new User(username, email, password, role, addressUser);
-
-            // Add the user to the system
-            mizDooniService.addUser(newUser);
-
-            return ResponseEntity.ok(newUser); // Return the newly created user
-        } catch (Exception e) {
-            return ResponseEntity.status(400).body(null); // Failed to create user, return bad request
-        }
-    }
     @GetMapping("/tables")
     public ResponseEntity<ArrayList<Table>> tables(){
         return ResponseEntity.ok(mizDooniService.getTables());

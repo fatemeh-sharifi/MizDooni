@@ -1,5 +1,6 @@
 package Entity.User;
 
+import Entity.Address.AddressUserEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
@@ -8,5 +9,15 @@ import jakarta.persistence.Table;
 @Table(name = "clients")
 @PrimaryKeyJoinColumn(name = "username")
 public class ClientEntity extends UserEntity {
-    // Additional client-specific attributes
+    public ClientEntity ( String username, String email, String password, String role, AddressUserEntity addressUser ) {
+        setUsername(username);
+        setEmail(email);
+        setPassword(password);
+        setRole(role);
+        setAddress(addressUser);
+    }
+
+    public ClientEntity ( ) {
+
+    }
 }

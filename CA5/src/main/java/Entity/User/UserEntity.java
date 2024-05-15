@@ -34,5 +34,16 @@ public class UserEntity {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressUserEntity address;
 
+    public UserEntity ( String username, String email, String password, String role, AddressUserEntity addressUser ) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.address = addressUser;
+    }
+
+    public UserEntity ( ) {
+
+    }
 }
 
