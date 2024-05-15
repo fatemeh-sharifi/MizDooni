@@ -12,6 +12,7 @@ import Repository.Restaurant.RestaurantRepository;
 import Repository.User.ClientRepository;
 import Repository.User.ManagerRepository;
 import Repository.User.UserRepository;
+import Service.Feedback.FeedbackService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -32,14 +33,16 @@ public class DataFetchService {
     private final ClientRepository clientRepository;
     private final RestaurantRepository restaurantRepository;
     private final FeedbackRepository feedbackRepository;
+    private final FeedbackService feedbackService;
 
     @Autowired
-    public DataFetchService(UserRepository userRepository, ManagerRepository managerRepository, ClientRepository clientRepository, RestaurantRepository restaurantRepository, FeedbackRepository feedbackRepository) {
+    public DataFetchService( UserRepository userRepository, ManagerRepository managerRepository, ClientRepository clientRepository, RestaurantRepository restaurantRepository, FeedbackRepository feedbackRepository, FeedbackService feedbackService ) {
         this.userRepository = userRepository;
         this.managerRepository = managerRepository;
         this.clientRepository = clientRepository;
         this.restaurantRepository = restaurantRepository;
         this.feedbackRepository = feedbackRepository;
+        this.feedbackService = feedbackService;
     }
 
     public void fetchUsersAndRestaurantsFromApi() {
@@ -106,7 +109,6 @@ public class DataFetchService {
                         restaurantEntity.setImage(fetchedRestaurant.getImage());
                         restaurantEntity.setName(fetchedRestaurant.getName());
                         restaurantEntity.setAddress(fetchedRestaurant.getAddress());
-                        System.out.println(managerRepository.count() == 0);
                         restaurantEntity.setManager(managerRepository.findByUsername(fetchedRestaurant.getManagerUsername()));
                         restaurantEntity.setDescription(fetchedRestaurant.getDescription());
                         restaurantEntity.setType(fetchedRestaurant.getType());
@@ -151,8 +153,6 @@ public class DataFetchService {
                 List<FeedbackDTO> fetchedFeedbacks = objectMapper.readValue(feedbacksResponse.getEntity().getContent(), new TypeReference<>() {});
                 for (FeedbackDTO fetchedFeedback : fetchedFeedbacks) {
 
-                    System.out.println(fetchedFeedback.getId());
-                    System.out.println(fetchedFeedback.getRestaurantName());
                     saveFeedback(fetchedFeedback);
                 }
             } finally {
@@ -180,6 +180,7 @@ public class DataFetchService {
             feedbackEntity.setAmbianceRate(fetchedFeedback.getAmbianceRate());
             feedbackEntity.setOverallRate(fetchedFeedback.getOverallRate());
             feedbackRepository.save(feedbackEntity);
+            feedbackService.updateRestaurantAverages(feedbackEntity);
         } else {
             // If the feedback already exists, you may want to update it instead of saving again
             // For simplicity, I'm just printing a message here

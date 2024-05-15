@@ -48,7 +48,7 @@ public class RestaurantService {
 //    public List<RestaurantEntity> findTopRestaurants(String username, String type, String city, String country) {
 //        List<RestaurantEntity> allRestaurants = restaurantRepository.findRestaurants(username, type, city, country);
 //        List<RestaurantEntity> sortedRestaurants = allRestaurants.stream()
-//                .sorted(Comparator.comparingDouble(RestaurantEntity::getOverallAvg).reversed())
+//                .sorted(Comparator.comparingDouble(RestaurantEntity::).reversed())
 //                .collect(Collectors.toList());
 //        return sortedRestaurants.stream().limit(6).collect(Collectors.toList());
 //    }

@@ -72,5 +72,22 @@ public interface RestaurantRepository extends JpaRepository<RestaurantEntity, Lo
 //            "AND (:country IS NULL OR r.address.country = :country)")
 //    List<RestaurantEntity> findRestaurants(
 //            String username, String type, String city, String country);
+
+//    @Query("SELECT r, AVG(f.overallRate) AS avgRating FROM RestaurantEntity r " +
+//            "LEFT JOIN r.address a " +
+//            "LEFT JOIN FeedbackEntity f ON r.name = f.restaurant.name " +
+//            "LEFT JOIN UserEntity u ON u.address = a " +
+//            "WHERE (:username IS NULL OR u.username = :username) " +
+//            "AND (:type IS NULL OR r.type = :type) " +
+//            "AND (:city IS NULL OR a.city = :city) " +
+//            "AND (:country IS NULL OR a.country = :country) " +
+//            "GROUP BY r " +
+//            "ORDER BY avgRating DESC")
+//    List<Object[]> findTopRestaurantsWithAvgRating(
+//            @Param("username") String username,
+//            @Param("type") String type,
+//            @Param("city") String city,
+//            @Param("country") String country,
+//            Pageable pageable);
 }
 

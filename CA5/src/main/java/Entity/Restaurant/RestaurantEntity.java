@@ -45,36 +45,21 @@ import lombok.Setter;
         @JoinColumn(name = "manager_username", referencedColumnName = "username")
         private UserEntity manager;
 
-//        @Column(name = "manager_username", nullable = false)
-//        private String managerUsername;
+        @Column(nullable = false)
+        private double serviceAvg;
+
+        @Column(nullable = false)
+        private double foodAvg;
+
+        @Column(nullable = false)
+        private double ambianceAvg;
+
+        @Column(nullable = false)
+        private double overallAvg;
 
 
-//    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-//    private List<TableEntity> tables;
-//
-//    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-//    private List<ReservationEntity> reservations;
-//
-//    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-//    private List<FeedbackEntity> feedbacks;
-//
-//    @Column(name = "service_avg")
-//    private double serviceAvg;
-//
-//    @Column(name = "food_avg")
-//    private double foodAvg;
-//
-//    @Column(name = "ambiance_avg")
-//    private double ambianceAvg;
-//
-//    @Column(name = "overall_avg")
-//    private double overallAvg;
+        public RestaurantEntity() {
 
-    public RestaurantEntity() {
-
-//        this.tables = new ArrayList<>();
-//        this.reservations = new ArrayList<>();
-//        this.feedbacks = new ArrayList<>();
     }
     // Add a method to generate the ID value based on attributes
     public void generateId() {
