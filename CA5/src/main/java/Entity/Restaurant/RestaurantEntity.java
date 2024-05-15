@@ -34,9 +34,10 @@ import lombok.Setter;
         @Column(nullable = false, columnDefinition = "TEXT")
         private String description;
 
-        @OneToOne(cascade = CascadeType.ALL)
+        @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
         @JoinColumn(name = "address_id", referencedColumnName = "id")
         private AddressRestaurantEntity address;
+
 
         @Column()
         private String image;

@@ -98,5 +98,34 @@ public class RestaurantService {
             return ResponseEntity.badRequest().body(null);
         }
 
-}
+    }
+    public Map<String, Map<String, List<String>>> getTypesCountriesAndCities() {
+        List<String> types = restaurantRepository.findDistinctTypes();
+        Map<String, Map<String, List<String>>> typeCountryCityMap = new HashMap<>();
+
+        for (String type : types) {
+            List<Object[]> countryCityPairs = addressRestaurantRepository.findDistinctCountriesAndCities();
+            Map<String, List<String>> countryCityMap = new HashMap<>();
+
+            for (Object[] pair : countryCityPairs) {
+                String country = (String) pair[0];
+                String city = (String) pair[1];
+
+                countryCityMap.computeIfAbsent(country, k -> new ArrayList<>()).add(city);
+            }
+
+            typeCountryCityMap.put(type, countryCityMap);
+        }
+
+        return typeCountryCityMap;
+    }
+    @GetMapping("/typesCountriesAndCities")
+    public ResponseEntity<Map<String, Map<String, List<String>>>> findTypesCountriesAndCities() {
+        try {
+            Map<String, Map<String, List<String>>> typeCountryCityMap = getTypesCountriesAndCities();
+            return ResponseEntity.ok().body(typeCountryCityMap);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }

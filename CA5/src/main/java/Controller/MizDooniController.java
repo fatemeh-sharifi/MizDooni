@@ -196,15 +196,15 @@ public class MizDooniController {
 //        }
 //    }
 
-    @GetMapping("/typesCountriesAndCities")
-    public ResponseEntity<Map<String, Map<String, List<String>>>> getTypesCountriesAndCities() {
-        try {
-            Map<String, Map<String, List<String>>> typeCountryCityMap = mizDooniService.getTypesCountriesAndCities();
-            return ResponseEntity.ok().body(typeCountryCityMap);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
+//    @GetMapping("/typesCountriesAndCities")
+//    public ResponseEntity<Map<String, Map<String, List<String>>>> getTypesCountriesAndCities() {
+//        try {
+//            Map<String, Map<String, List<String>>> typeCountryCityMap = mizDooniService.getTypesCountriesAndCities();
+//            return ResponseEntity.ok().body(typeCountryCityMap);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//    }
 
     @PostMapping("/login")
     public ResponseEntity<User> login(

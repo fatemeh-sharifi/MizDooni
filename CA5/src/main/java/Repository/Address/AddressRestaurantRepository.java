@@ -11,4 +11,5 @@ import java.util.List;
 public interface AddressRestaurantRepository extends JpaRepository<AddressRestaurantEntity, Long> {
     @Query("SELECT DISTINCT a.country, a.city FROM AddressRestaurantEntity a")
     List<Object[]> findDistinctCountriesAndCities();
+
 }
