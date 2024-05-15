@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class RestaurantService {
@@ -118,7 +119,8 @@ public class RestaurantService {
         try {
             List<RestaurantEntity> topRestaurants = restaurantRepository.findTopRestaurants(username, type, city, country);
             List<Restaurant> topRestaurantsModel = getAllRestaurantsWithFeedbacks(topRestaurants);
-            return ResponseEntity.ok().body(topRestaurantsModel);
+            List<Restaurant> top6RestaurantsModel = topRestaurantsModel.stream().limit(6).collect(Collectors.toList());
+            return ResponseEntity.ok().body(top6RestaurantsModel);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }

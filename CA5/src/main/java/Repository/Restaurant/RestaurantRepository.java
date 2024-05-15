@@ -64,21 +64,10 @@ public interface RestaurantRepository extends JpaRepository<RestaurantEntity, Lo
     @Query("SELECT r FROM RestaurantEntity r WHERE r.id = :id")
     RestaurantEntity findRestaurantById(@Param("id") int id);
 
-//    @Query("SELECT r FROM RestaurantEntity r " +
-//            "WHERE (:username IS NULL OR r.address.city = (SELECT u.address.city FROM UserEntity u WHERE u.username = :username)) " +
-//            "AND (:username IS NULL OR r.address.country = (SELECT u.address.country FROM UserEntity u WHERE u.username = :username)) " +
-//            "AND (:type IS NULL OR r.type = :type) " +
-//            "AND (:city IS NULL OR r.address.city = :city) " +
-//            "AND (:country IS NULL OR r.address.country = :country)")
-//    List<RestaurantEntity> findRestaurants(
-//            String username, String type, String city, String country);
-
-
-
     @Query("SELECT r FROM RestaurantEntity r " +
             "LEFT JOIN AddressRestaurantEntity a ON r.address.id = a.id " +
             "LEFT JOIN UserEntity u ON r.manager.username = u.username " +
-            "WHERE (:username IS NULL OR (u.username = :username AND u.address.city = a.city AND u.address.country = a.country)) " +
+            "WHERE (:username IS NULL OR (u.username = :username AND u.address.country = a.country)) " +
             "AND (:type IS NULL OR r.type = :type) " +
             "AND (:city IS NULL OR a.city = :city) " +
             "AND (:country IS NULL OR a.country = :country) " +
