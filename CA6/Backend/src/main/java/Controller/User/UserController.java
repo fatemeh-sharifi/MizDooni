@@ -5,6 +5,7 @@ import Entity.User.ClientEntity;
 import Entity.User.ManagerEntity;
 import Entity.User.UserEntity;
 import Repository.User.UserRepository;
+import Service.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/users")
     public ResponseEntity<List<UserEntity>> getAllUsers() {
@@ -41,7 +44,8 @@ public class UserController {
     ) {
         try {
             // Query the database to find the user based on the username and password
-            UserEntity user = userRepository.findByUsernameAndPassword(username, password);
+            String hashed_password = userService.hashPassword(password);
+            UserEntity user = userRepository.findByUsernameAndPassword(username, hashed_password);
 
             if (user != null) {
                 // Return the user if found
@@ -76,9 +80,11 @@ public class UserController {
 
             UserEntity newUser;
             if (role.equalsIgnoreCase("manager")) {
-                newUser = new ManagerEntity(username, email, password, role, addressUser);
+                String hashed_password = userService.hashPassword(password);
+                newUser = new ManagerEntity(username, email, hashed_password, role, addressUser);
             } else if (role.equalsIgnoreCase("client")) {
-                newUser = new ClientEntity(username, email, password, role, addressUser);
+                String hashed_password = userService.hashPassword(password);
+                newUser = new ClientEntity(username, email, hashed_password, role, addressUser);
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Invalid role, return bad request
             }
