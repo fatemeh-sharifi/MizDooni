@@ -9,6 +9,7 @@ import Service.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,10 +45,14 @@ public class UserController {
     ) {
         try {
             // Query the database to find the user based on the username and password
-            String hashed_password = userService.hashPassword(password);
-            UserEntity user = userRepository.findByUsernameAndPassword(username, hashed_password);
-
-            if (user != null) {
+            String hashedPassword = userService.hashPassword(password);
+            System.out.println (hashedPassword);
+            UserEntity user = userRepository.findByUsername(username);
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            boolean isPasswordCorrect = encoder.matches(password, hashedPassword);
+            System.out.println (hashedPassword);
+            System.out.println (isPasswordCorrect );
+            if (user != null & isPasswordCorrect) {
                 // Return the user if found
                 return ResponseEntity.ok().body(user);
             } else {
