@@ -38,32 +38,32 @@ public class UserController {
         }
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<UserEntity> login(
-            @RequestParam String username,
-            @RequestParam String password
-    ) {
-        try {
-            // Query the database to find the user based on the username and password
-            String hashedPassword = userService.hashPassword(password);
-            System.out.println (hashedPassword);
-            UserEntity user = userRepository.findByUsername(username);
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            boolean isPasswordCorrect = encoder.matches(password, hashedPassword);
-            System.out.println (hashedPassword);
-            System.out.println (isPasswordCorrect );
-            if (user != null & isPasswordCorrect) {
-                // Return the user if found
-                return ResponseEntity.ok().body(user);
-            } else {
-                // Return 404 Not Found if user is not found
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            // Return 500 Internal Server Error if an error occurs
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<UserEntity> login(
+//            @RequestParam String username,
+//            @RequestParam String password
+//    ) {
+//        try {
+//            // Query the database to find the user based on the username and password
+//            String hashedPassword = userService.hashPassword(password);
+//            System.out.println (hashedPassword);
+//            UserEntity user = userRepository.findByUsername(username);
+//            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//            boolean isPasswordCorrect = encoder.matches(password, hashedPassword);
+//            System.out.println (hashedPassword);
+//            System.out.println (isPasswordCorrect );
+//            if (user != null & isPasswordCorrect) {
+//                // Return the user if found
+//                return ResponseEntity.ok().body(user);
+//            } else {
+//                // Return 404 Not Found if user is not found
+//                return ResponseEntity.notFound().build();
+//            }
+//        } catch (Exception e) {
+//            // Return 500 Internal Server Error if an error occurs
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
     @PostMapping("/signup")
     public ResponseEntity<UserEntity> signIn(
             @RequestParam String username,
