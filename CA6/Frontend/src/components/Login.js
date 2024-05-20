@@ -114,13 +114,13 @@ function Login() {
                     <div className="d-flex justify-content-around mb-4">
                         <p className="me-2">I'm a new</p>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" name="userType" id="manager" checked={role === 'manager'} onClick={() => { setRole('manager') }}/>
+                            <input className="form-check-input" type="checkbox" name="userType" id="manager" checked={role === 'manager'} onClick={() => { setRole('manager') }} />
                             <label className="form-check-label" htmlFor="manager">
                                 Manager
                             </label>
                         </div>
                         <div className="form-check">
-                            <input className="form-check-input" type="checkbox" name="userType" id="client" checked={role === 'client'} onClick={() => { setRole('client') }}/>
+                            <input className="form-check-input" type="checkbox" name="userType" id="client" checked={role === 'client'} onClick={() => { setRole('client') }} />
                             <label className="form-check-label" htmlFor="client">
                                 Client
                             </label>
@@ -129,6 +129,9 @@ function Login() {
                     <button className="btn btn-primary mb-4 w-100 bg-danger border-0" onClick={handleSignUp}>Sign up</button>
                 </div>
             </div>
+            <a href={`https://accounts.google.com/o/oauth2/auth?client_id=318976450429-mlodo6eolob4l5a2mfnb33l6pr8gl3h0.apps.googleusercontent.com&redirect_uri=http://localhost:3000/callback&response_type=code&scope=email%20profile`}>
+                <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" alt="Google sign-in" />
+            </a>
         </div>
     );
 }

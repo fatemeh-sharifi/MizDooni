@@ -20,34 +20,17 @@ function App() {
   return (
     <div>
       <Router>
-      <UserContext.Provider value={{ ...user }}>
-        <Navbar />
-        <Routes>
-          {/* <Route
-            path="/Profile"
-            element={
-              <Protected isLoggedIn={user.loggedIn}>
-                <Profile />
-              </Protected>
-            }
-          /> */}
-          {/* <Route path="/Provider/:id" element={<Protected isLoggedIn={user.loggedIn}><Provider /></Protected>} /> */}
-          {/* <Route path="/Register" element={<Register />} /> */}
-          <Route path="/Login" element={<Login />} />
-          {/* <Route
-            path="/Products/:id"
-            element={
-              <Protected isLoggedIn={user.loggedIn}>
-                <Product />
-              </Protected>
-            }
-          /> */}
-          <Route path="/" element={<Protected isLoggedIn={user.loggedIn}><Home /></Protected>} />
-          <Route path="/searchResualt" element={<Protected isLoggedIn={user.loggedIn}><SearchResult /></Protected>} />
-          <Route path="/restaurant/:id" element={<Protected isLoggedIn={user.loggedIn}><Restaurant /></Protected>} />
-          <Route path="/reservations" element={<Protected isLoggedIn={user.loggedIn}><ProtectedClient role={user.role}><Customer /></ProtectedClient></Protected>} />
-        </Routes>
-        <Footer/>
+        <UserContext.Provider value={{ ...user }}>
+          <Navbar />
+          <Routes>
+            <Route path={"/callback"} element={<Callback />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/" element={<Protected isLoggedIn={user.loggedIn}><Home /></Protected>} />
+            <Route path="/searchResualt" element={<Protected isLoggedIn={user.loggedIn}><SearchResult /></Protected>} />
+            <Route path="/restaurant/:id" element={<Protected isLoggedIn={user.loggedIn}><Restaurant /></Protected>} />
+            <Route path="/reservations" element={<Protected isLoggedIn={user.loggedIn}><ProtectedClient role={user.role}><Customer /></ProtectedClient></Protected>} />
+          </Routes>
+          <Footer />
         </UserContext.Provider>
       </Router>
     </div>
