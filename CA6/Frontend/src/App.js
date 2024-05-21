@@ -1,6 +1,6 @@
 //import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import React, { createContext } from "react";
+import React, { createContext, useEffect } from "react";
 import './App.css';
 import UserInfo from "./utility/userInfo";
 import Navbar from "./components/Navbar";
@@ -18,7 +18,15 @@ export const UserContext = createContext({});
 function App() {
 
   const user = UserInfo();
-  console.log(user);
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+    console.log("local_storage", localStorage);
+    console.log("first", user);
+  }, [user]);
+
+  
+
+  // console.log(user);
   return (
     <div>
       <Router>
@@ -38,5 +46,4 @@ function App() {
     </div>
   );
 }
-
 export default App;

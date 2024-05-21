@@ -26,31 +26,23 @@ function Login() {
     function handleSignIn(event) {
         event.preventDefault();
         const params = { username: username, password: password };
-        axios.post("http://localhost:8080/login", null, { params: params }).then(
+        axios.post("http://localhost:8080/login", null, {
+            params: params,
+            // headers: {
+            //     'Content-Type': 'application/json',
+            //     'Access-Control-Allow-Origin': '*', // This allows requests from any origin, adjust as needed
+            //     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', // Specify the allowed HTTP methods
+            //     'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept', // Specify the allowed headers
+            // }
+        }).then(
             (response) => {
                 if (response.status === 200) {
-                    const token = response.data.token; // Assuming the token is returned in response.data.token
-                    console.log(response.data.token)
+                    const token = response.data.token;
+                    console.log(response.data.token);
                     localStorage.setItem('jwtToken', token);
                     UserInfo.SetAllInfo(response.data.user);
-                    navigate("/")
-                    // axios.get("http://localhost:8080/users/" + String(username), {
-                    //     headers: {
-                    //         'Authorization': `Bearer ${token}`
-                    //     }
-                    // }).then(
-                    //     (response) => {
-                    //         // console.log(response.data.user)
-                            
-                    //     },
-                    //     (error) => {
-                    //         Swal.fire({
-                    //             icon: 'error',
-                    //             title: error.response.data.message.split(":")[1],
-                    //             text: "Sign in failed! Please try again.",
-                    //         });
-                    //     }
-                    // );
+                    localStorage.setItem('user', JSON.stringify(response.data.user));
+                    navigate("/");
                 }
             },
             (error) => {
@@ -72,6 +64,7 @@ function Login() {
             console.log(error);
         });
     }
+    
 
     function handleSignUp(event) {
         event.preventDefault();
@@ -148,3 +141,4 @@ function Login() {
 }
 
 export default Login;
+

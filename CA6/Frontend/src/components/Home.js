@@ -96,6 +96,7 @@ function Home() {
     // }
     function getSameLocation() {
         const params = { username: UserInfo.username };
+        console.log("send req : ", localStorage.getItem("jwtToken"));
         axios.get("http://localhost:8080/topRestaurants", { params: params })
             .then((response) => {
                 console.log("same loc :", response.data);
@@ -143,10 +144,6 @@ function Home() {
 
 
     useEffect(() => {
-        const token = localStorage.getItem('jwtToken');
-        if (token) {
-            fetchUserData(token);
-        }
         setTopRestaurants(null);
         setSameLocation(null);
         setType(null);
@@ -157,28 +154,30 @@ function Home() {
         getTypes();
     }, []);
 
+    
 
-    function fetchUserData(token) {
-        axios.get('http://localhost:8080/user', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        }).then(
-            (response) => {
-                if (response.status === 200) {
-                    const userData = response.data;
-                    UserInfo.setAllInfo(userData);
-                }
-            },
-            (error) => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: error.response ? error.response.data.message : 'An error occurred. Please try again.',
-                });
-            }
-        );
-    }
+
+    // function fetchUserData(token) {
+    //     axios.get('http://localhost:8080/user', {
+    //         headers: {
+    //             'Authorization': `Bearer ${token}`
+    //         }
+    //     }).then(
+    //         (response) => {
+    //             if (response.status === 200) {
+    //                 const userData = response.data;
+    //                 UserInfo.setAllInfo(userData);
+    //             }
+    //         },
+    //         (error) => {
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: 'Error',
+    //                 text: error.response ? error.response.data.message : 'An error occurred. Please try again.',
+    //             });
+    //         }
+    //     );
+    // }
     function createCard(restaurant, index) {
         return (
             <Card

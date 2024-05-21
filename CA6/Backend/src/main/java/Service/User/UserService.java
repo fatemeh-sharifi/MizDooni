@@ -1,5 +1,6 @@
 package Service.User;
 
+import Entity.User.UserEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -9,4 +10,5 @@ public class UserService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.encode(password);
     }
+
 }

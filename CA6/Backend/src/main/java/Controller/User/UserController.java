@@ -6,6 +6,7 @@ import Entity.User.ManagerEntity;
 import Entity.User.UserEntity;
 import Repository.User.UserRepository;
 import Service.User.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -99,4 +100,18 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Failed to create user, return bad request
         }
     }
+//    @GetMapping("/user")
+//    public ResponseEntity<?> getUser( HttpServletRequest request) {
+//        System.out.println ("______________________________________I AM IN GET USER _______________________________" );
+//        String userEmail = (String) request.getAttribute("userEmail");
+//        System.out.println (userEmail );
+//        if (userEmail == null) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+//        }
+//        UserEntity user = userRepository.findByEmail(userEmail);
+//        if (user == null) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+//        }
+//        return ResponseEntity.ok(user);
+//    }
 }

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../App";
 import axios from "axios";
+import Swal from "sweetalert2";
 import Reservation from "./Reservation";
 import "../css/Customer.css"
 
@@ -10,33 +11,33 @@ function Customer() {
     const [reservations, setReservations] = useState([]);
     const [isCanceld, setIsCanceled] = useState(false);
 
-    useEffect(() => {
-        const token = localStorage.getItem('jwtToken');
-        if (token) {
-            fetchUserData(token);
-        }
-    }, []);
-    function fetchUserData(token) {
-        axios.get('http://localhost:8080/user', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        }).then(
-            (response) => {
-                if (response.status === 200) {
-                    const userData = response.data;
-                    UserInfo.setAllInfo(userData);
-                }
-            },
-            (error) => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: error.response ? error.response.data.message : 'An error occurred. Please try again.',
-                });
-            }
-        );
-    }
+    // useEffect(() => {
+    //     const token = localStorage.getItem('jwtToken');
+    //     if (token) {
+    //         fetchUserData(token);
+    //     }
+    // }, []);
+    // function fetchUserData(token) {
+    //     axios.get('http://localhost:8080/user', {
+    //         headers: {
+    //             'Authorization': `Bearer ${token}`
+    //         }
+    //     }).then(
+    //         (response) => {
+    //             if (response.status === 200) {
+    //                 const userData = response.data;
+    //                 UserInfo.setAllInfo(userData);
+    //             }
+    //         },
+    //         (error) => {
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: 'Error',
+    //                 text: error.response ? error.response.data.message : 'An error occurred. Please try again.',
+    //             });
+    //         }
+    //     );
+    // }
     function getReservations() {
         const params = { username: UserInfo.username }
         axios.get("http://localhost:8080/reservations", { params: params }).then(
