@@ -9,10 +9,10 @@ function Card(props) {
         const filledStars = Math.floor(rating);
         const emptyStars = 5 - filledStars;
         for (let i = 0; i < filledStars; i++) {
-            stars.push(<img key={i} src="img/Vector.svg" alt="star-img" />);
+            stars.push(<img key={i} src="/img/Vector.svg" alt="star-img" />);
         }
         for (let i = 0; i < emptyStars; i++) {
-            stars.push(<img key={filledStars + i} src="img/empty-star.svg" alt="empty-star-img" />);
+            stars.push(<img key={filledStars + i} src="/img/empty-star.svg" alt="empty-star-img" />);
         }
 
         return stars;
@@ -53,17 +53,17 @@ function Card(props) {
                 <h4 className="card-title">{props.title}</h4>
                 <p className="card-text"><small className="text-muted">{props.reviews} reviews</small></p>
                 <p className="card-text"><small className="about">{props.type}</small></p>
-                <p className="card-text"><img src="img/location.svg" alt="location-img" className="location-img" /><small className="restaurant-data">{props.city}</small></p>
+                <p className="card-text"><img src="/img/location.svg" alt="location-img" className="location-img" /><small className="restaurant-data">{props.city}</small></p>
                 {isOpen(props.start, props.end) ? (
                     <p className="card-text">
                         <small className="open-text">Open</small>
-                        <img src="img/dot.svg" alt="dot-img" className="dot-img" />
+                        <img src="/img/dot.svg" alt="dot-img" className="dot-img" />
                         <small className="restaurant-data">Closes at {convertToAMPM(props.end)}</small>
                     </p>
                 ) : (
                     <p className="card-text">
                         <small className="close-text">Closed</small>
-                        <img src="img/dot.svg" alt="dot-img" className="dot-img" />
+                        <img src="/img/dot.svg" alt="dot-img" className="dot-img" />
                         <small className="restaurant-data">Opens at {convertToAMPM(props.start)}</small></p>
                 )}
             </div>

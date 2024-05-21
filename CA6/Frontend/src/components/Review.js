@@ -15,7 +15,9 @@ function Review(props) {
     const [allowed, setAllowed] = useState(true);
     const UserInfo = useContext(UserContext);
     const [showModal, setShowModal] = useState(false);
-
+    const sanitizeInput = (input) => {
+        return input.replace(/[&<>"'/`=]/g, '');
+    };
     function handleSubmitReview(event) {
         axios.post("http://localhost:8080/reviews", null, {
             params: {
@@ -25,7 +27,7 @@ function Review(props) {
                 serviceRate: serviceRating,
                 ambianceRate: ambienceRating,
                 overallRate: overallRating,
-                comment: comment
+                comment: sanitizeInput(comment)
             }
         }).then(
             (response) => {
@@ -61,10 +63,10 @@ function Review(props) {
         const filledStars = Math.floor(rating);
         const emptyStars = 5 - filledStars;
         for (let i = 0; i < filledStars; i++) {
-            stars.push(<img key={i} src="img/full-star.svg" alt="star-img" />);
+            stars.push(<img key={i} src="/img/full-star.svg" alt="star-img" />);
         }
         for (let i = 0; i < emptyStars; i++) {
-            stars.push(<img key={filledStars + i} src="img/empty-star.svg" alt="empty-star-img" />);
+            stars.push(<img key={filledStars + i} src="/img/empty-star.svg" alt="empty-star-img" />);
         }
 
         return stars;

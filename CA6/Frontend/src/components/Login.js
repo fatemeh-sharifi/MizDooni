@@ -22,71 +22,88 @@ function Login() {
         }
         setJustifyActive(value);
     };
-
+    const sanitizeInput = (input) => {
+        return input.replace(/[&<>"'/`=]/g, '');
+    };
     function handleSignIn(event) {
         event.preventDefault();
-        const params = { username: username, password: password };
-        axios.post("http://localhost:8080/login", null, {
-            params: params,
-            // headers: {
-            //     'Content-Type': 'application/json',
-            //     'Access-Control-Allow-Origin': '*', // This allows requests from any origin, adjust as needed
-            //     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', // Specify the allowed HTTP methods
-            //     'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept', // Specify the allowed headers
-            // }
-        }).then(
-            (response) => {
-                if (response.status === 200) {
-                    const token = response.data.token;
-                    console.log(response.data.token);
-                    localStorage.setItem('jwtToken', token);
-                    UserInfo.SetAllInfo(response.data.user);
-                    localStorage.setItem('userInfo', JSON.stringify(response.data.user));
-                    navigate("/");
+        if (!username.trim() || !password) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid',
+                text: "Fill all.",
+            });
+        }
+        else {
+            const params = { username: sanitizeInput(username), password: sanitizeInput(password) };
+            axios.post("http://localhost:8080/login", null, {
+                params: params,
+            }).then(
+                (response) => {
+                    if (response.status === 200) {
+                        const token = response.data.token;
+                        console.log(response.data.token);
+                        localStorage.setItem('jwtToken', token);
+                        UserInfo.SetAllInfo(response.data.user);
+                        localStorage.setItem('userInfo', JSON.stringify(response.data.user));
+                        navigate("/");
+                    }
+                },
+                (error) => {
+                    if (error.response.status === 401) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Unauthorized',
+                            text: "Invalid username or password. Please try again.",
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: "Sign in failed! Please try again later.",
+                        });
+                    }
                 }
-            },
-            (error) => {
-                if (error.response.status === 401) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Unauthorized',
-                        text: "Invalid username or password. Please try again.",
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: "Sign in failed! Please try again later.",
-                    });
-                }
-            }
-        ).catch((error) => {
-            console.log(error);
-        });
+            ).catch((error) => {
+                console.log(error);
+            });
+        }
     }
-    
+
 
     function handleSignUp(event) {
         event.preventDefault();
-        const params = { username: username, password: password, email: email, city: city, country: country, role: role };
-        axios.post("http://localhost:8080/signup", null, { params: params }).then(
-            (response) => {
-                if (response.status === 200) {
-                    console.log("signup : ", response.data);
-                    const token = response.data.token; // Assuming the token is returned in response.data.token
-                    localStorage.setItem('jwtToken', token);
-                    UserInfo.SetAllInfo(response.data);
-                    navigate("/");
+        if (!username.trim() || !password || !email || !city || !country || !role) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid',
+                text: "Fill all.",
+            });
+        }
+        else {
+            const params = {
+                username: sanitizeInput(username), password: sanitizeInput(password),
+                email: sanitizeInput(email), city: sanitizeInput(city), country: sanitizeInput(country), role: sanitizeInput(role)
+            };
+            axios.post("http://localhost:8080/signup", null, { params: params }).then(
+                (response) => {
+                    if (response.status === 200) {
+                        console.log("signup : ", response.data);
+                        const token = response.data.token; // Assuming the token is returned in response.data.token
+                        localStorage.setItem('jwtToken', token);
+                        UserInfo.SetAllInfo(response.data);
+                        navigate("/");
+                    }
+                },
+                (error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: error.response.data.message.split(":")[1],
+                        text: "Please try again.",
+                    });
                 }
-            },
-            (error) => {
-                Swal.fire({
-                    icon: 'error',
-                    title: error.response.data.message.split(":")[1],
-                    text: "Please try again.",
-                });
-            }
-        );
+            );
+        }
     }
 
     return (

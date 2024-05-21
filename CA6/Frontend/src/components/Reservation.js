@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../App";
 import { Link } from "react-router-dom";
 import Rating from "./Rating";
@@ -34,7 +34,9 @@ function Reservation(props) {
             console.log(error);
         })
     }
-
+    const sanitizeInput = (input) => {
+        return input.replace(/[&<>"'/`=]/g, '');
+    };
     function handleSubmitReview() {
         axios.post("http://localhost:8080/reviews", null, {
             params: {
@@ -44,7 +46,7 @@ function Reservation(props) {
                 serviceRate: serviceRating,
                 ambianceRate: ambienceRating,
                 overallRate: overallRating,
-                comment: comment
+                comment: sanitizeInput(comment)
             }
         }).then(
             (response) => {

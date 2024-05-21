@@ -34,10 +34,10 @@ function ReviewPart(props) {
         const filledStars = Math.floor(rating);
         const emptyStars = 5 - filledStars;
         for (let i = 0; i < filledStars; i++) {
-            stars.push(<img key={i} src="img/full-star.svg" alt="star-img" />);
+            stars.push(<img key={i} src="/img/full-star.svg" alt="star-img" />);
         }
         for (let i = 0; i < emptyStars; i++) {
-            stars.push(<img key={filledStars + i} src="img/empty-star.svg" alt="empty-star-img" />);
+            stars.push(<img key={filledStars + i} src="/img/empty-star.svg" alt="empty-star-img" />);
         }
 
         return stars;
@@ -54,11 +54,11 @@ function ReviewPart(props) {
                         <p className="username">{props.username}</p>
                         <p className="user-rating">
                             Overall <span>{props.overallRate}</span>
-                            <img src="img/dot.svg" alt="dot-img" className="dot" />
+                            <img src="/img/dot.svg" alt="dot-img" className="dot" />
                             Food <span>{props.foodRate}</span>
-                            <img src="img/dot.svg" alt="dot-img" className="dot" />
+                            <img src="/img/dot.svg" alt="dot-img" className="dot" />
                             Service <span>{props.serviceRate}</span>
-                            <img src="img/dot.svg" alt="dot-img" className="dot" />
+                            <img src="/img/dot.svg" alt="dot-img" className="dot" />
                             Ambience <span>{props.ambianceRate}</span>
                         </p>
                         <p className="comment-text">{props.comment}</p>

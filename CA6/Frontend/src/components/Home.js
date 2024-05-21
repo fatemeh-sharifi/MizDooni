@@ -110,10 +110,12 @@ function Home() {
                 });
             });
     }
-
+    const sanitizeInput = (input) => {
+        return input.replace(/[&<>"'/`=]/g, '');
+    };
     function handleSearch(event) {
         event.preventDefault();
-        const params = { name: selectedName || null, type: selectedType || null, city: selectedLocation || null, country: null }
+        const params = { name: sanitizeInput(selectedName) || null, type: selectedType || null, city: selectedLocation || null, country: null }
         axios.get("http://localhost:8080/restaurants", { params: params }).then(
             (response) => {
                 if (response.status === 200) {
