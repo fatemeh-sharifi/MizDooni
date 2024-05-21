@@ -104,7 +104,7 @@ function Customer() {
                 <p className="mail-text mx-4">Your reservations are also emailed to <a href="#">{UserInfo.email}</a> </p>
                 <div className="d-flex flex-wrap gap-1">
                     <p className="address ">Address: {UserInfo.address.city}, {UserInfo.address.country}</p>
-                    <button type="button" className="logout text-white me-3" onClick={() => { UserInfo.setLoggedIn(false) }}>Logout</button>
+                    <button type="button" className="logout text-white me-3" onClick={() => { UserInfo.setLoggedIn(false); localStorage.removeItem("jwtToken"); }}>Logout</button>
                 </div>
             </div>
             <div className="table-par mx-1 mt-4">
