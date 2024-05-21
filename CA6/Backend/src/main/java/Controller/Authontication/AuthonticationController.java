@@ -1,6 +1,8 @@
 package Controller.Authontication;
 
+import Entity.Address.AddressUserEntity;
 import Entity.User.UserEntity;
+import Model.Address.AddressUser;
 import Model.User.User;
 import Repository.User.UserRepository;
 import Service.User.UserService;
@@ -35,7 +37,7 @@ public class AuthonticationController {
     public String ACCESS_TOKEN = "";
 
     @GetMapping("/callback")
-    public ResponseEntity<Map<String, String>> callback(@RequestParam(value = "code") String code) throws IOException, InterruptedException {
+    public ResponseEntity<?> callback(@RequestParam(value = "code") String code) throws IOException, InterruptedException {
         System.out.println ("HEEEEEEEELLLLLLLLPPPPPPPP" );
         String redirectUri = "http://localhost:3000/callback";
         String url = "https://oauth2.googleapis.com/token";
@@ -63,8 +65,9 @@ public class AuthonticationController {
 
         HttpResponse<String> userInfoResponse = client.send(userInfoRequest, HttpResponse.BodyHandlers.ofString());
         Map<String, Object> userInfo = mapper.readValue(userInfoResponse.body(), Map.class);
+        System.out.println ( userInfo);
         String email = (String) userInfo.get("email");
-        String name = (String) userInfo.get("name");
+        System.out.println (email );
         UserEntity user = userRepository.findByEmail(email);
         if(user != null){
             String usernameSubstring = email.substring(0, email.indexOf('@'));
@@ -72,20 +75,18 @@ public class AuthonticationController {
             System.out.println ("here is user is not null  - " + email);
         } else {
             String usernameSubstring = email.substring(0, email.indexOf('@'));
-            UserEntity userEntity = new UserEntity ( usernameSubstring, email, null, "client", null);
+            AddressUserEntity addressUser = new AddressUserEntity ( "", "" );
+            UserEntity userEntity = new UserEntity ( usernameSubstring, email, "", "client", addressUser);
             userRepository.save ( userEntity );
             System.out.println ("here is user is null - " + email );
         }
 //        if (user != null && new BCryptPasswordEncoder ().matches(password, user.getPassword())) {
         String jwtToken = JwtUtil.generateToken(user.getEmail());
 
-        // Prepare the response
-        Map<String, String> responseMap = new HashMap <> ();
-        responseMap.put("token", jwtToken);
-        responseMap.put("username", user.getUsername());
+        LoginResponse loginResponse = new LoginResponse ( jwtToken, user );
 
 
-        return new ResponseEntity<>(responseMap, HttpStatus.OK);
+        return ResponseEntity.ok ( loginResponse );
     }
     @PostMapping ("/login")
     public ResponseEntity <?> login(
