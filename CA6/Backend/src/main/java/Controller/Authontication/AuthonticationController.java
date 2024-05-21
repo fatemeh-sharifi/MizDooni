@@ -36,6 +36,7 @@ public class AuthonticationController {
 
     @GetMapping("/callback")
     public ResponseEntity<Map<String, String>> callback(@RequestParam(value = "code") String code) throws IOException, InterruptedException {
+        System.out.println ("HEEEEEEEELLLLLLLLPPPPPPPP" );
         String redirectUri = "http://localhost:3000/callback";
         String url = "https://oauth2.googleapis.com/token";
         HttpClient client = HttpClient.newHttpClient();
@@ -64,15 +65,19 @@ public class AuthonticationController {
         Map<String, Object> userInfo = mapper.readValue(userInfoResponse.body(), Map.class);
         String email = (String) userInfo.get("email");
         String name = (String) userInfo.get("name");
-
-        // Check if the user exists in the database and create/update as necessary
-//        User user = userService.findOrCreateUser(email, name);
-//
-//        // Generate JWT token for the user
-//        String jwtToken = userService.createJwtToken(user);
         UserEntity user = userRepository.findByEmail(email);
+        if(user != null){
+            String usernameSubstring = email.substring(0, email.indexOf('@'));
+            userRepository.findByEmail ( email ).setUsername (usernameSubstring);
+            System.out.println ("here is user is not null  - " + email);
+        } else {
+            String usernameSubstring = email.substring(0, email.indexOf('@'));
+            UserEntity userEntity = new UserEntity ( usernameSubstring, email, null, "client", null);
+            userRepository.save ( userEntity );
+            System.out.println ("here is user is null - " + email );
+        }
 //        if (user != null && new BCryptPasswordEncoder ().matches(password, user.getPassword())) {
-            String jwtToken = JwtUtil.generateToken(user.getEmail());
+        String jwtToken = JwtUtil.generateToken(user.getEmail());
 
         // Prepare the response
         Map<String, String> responseMap = new HashMap <> ();
