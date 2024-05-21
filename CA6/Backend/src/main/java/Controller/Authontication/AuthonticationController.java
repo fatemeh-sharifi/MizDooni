@@ -1,8 +1,10 @@
 package Controller.Authontication;
 
 import Entity.User.UserEntity;
+import Model.User.User;
 import Repository.User.UserRepository;
-import Utility.AuthResponse;
+import Service.User.UserService;
+import Model.Response.LoginResponse;
 import Utility.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -25,6 +28,8 @@ public class AuthonticationController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
     public static String CLIENT_ID = "318976450429-mlodo6eolob4l5a2mfnb33l6pr8gl3h0.apps.googleusercontent.com";
     public static String CLIENT_SECRET = "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";
     public String ACCESS_TOKEN = "";
@@ -61,15 +66,19 @@ public class AuthonticationController {
         String name = (String) userInfo.get("name");
 
         // Check if the user exists in the database and create/update as necessary
-        User user = userService.findOrCreateUser(email, name);
-
-        // Generate JWT token for the user
-        String jwtToken = userService.createJwtToken(user);
+//        User user = userService.findOrCreateUser(email, name);
+//
+//        // Generate JWT token for the user
+//        String jwtToken = userService.createJwtToken(user);
+        UserEntity user = userRepository.findByEmail(email);
+//        if (user != null && new BCryptPasswordEncoder ().matches(password, user.getPassword())) {
+            String jwtToken = JwtUtil.generateToken(user.getEmail());
 
         // Prepare the response
-        Map<String, String> responseMap = new HashMap<>();
+        Map<String, String> responseMap = new HashMap <> ();
         responseMap.put("token", jwtToken);
         responseMap.put("username", user.getUsername());
+
 
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
@@ -81,7 +90,8 @@ public class AuthonticationController {
         UserEntity user = userRepository.findByUsername(username);
         if (user != null && new BCryptPasswordEncoder ().matches(password, user.getPassword())) {
             String token = JwtUtil.generateToken(user.getEmail());
-            return ResponseEntity.ok(new AuthResponse (token));
+            LoginResponse loginResponse = new LoginResponse (token, user );
+            return ResponseEntity.ok ( loginResponse );
         }
         return ResponseEntity.status( HttpStatus.UNAUTHORIZED).body("Invalid username or password");
     }

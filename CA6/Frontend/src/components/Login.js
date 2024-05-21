@@ -30,32 +30,43 @@ function Login() {
             (response) => {
                 if (response.status === 200) {
                     const token = response.data.token; // Assuming the token is returned in response.data.token
+                    console.log(response.data.token)
                     localStorage.setItem('jwtToken', token);
-                    axios.get("http://localhost:8080/users/" + String(username), {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    }).then(
-                        (response) => {
-                            UserInfo.SetAllInfo(response.data);
-                            navigate("/")
-                        },
-                        (error) => {
-                            Swal.fire({
-                                icon: 'error',
-                                title: error.response.data.message.split(":")[1],
-                                text: "Sign in failed! Please try again.",
-                            });
-                        }
-                    );
+                    UserInfo.SetAllInfo(response.data.user);
+                    navigate("/")
+                    // axios.get("http://localhost:8080/users/" + String(username), {
+                    //     headers: {
+                    //         'Authorization': `Bearer ${token}`
+                    //     }
+                    // }).then(
+                    //     (response) => {
+                    //         // console.log(response.data.user)
+                            
+                    //     },
+                    //     (error) => {
+                    //         Swal.fire({
+                    //             icon: 'error',
+                    //             title: error.response.data.message.split(":")[1],
+                    //             text: "Sign in failed! Please try again.",
+                    //         });
+                    //     }
+                    // );
                 }
             },
             (error) => {
-                Swal.fire({
-                    icon: 'error',
-                    title: error.response.data.message,
-                    text: "Sign in failed! Please try again.",
-                });
+                if (error.response.status === 401) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Unauthorized',
+                        text: "Invalid username or password. Please try again.",
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: "Sign in failed! Please try again later.",
+                    });
+                }
             }
         ).catch((error) => {
             console.log(error);

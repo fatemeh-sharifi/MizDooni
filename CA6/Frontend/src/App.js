@@ -11,6 +11,7 @@ import SearchResult from "./components/SearchResult";
 import Restaurant from "./components/Restaurant";
 import ProtectedClient from "./components/ProtectedClient";
 import Customer from "./components/Customer";
+import Callback from "./components/Callback"
 export const UserContext = createContext({});
 
 function App() {
