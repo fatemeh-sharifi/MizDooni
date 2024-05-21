@@ -21,8 +21,6 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private UserService userService;
-    String client_id = "318976450429-mlodo6eolob4l5a2mfnb33l6pr8gl3h0.apps.googleusercontent.com";
-    String client_secret = "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";
     @GetMapping("/users")
     public ResponseEntity<List<UserEntity>> getAllUsers() {
         List<UserEntity> users = userRepository.findAll();
