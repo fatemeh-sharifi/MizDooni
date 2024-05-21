@@ -18,11 +18,11 @@ export const UserContext = createContext({});
 function App() {
 
   const user = UserInfo();
-  useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(user));
-    console.log("local_storage", localStorage);
-    console.log("first", user);
-  }, [user]);
+  // useEffect(() => {
+  //   localStorage.setItem("user", JSON.stringify(user));
+  //   console.log("local_storage", localStorage);
+  //   console.log("first", user);
+  // }, [user]);
 
   
 

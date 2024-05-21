@@ -8,7 +8,7 @@ function SearchResult() {
     console.log("locationUse:", locationUse);
     const { state: { data: searchData = {}, name: paramName = '', type: paramType = '', city: paramLocation = '' } = {} } = locationUse;
     console.log("serach data : ", searchData);
-    const UserInfo = useContext(UserContext);
+    // const UserInfo = useContext(UserContext);
     function createCard(restaurant, index) {
         return (
             <Card

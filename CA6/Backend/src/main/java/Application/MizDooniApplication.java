@@ -181,7 +181,7 @@ public class MizDooniApplication {
                     response.setStatus(HttpServletResponse.SC_OK);
                     return;
                 }
-                if(request.getServletPath().contains ( "login" ) || request.getServletPath ().contains ( "signup" ) || request.getServletPath ().contains ( "callback" )){
+                if(request.getServletPath().contains ( "login" ) || request.getServletPath ().contains ( "signup" ) || request.getServletPath ().contains ( "callback" )||request.getServletPath ().contains ( "svg" )||request.getServletPath ().contains ( "png" )){
                     chain.doFilter ( request, response );
                     System.out.println ("I AM RETURNING!-------------------------------------------------" );
                     return;
