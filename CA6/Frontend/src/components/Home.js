@@ -17,6 +17,7 @@ function Home() {
     const UserInfo = useContext(UserContext);
     const navigate = useNavigate();
 
+
     function getTopRestaurants() {
         axios.get("http://localhost:8080/topRestaurants").then(
             (response) => {
@@ -111,12 +112,12 @@ function Home() {
 
     function handleSearch(event) {
         event.preventDefault();
-        const params = { name: selectedName || null, type: selectedType || null, city: selectedLocation || null, country : null }
-        axios.get("http://localhost:8080/restaurants", {params : params}).then(
+        const params = { name: selectedName || null, type: selectedType || null, city: selectedLocation || null, country: null }
+        axios.get("http://localhost:8080/restaurants", { params: params }).then(
             (response) => {
                 if (response.status === 200) {
                     console.log("search : ", response.data);
-                    navigate("/searchResualt", { state: { data : response.data, name : params.name, type : params.type , city : params.city} });
+                    navigate("/searchResualt", { state: { data: response.data, name: params.name, type: params.type, city: params.city } });
                 }
             },
             (error) => {
@@ -142,6 +143,10 @@ function Home() {
 
 
     useEffect(() => {
+        const token = localStorage.getItem('jwtToken');
+        if (token) {
+            fetchUserData(token);
+        }
         setTopRestaurants(null);
         setSameLocation(null);
         setType(null);
@@ -152,6 +157,28 @@ function Home() {
         getTypes();
     }, []);
 
+
+    function fetchUserData(token) {
+        axios.get('http://localhost:8080/user', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(
+            (response) => {
+                if (response.status === 200) {
+                    const userData = response.data;
+                    UserInfo.setAllInfo(userData);
+                }
+            },
+            (error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.response ? error.response.data.message : 'An error occurred. Please try again.',
+                });
+            }
+        );
+    }
     function createCard(restaurant, index) {
         return (
             <Card

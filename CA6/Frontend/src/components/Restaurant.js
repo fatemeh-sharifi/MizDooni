@@ -21,6 +21,33 @@ function Restaurant() {
     const UserInfo = useContext(UserContext);
     const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
+    useEffect(() => {
+        const token = localStorage.getItem('jwtToken');
+        if (token) {
+            fetchUserData(token);
+        }
+    }, []);
+    function fetchUserData(token) {
+        axios.get('http://localhost:8080/user', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(
+            (response) => {
+                if (response.status === 200) {
+                    const userData = response.data;
+                    UserInfo.setAllInfo(userData);
+                }
+            },
+            (error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.response ? error.response.data.message : 'An error occurred. Please try again.',
+                });
+            }
+        );
+    }
     function getRestaurant() {
         console.log("id : ", id);
         axios.get("http://localhost:8080/restaurants/" + String(id)).then(

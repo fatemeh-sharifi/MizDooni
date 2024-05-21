@@ -1,5 +1,6 @@
-import React from "react";
+import React ,{useEffect} from "react";
 import { useLocation } from "react-router-dom";
+import { UserContext } from "../App";
 import Card from "./Card";
 
 function SearchResult() {
@@ -7,6 +8,7 @@ function SearchResult() {
     console.log("locationUse:", locationUse);
     const { state: { data: searchData = {}, name: paramName = '', type: paramType = '', city: paramLocation = '' } = {} } = locationUse;
     console.log("serach data : ", searchData);
+    const UserInfo = useContext(UserContext);
     function createCard(restaurant, index) {
         return (
             <Card
@@ -23,6 +25,34 @@ function SearchResult() {
             />
         );
     }
+    useEffect(() => {
+        const token = localStorage.getItem('jwtToken');
+        if (token) {
+            fetchUserData(token);
+        }
+    }, []);
+    function fetchUserData(token) {
+        axios.get('http://localhost:8080/user', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(
+            (response) => {
+                if (response.status === 200) {
+                    const userData = response.data;
+                    UserInfo.setAllInfo(userData);
+                }
+            },
+            (error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.response ? error.response.data.message : 'An error occurred. Please try again.',
+                });
+            }
+        );
+    }
+
     return (
         <div>
             <div className="container w-75 topRestaurant">
