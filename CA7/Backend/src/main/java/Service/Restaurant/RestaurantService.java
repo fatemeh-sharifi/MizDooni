@@ -31,7 +31,7 @@ public class RestaurantService {
     @Autowired
     private AddressRestaurantRepository addressRestaurantRepository;
 
-    public List < Restaurant > ( List < RestaurantEntity > restaurantEntities ) {
+    public List < Restaurant > getAllRestaurantsWithFeedbacks ( List < RestaurantEntity > restaurantEntities ) {
         List < Restaurant > restaurantModels = new ArrayList <> ( );
 
         for ( RestaurantEntity restaurantEntity : restaurantEntities ) {
@@ -44,7 +44,7 @@ public class RestaurantService {
                 feedbackModel.setServiceRate ( feedbackEntity.getServiceRate ( ) );
                 feedbackModel.setComment ( feedbackEntity.getComment ( ) );
                 feedbackModel.setRestaurantName ( feedbackEntity.getRestaurant ( ).getName ( ) );
-                feedbackMogetAllRestaurantsWithFeedbacks del.setFoodRate ( feedbackEntity.getFoodRate ( ) );
+                feedbackModel.setFoodRate ( feedbackEntity.getFoodRate ( ) );
                 feedbackModel.setDateTime ( feedbackEntity.getDateTime ( ) );
                 feedbackModel.setOverallRate ( feedbackEntity.getOverallRate ( ) );
                 feedbackModel.setUsername ( feedbackEntity.getCustomer ( ).getUsername ( ) );
