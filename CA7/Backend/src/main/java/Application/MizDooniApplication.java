@@ -133,6 +133,7 @@ package Application;
 
 import Service.DataFetch.DataFetchService;
 import Utility.JwtUtil;
+import co.elastic.apm.attach.ElasticApmAttacher;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -160,6 +161,7 @@ import java.io.IOException;
 public class MizDooniApplication {
 
     public static void main(String[] args) throws IOException {
+        ElasticApmAttacher.attach();
         ConfigurableApplicationContext context = SpringApplication.run(MizDooniApplication.class, args);
         DataFetchService dataFetchService = context.getBean(DataFetchService.class);
         // Fetch users and restaurants asynchronously

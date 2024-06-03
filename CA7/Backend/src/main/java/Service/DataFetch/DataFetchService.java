@@ -33,6 +33,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import co.elastic.apm.api.ElasticApm;
+import co.elastic.apm.api.Scope;
+import co.elastic.apm.api.Span;
+import co.elastic.apm.api.Transaction;
 
 @Service
 public class DataFetchService {
@@ -59,72 +63,175 @@ public class DataFetchService {
         this.userService = userService;
     }
 
-    public void fetchReservationsLocal(){
+//    public void fetchReservationsLocal(){
+//
+//        ClientEntity userEntity = clientRepository.findByUsername("Mostafa_Ebrahimi");
+//        RestaurantEntity restaurantEntity = restaurantRepository.findByName("The Commoner");
+//
+//        // First reservation
+//        LocalDate date1 = LocalDate.now().minusDays(2); // Assuming the reservation is for yesterday
+//        LocalTime time1 = LocalTime.of(15, 0);
+//
+//        // Check if a reservation already exists for the given user, restaurant, date, and time
+//        ReservationEntity existingReservation1 = reservationRepository.findByUserAndRestaurantAndDateTime(
+//                userEntity.getUsername(), restaurantEntity.getName(), date1, time1);
+//
+//        if (existingReservation1 == null) {
+//            ReservationEntity reservationEntity1 = new ReservationEntity();
+//            reservationEntity1.setUser(userEntity);
+//            reservationEntity1.setRestaurant(restaurantEntity);
+//            reservationEntity1.setDate(date1);
+//            reservationEntity1.setTime(time1);
+//            reservationEntity1.setCanceled(false); // Assuming the reservation is not canceled
+//            reservationEntity1.setTableSeat(4);
+//            long i = 1;
+//            reservationEntity1.setTable(tableRepository.findByIdAndRestaurantName(i, "The Commoner"));
+//            // Save the first reservationEntity using your ReservationRepository
+//            reservationRepository.save(reservationEntity1);
+//        } else {
+//            System.out.println("A reservation already exists for user Mostafa_Ebrahimi at The Commoner on " + date1 + " at " + time1);
+//        }
+//
+//        // Second reservation
+//        LocalDate date2 = LocalDate.now().plusDays(1); // Assuming the reservation is for tomorrow
+//        LocalTime time2 = LocalTime.of(18, 0); // Set the minutes to zero
+//
+//        // Check if a reservation already exists for the given user, restaurant, date, and time
+//        ReservationEntity existingReservation2 = reservationRepository.findByUserAndRestaurantAndDateTime(
+//                userEntity.getUsername(), restaurantEntity.getName(), date2, time2);
+//
+//        if (existingReservation2 == null) {
+//            ReservationEntity reservationEntity2 = new ReservationEntity();
+//            reservationEntity2.setUser(userEntity);
+//            reservationEntity2.setRestaurant(restaurantEntity);
+//            reservationEntity2.setDate(date2);
+//            reservationEntity2.setTime(time2);
+//            reservationEntity2.setCanceled(false); // Assuming the reservation is not canceled
+//            // Save the second reservationEntity using your ReservationRepository
+//            reservationEntity2.setTableSeat(5);
+//            long i = 2;
+//            reservationEntity2.setTable(tableRepository.findByIdAndRestaurantName(i, reservationEntity2.getRestaurant().getName()));
+//            reservationRepository.save(reservationEntity2);
+//        } else {
+//            System.out.println("A reservation already exists for user Mostafa_Ebrahimi at The Commoner on " + date2 + " at " + time2);
+//        }
+//
+//
+//    }
 
-        ClientEntity userEntity = clientRepository.findByUsername("Mostafa_Ebrahimi");
-        RestaurantEntity restaurantEntity = restaurantRepository.findByName("The Commoner");
+    public void fetchReservationsLocal(Transaction transaction) {
+        Span span = transaction.startSpan("custom", "db-operation", "fetchReservationsLocal");
+        try (Scope scope = span.activate()) {
+            span.setName("fetchReservationsLocal");
 
-        // First reservation
-        LocalDate date1 = LocalDate.now().minusDays(2); // Assuming the reservation is for yesterday
-        LocalTime time1 = LocalTime.of(15, 0);
+            ClientEntity userEntity = clientRepository.findByUsername("Mostafa_Ebrahimi");
+            RestaurantEntity restaurantEntity = restaurantRepository.findByName("The Commoner");
 
-        // Check if a reservation already exists for the given user, restaurant, date, and time
-        ReservationEntity existingReservation1 = reservationRepository.findByUserAndRestaurantAndDateTime(
-                userEntity.getUsername(), restaurantEntity.getName(), date1, time1);
+            // First reservation
+            LocalDate date1 = LocalDate.now().minusDays(2);
+            LocalTime time1 = LocalTime.of(15, 0);
+            ReservationEntity existingReservation1 = reservationRepository.findByUserAndRestaurantAndDateTime(
+                    userEntity.getUsername(), restaurantEntity.getName(), date1, time1);
 
-        if (existingReservation1 == null) {
-            ReservationEntity reservationEntity1 = new ReservationEntity();
-            reservationEntity1.setUser(userEntity);
-            reservationEntity1.setRestaurant(restaurantEntity);
-            reservationEntity1.setDate(date1);
-            reservationEntity1.setTime(time1);
-            reservationEntity1.setCanceled(false); // Assuming the reservation is not canceled
-            reservationEntity1.setTableSeat(4);
-            long i = 1;
-            reservationEntity1.setTable(tableRepository.findByIdAndRestaurantName(i, "The Commoner"));
-            // Save the first reservationEntity using your ReservationRepository
-            reservationRepository.save(reservationEntity1);
-        } else {
-            System.out.println("A reservation already exists for user Mostafa_Ebrahimi at The Commoner on " + date1 + " at " + time1);
+            if (existingReservation1 == null) {
+                ReservationEntity reservationEntity1 = new ReservationEntity();
+                reservationEntity1.setUser(userEntity);
+                reservationEntity1.setRestaurant(restaurantEntity);
+                reservationEntity1.setDate(date1);
+                reservationEntity1.setTime(time1);
+                reservationEntity1.setCanceled(false);
+                reservationEntity1.setTableSeat(4);
+                long i = 1;
+                reservationEntity1.setTable(tableRepository.findByIdAndRestaurantName(i, "The Commoner"));
+                reservationRepository.save(reservationEntity1);
+            } else {
+                System.out.println("A reservation already exists for user Mostafa_Ebrahimi at The Commoner on " + date1 + " at " + time1);
+            }
+
+            // Second reservation
+            LocalDate date2 = LocalDate.now().plusDays(1);
+            LocalTime time2 = LocalTime.of(18, 0);
+            ReservationEntity existingReservation2 = reservationRepository.findByUserAndRestaurantAndDateTime(
+                    userEntity.getUsername(), restaurantEntity.getName(), date2, time2);
+
+            if (existingReservation2 == null) {
+                ReservationEntity reservationEntity2 = new ReservationEntity();
+                reservationEntity2.setUser(userEntity);
+                reservationEntity2.setRestaurant(restaurantEntity);
+                reservationEntity2.setDate(date2);
+                reservationEntity2.setTime(time2);
+                reservationEntity2.setCanceled(false);
+                reservationEntity2.setTableSeat(5);
+                long i = 2;
+                reservationEntity2.setTable(tableRepository.findByIdAndRestaurantName(i, reservationEntity2.getRestaurant().getName()));
+                reservationRepository.save(reservationEntity2);
+            } else {
+                System.out.println("A reservation already exists for user Mostafa_Ebrahimi at The Commoner on " + date2 + " at " + time2);
+            }
+        } catch (Exception e) {
+            span.captureException(e);
+            throw e;
+        } finally {
+            span.end();
         }
-
-        // Second reservation
-        LocalDate date2 = LocalDate.now().plusDays(1); // Assuming the reservation is for tomorrow
-        LocalTime time2 = LocalTime.of(18, 0); // Set the minutes to zero
-
-        // Check if a reservation already exists for the given user, restaurant, date, and time
-        ReservationEntity existingReservation2 = reservationRepository.findByUserAndRestaurantAndDateTime(
-                userEntity.getUsername(), restaurantEntity.getName(), date2, time2);
-
-        if (existingReservation2 == null) {
-            ReservationEntity reservationEntity2 = new ReservationEntity();
-            reservationEntity2.setUser(userEntity);
-            reservationEntity2.setRestaurant(restaurantEntity);
-            reservationEntity2.setDate(date2);
-            reservationEntity2.setTime(time2);
-            reservationEntity2.setCanceled(false); // Assuming the reservation is not canceled
-            // Save the second reservationEntity using your ReservationRepository
-            reservationEntity2.setTableSeat(5);
-            long i = 2;
-            reservationEntity2.setTable(tableRepository.findByIdAndRestaurantName(i, reservationEntity2.getRestaurant().getName()));
-            reservationRepository.save(reservationEntity2);
-        } else {
-            System.out.println("A reservation already exists for user Mostafa_Ebrahimi at The Commoner on " + date2 + " at " + time2);
-        }
-
-
     }
+
+    //    public void fetchUsersAndRestaurantsFromApi() {
+//        fetchAndSaveUsersFromApi();
+//        fetchAndSaveRestaurantsFromApi();
+//        fetchFeedbacksFromApi();
+//        fetchAndSaveTablesFromApi();
+//        fetchReservationsLocal();
+//        System.out.println("__________________ FETCHING IS FINISHED_________________");
+//    }
     public void fetchUsersAndRestaurantsFromApi() {
-        fetchAndSaveUsersFromApi();
-        fetchAndSaveRestaurantsFromApi();
-        fetchFeedbacksFromApi();
-        fetchAndSaveTablesFromApi();
-        fetchReservationsLocal();
-        System.out.println("__________________ FETCHING IS FINISHED_________________");
-    }
+        Transaction transaction = ElasticApm.startTransaction();
+        try (Scope txScope = transaction.activate()) {
+            transaction.setName("fetchUsersAndRestaurantsFromApi");
+            transaction.setType(Transaction.TYPE_REQUEST);
 
-    private void fetchAndSaveTablesFromApi(){
-        try{
+            fetchAndSaveUsersFromApi(transaction);
+            fetchAndSaveRestaurantsFromApi(transaction);
+            fetchFeedbacksFromApi(transaction);
+            fetchAndSaveTablesFromApi(transaction);
+            fetchReservationsLocal(transaction);
+
+            System.out.println("__________________ FETCHING IS FINISHED_________________");
+        } catch (Exception e) {
+            transaction.captureException(e);
+            throw e;
+        } finally {
+            transaction.end();
+        }
+    }
+//    private void fetchAndSaveTablesFromApi(){
+//        try{
+//            CloseableHttpClient httpClient = HttpClients.createDefault();
+//            String tablesEndpoint = "http://91.107.137.117:55/tables";
+//            CloseableHttpResponse tablesResponse = httpClient.execute(new HttpGet(tablesEndpoint));
+//            try {
+//                ObjectMapper objectMapper = new ObjectMapper();
+//                List<TableDTO> fetchedTables = objectMapper.readValue(tablesResponse.getEntity().getContent(), new TypeReference<>() {});
+//                for (TableDTO fetchedTable : fetchedTables) {
+//                    TableEntity tableEntity = new TableEntity();
+//                    tableEntity.setManager(managerRepository.findByUsername(fetchedTable.getManagerUsername()));
+//                    tableEntity.setRestaurant(restaurantRepository.findByName(fetchedTable.getRestaurantName()));
+//                    tableEntity.setSeatsNumber(fetchedTable.getSeatsNumber());
+//                    saveTable(tableEntity);
+//                }
+//            } finally {
+//                tablesResponse.close();
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException("Error fetching tables from API: " + e.getMessage());
+//        }
+//    }
+
+    private void fetchAndSaveTablesFromApi(Transaction transaction) {
+        Span span = transaction.startSpan("custom", "api-call", "fetchTables");
+        try (Scope scope = span.activate()) {
+            span.setName("fetchAndSaveTablesFromApi");
+
             CloseableHttpClient httpClient = HttpClients.createDefault();
             String tablesEndpoint = "http://91.107.137.117:55/tables";
             CloseableHttpResponse tablesResponse = httpClient.execute(new HttpGet(tablesEndpoint));
@@ -142,9 +249,13 @@ public class DataFetchService {
                 tablesResponse.close();
             }
         } catch (IOException e) {
+            span.captureException(e);
             throw new RuntimeException("Error fetching tables from API: " + e.getMessage());
+        } finally {
+            span.end();
         }
     }
+
     private void saveTable(TableEntity fetchedTable) {
         TableEntity existingTable = tableRepository.findByIdAndRestaurantName(fetchedTable.getId(), fetchedTable.getRestaurant().getName());
         if (existingTable == null) {
@@ -155,8 +266,29 @@ public class DataFetchService {
             System.out.println("Table already exists: " + fetchedTable.getId());
         }
     }
-    private void fetchAndSaveUsersFromApi() {
-        try {
+//    private void fetchAndSaveUsersFromApi() {
+//        try {
+//            CloseableHttpClient httpClient = HttpClients.createDefault();
+//            String usersEndpoint = "http://91.107.137.117:55/users";
+//            CloseableHttpResponse usersResponse = httpClient.execute(new HttpGet(usersEndpoint));
+//            try {
+//                ObjectMapper objectMapper = new ObjectMapper();
+//                List<UserEntity> fetchedUsers = objectMapper.readValue(usersResponse.getEntity().getContent(), new TypeReference<>() {});
+//                for (UserEntity fetchedUser : fetchedUsers) {
+//                    saveUser(fetchedUser);
+//                }
+//            } finally {
+//                usersResponse.close();
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException("Error fetching users from API: " + e.getMessage());
+//        }
+//    }
+    private void fetchAndSaveUsersFromApi(Transaction transaction) {
+        Span span = transaction.startSpan("custom", "api-call", "fetchUsers");
+        try (Scope scope = span.activate()) {
+            span.setName("fetchAndSaveUsersFromApi");
+
             CloseableHttpClient httpClient = HttpClients.createDefault();
             String usersEndpoint = "http://91.107.137.117:55/users";
             CloseableHttpResponse usersResponse = httpClient.execute(new HttpGet(usersEndpoint));
@@ -170,9 +302,13 @@ public class DataFetchService {
                 usersResponse.close();
             }
         } catch (IOException e) {
+            span.captureException(e);
             throw new RuntimeException("Error fetching users from API: " + e.getMessage());
+        } finally {
+            span.end();
         }
     }
+
 
     private void saveUser(UserEntity fetchedUser) {
         UserEntity existingUser = userRepository.findByUsername(fetchedUser.getUsername());
@@ -196,8 +332,49 @@ public class DataFetchService {
             }
         }
     }
-    private void fetchAndSaveRestaurantsFromApi() {
-        try {
+//    private void fetchAndSaveRestaurantsFromApi() {
+//        try {
+//            CloseableHttpClient httpClient = HttpClients.createDefault();
+//            String restaurantsEndpoint = "http://91.107.137.117:55/restaurants";
+//            CloseableHttpResponse restaurantsResponse = httpClient.execute(new HttpGet(restaurantsEndpoint));
+//            try {
+//                ObjectMapper objectMapper = new ObjectMapper();
+//                List<RestaurantDTO> fetchedRestaurants = objectMapper.readValue(restaurantsResponse.getEntity().getContent(), new TypeReference<List<RestaurantDTO>>() {});
+//                for (RestaurantDTO fetchedRestaurant : fetchedRestaurants) {
+//                    fetchedRestaurant.generateId();
+//                    RestaurantEntity existingRestaurant = restaurantRepository.findById(fetchedRestaurant.getId());
+//                    if (existingRestaurant == null) {
+//                        RestaurantEntity restaurantEntity = new RestaurantEntity();
+////                        restaurantEntity.setId(fetchedRestaurant.getId());
+//                        restaurantEntity.setImage(fetchedRestaurant.getImage());
+//                        restaurantEntity.setName(fetchedRestaurant.getName());
+//                        restaurantEntity.setAddress(fetchedRestaurant.getAddress());
+//                        restaurantEntity.setManager(managerRepository.findByUsername(fetchedRestaurant.getManagerUsername()));
+//                        restaurantEntity.setDescription(fetchedRestaurant.getDescription());
+//                        restaurantEntity.setType(fetchedRestaurant.getType());
+//                        restaurantEntity.setEndTime(fetchedRestaurant.getEndTime());
+//                        restaurantEntity.setStartTime(fetchedRestaurant.getStartTime());
+//                        restaurantEntity.generateId();
+//                        saveRestaurant(restaurantEntity);
+//                    } else {
+//                        // Handle existing restaurant case if needed
+//                        // For example, update existing restaurant details
+//                        // existingRestaurant.setName(fetchedRestaurant.getName());
+//                        // restaurantRepository.save(existingRestaurant);
+//                    }
+//                }
+//            } finally {
+//                restaurantsResponse.close();
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException("Error fetching restaurants from API: " + e.getMessage());
+//        }
+//    }
+    private void fetchAndSaveRestaurantsFromApi(Transaction transaction) {
+        Span span = transaction.startSpan("custom", "api-call", "fetchRestaurants");
+        try (Scope scope = span.activate()) {
+            span.setName("fetchAndSaveRestaurantsFromApi");
+
             CloseableHttpClient httpClient = HttpClients.createDefault();
             String restaurantsEndpoint = "http://91.107.137.117:55/restaurants";
             CloseableHttpResponse restaurantsResponse = httpClient.execute(new HttpGet(restaurantsEndpoint));
@@ -209,7 +386,6 @@ public class DataFetchService {
                     RestaurantEntity existingRestaurant = restaurantRepository.findById(fetchedRestaurant.getId());
                     if (existingRestaurant == null) {
                         RestaurantEntity restaurantEntity = new RestaurantEntity();
-//                        restaurantEntity.setId(fetchedRestaurant.getId());
                         restaurantEntity.setImage(fetchedRestaurant.getImage());
                         restaurantEntity.setName(fetchedRestaurant.getName());
                         restaurantEntity.setAddress(fetchedRestaurant.getAddress());
@@ -220,20 +396,19 @@ public class DataFetchService {
                         restaurantEntity.setStartTime(fetchedRestaurant.getStartTime());
                         restaurantEntity.generateId();
                         saveRestaurant(restaurantEntity);
-                    } else {
-                        // Handle existing restaurant case if needed
-                        // For example, update existing restaurant details
-                        // existingRestaurant.setName(fetchedRestaurant.getName());
-                        // restaurantRepository.save(existingRestaurant);
                     }
                 }
             } finally {
                 restaurantsResponse.close();
             }
         } catch (IOException e) {
+            span.captureException(e);
             throw new RuntimeException("Error fetching restaurants from API: " + e.getMessage());
+        } finally {
+            span.end();
         }
     }
+
 
     private void saveRestaurant(RestaurantEntity fetchedRestaurant) {
         RestaurantEntity existingRestaurant = restaurantRepository.findById(fetchedRestaurant.getId());
@@ -247,25 +422,51 @@ public class DataFetchService {
             System.out.println("Restaurant already exists: " + fetchedRestaurant.getName());
         }
     }
-    public void fetchFeedbacksFromApi() {
-        try {
+//    public void fetchFeedbacksFromApi() {
+//        try {
+//            CloseableHttpClient httpClient = HttpClients.createDefault();
+//            String feedbacksEndpoint = "http://91.107.137.117:55/reviews"; // Replace with your actual API endpoint
+//            CloseableHttpResponse feedbacksResponse = httpClient.execute(new HttpGet(feedbacksEndpoint));
+//            try {
+//                ObjectMapper objectMapper = new ObjectMapper();
+//                List<FeedbackDTO> fetchedFeedbacks = objectMapper.readValue(feedbacksResponse.getEntity().getContent(), new TypeReference<>() {});
+//                for (FeedbackDTO fetchedFeedback : fetchedFeedbacks) {
+//
+//                    saveFeedback(fetchedFeedback);
+//                }
+//            } finally {
+//                feedbacksResponse.close();
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException("Error fetching feedbacks from API: " + e.getMessage());
+//        }
+//    }
+
+    public void fetchFeedbacksFromApi(Transaction transaction) {
+        Span span = transaction.startSpan("custom", "api-call", "fetchFeedbacks");
+        try (Scope scope = span.activate()) {
+            span.setName("fetchFeedbacksFromApi");
+
             CloseableHttpClient httpClient = HttpClients.createDefault();
-            String feedbacksEndpoint = "http://91.107.137.117:55/reviews"; // Replace with your actual API endpoint
+            String feedbacksEndpoint = "http://91.107.137.117:55/reviews";
             CloseableHttpResponse feedbacksResponse = httpClient.execute(new HttpGet(feedbacksEndpoint));
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
                 List<FeedbackDTO> fetchedFeedbacks = objectMapper.readValue(feedbacksResponse.getEntity().getContent(), new TypeReference<>() {});
                 for (FeedbackDTO fetchedFeedback : fetchedFeedbacks) {
-
                     saveFeedback(fetchedFeedback);
                 }
             } finally {
                 feedbacksResponse.close();
             }
         } catch (IOException e) {
+            span.captureException(e);
             throw new RuntimeException("Error fetching feedbacks from API: " + e.getMessage());
+        } finally {
+            span.end();
         }
     }
+
 
     private void saveFeedback(FeedbackDTO fetchedFeedback) {
         // Check if the feedback already exists in the database
