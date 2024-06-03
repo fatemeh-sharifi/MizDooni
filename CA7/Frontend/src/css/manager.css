@@ -1,0 +1,163 @@
+body{
+    font-family: "Spline Sans", sans-serif;
+    background-color: #ED3545;
+}
+
+.sticky{
+    position: fixed;
+    background-color: white;
+    top: 0;
+    box-shadow: 0px 0px 1px 0px #303030 !important;
+    z-index: 1;
+}
+
+.logo{
+    width: 103px;
+    margin: 8px 0px 8px 53px;
+}
+
+
+.headTitle{
+    color: #ED3545;
+    font-size: 22px;
+    line-height: 26px;
+    margin-top: 37px;
+}
+
+.reserveBtn{
+    background-color: #ED3545;
+    font-size: 16px;
+    border-radius: 12px;
+    height: 45px;
+    width: 150px;
+    border: none;
+    margin: 28px 40px 28px 0;
+}
+
+.reserveBtn a{
+    all: unset;
+}
+
+.welcome{
+    margin-bottom: 0;
+}
+
+.name{
+    font-size: 22px;
+    font-weight: 400;
+}
+
+.addrress{
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.title{
+    margin-top: 100px;
+    height: 40px;
+}
+
+.title p{
+    margin-bottom: 0;
+}
+
+.col-8,.col-4{
+    background-color: white;
+    height: auto;
+}
+
+.col-8{
+    width: 66% !important;
+}
+
+.reservation-list{
+    font-size: 16px;
+    font-weight: 600;
+    color: #303030 !important;
+}
+
+.table-choice{
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.time-table{
+    color: #303030;
+    font-size: 14px;
+    font-weight: 300;
+    border-color: #FFF6F7; 
+    border-width: 1px;
+}
+
+.user{
+    font-size: 16px;
+    font-weight: 300;
+    color: #303030 !important;
+}
+
+.table td , .table tbody th{
+    height: 55px;
+    vertical-align: middle;
+}
+
+.table thead th{
+    height: 45px;
+    vertical-align: middle;
+}
+
+.tables{
+    color: #303030 !important;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.table {
+    border-width: 1px;
+    border-color: #FFF6F7; 
+}
+
+.table-container{
+    background-color: #861A24;
+    width: 102px;
+    height: 70px;
+    border-radius: 12px;
+    border: none;
+}
+
+.all-tables{
+    margin: 100px 150px;
+}
+
+.table-container img{
+    margin-right: 20px;
+}
+
+
+.number{
+    margin-bottom: 0;
+}
+
+.seats{
+    margin-bottom: 0;
+}
+
+.data-part{
+    height: 30px;
+}
+
+.add-table{
+    color: #ED3545;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.footer-part{
+    background-color: #ED3545;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.footer-text{
+    padding: 14px;
+    margin: 0;
+}
