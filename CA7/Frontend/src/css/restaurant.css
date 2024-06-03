@@ -1,0 +1,523 @@
+.first-part{
+    margin-top: 156px;
+}
+
+.restaurant-img{
+    width: 100%;
+    border-radius: 12px;
+    height: 306px !important;
+}
+
+.title-restaurant{
+    background-color: #ffffffeb;
+    margin-top: -88px;
+    position: relative;
+    height: auto;
+}
+
+/* .alidaei{
+    width: 688px;
+} */
+.restaurant-title{
+    color: #303030;
+    font-size: 48px;
+    font-weight: 600px;
+    margin-top: 10px;
+    margin-left: 14px;
+}
+
+.restaurant-title.long{
+    font-size: 25px;
+    margin-top: 27px;
+}
+
+.head-part{
+    height: 88px;
+}
+
+.open{
+    font-size: 18px;
+    font-weight: 300;
+    background-color: #2B9407;
+    border-radius: 12px;
+    width: 90px;
+    height: 33px;
+    margin-top: 27px;
+    margin-right: 25px;
+}
+
+.close{
+    font-size: 18px;
+    font-weight: 300;
+    background-color: #ED3545;
+    border-radius: 12px;
+    width: 90px;
+    height: 33px;
+    margin-top: 27px;
+    margin-right: 25px;
+}
+
+.open p, .close p{
+    margin-bottom: 0;
+    margin-top: 3px;
+}
+
+.img-line{
+    border-top: 1px solid #8d8d8d;
+    width: auto;
+    margin-top: 0;
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+.details{
+    margin-left: 14px;
+}
+
+.time-details{
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.review-details{
+    display: inline-block;
+    /* margin-left: 60px; */
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.type{
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 300;
+    /* margin-left: 70px; */
+}
+
+.location-part{
+    color: #7E7E7E;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.time-logo{
+    width: 24px;
+    margin-right: 8px;
+    margin-top: -5px;
+}
+
+.message-logo{
+    width: 21px;
+    margin-top: -3px;
+}
+
+.black-star{
+    margin-left: -13px;
+    margin: -7px 10px 0 -14px;
+}
+
+.knife-logo{
+    margin-right: 8px;
+    margin-top: -3px;
+}
+
+.lotime-checkboxion-part{
+    color: #7E7E7E;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.lotime-checkboxion-part img{
+    width: 11px;
+    height: 14px;
+    margin: -4px 4px 0 0;
+}
+
+.description p{
+    font-size: 16px;
+    font-weight: 300;
+    text-align: justify;
+    margin-bottom: -1px;
+}
+
+/* .table-reserve{
+    width: 500px;
+} */
+
+.form-title{
+    color: #303030;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.form-select {
+    background-image: url(../../public/img/icon.svg);
+    background-size: 7px;
+    border-radius: 12px;
+    width: 84px;
+    height: 40px;
+    background-color: #F5F5F5;
+}
+
+.form-select:focus , .form-control:focus {
+    border-color: #ED3545 !important;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(237, 53, 69, 0.5) !important;
+}
+
+.selection{
+    color: #303030;
+    width: 427px;
+    font-size: 16px;
+    font-weight: 400;
+    margin-left: 4px;
+}
+
+.time-title{
+    color: #000000;
+    font-size: 16px;
+    font-weight: 400;
+    margin-left: 4px;
+}
+
+.calendar{
+    background-color: #F5F5F5;
+    border: none;
+    border-radius: 12px;
+    width: 188px;
+    height: 40px;
+}
+
+.time-checkbox{
+    cursor: pointer;
+    margin: 4px;
+    background-color: #FFFCFC;
+    border-radius: 12px;
+    border: 1px solid #ED3545;
+    overflow: hidden;
+    float: left;
+    width: 119px;
+    height: 40px;
+}
+
+.time-checkbox label {
+    cursor: pointer;
+    float: left; line-height: 36px;
+    width: 119px;
+}
+
+.time-checkbox label span {
+    cursor: pointer;
+    text-align: center;
+    padding: 3px 0;
+    display: block;
+}
+
+.time-checkbox label input {
+    position: absolute;
+    display: none;
+    color: #ED3545 !important;
+}
+.time-checkbox label input + span{
+    color: #ED3545;
+}
+
+
+.time-checkbox input:checked + span {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.time-checkbox input:checked + span{
+    background-color: #ED3545;
+}
+
+.final-reserve{
+    width: 100%;
+    height: 40px;
+    border: none;
+    background-color: #ED3545;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.final-reserve.disabled {
+    background-color: #D9D9D9;
+}
+
+.reserve-warning{
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #ED3545;
+    text-align: justify;
+}
+
+.review-part{
+    background-color: #FFF6F7;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.review-start{
+    color: #303030;
+    font-size: 22px;
+}
+
+.rating-star img{
+    margin-top: -6px;
+    margin-right: 2px;
+    width: 20px;
+}
+
+.rating-star{
+    font-size: 12px;
+    color: #7E7E7E;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.empty-star{
+    margin-right: 15px !important;
+}
+
+.rating-name{
+    color: #303030;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.rating-number{
+    color: #303030;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.profile{
+    background-color: #F0B5BA;
+    width: 50px;
+    height: 50px;
+    border-radius: 27px;
+}
+
+.profile p{
+    color: #000000;
+    font-size: 22px;
+    margin-top: 8.5px;
+}
+
+.reviews-num{
+    font-size: 22px;
+    color: #303030;
+    font-weight: 400;
+}
+
+.add-btn{
+    background-color: #ED3545;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 400;
+    width: 150px;
+    height: 45px;
+    margin-bottom: 27px;
+}
+
+.username{
+    font-size: 22px;
+    font-weight: 400;
+    color: #303030;
+}
+
+.user-rating{
+    color: #000000;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.user-rating img{
+    margin: 0 2px;
+    width: 2px;
+}
+
+.user-rating span{
+    color: #ED3545;
+}
+
+.comment-text{
+    color: #303030;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.comment p{
+    margin-bottom: 12px;
+}
+
+.stars img{
+    margin-right: 6px;
+    margin-top: -5px;
+}
+
+.comment-date{
+    color: #7E7E7E;
+    font-size: 16px;
+    margin-left: 7px;
+}
+
+.add-review{
+    margin-bottom: 68px !important;
+}
+
+.add-review hr{
+    color: #676767 !important;
+}
+
+.page-link{
+    border-radius: 25px !important;
+    color: #000000 !important;
+    border-color: #ED3545 !important;
+}
+
+.page-link:focus{
+    border-color: #ED3545 !important;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(237, 53, 69, 0.5) !important;
+}
+
+.footer-part{
+    background-color: #ED3545 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+}
+
+.footer-text{
+    padding: 14px !important;
+    margin: 0 !important;
+}
+
+.modal-header{
+    border-color:  #D9D9D9 !important;
+}
+
+.modal-footer {
+    border: none !important;
+}
+
+#completeModalLabel{
+    font-weight: 500 !important;
+    color: #303030 !important; 
+    font-size: 22px !important;
+}
+
+.note{
+    font-weight: 400 !important;
+    font-size: 16px !important;
+}
+
+.reservDetails p{
+    font-size: 16px;
+    font-weight: 400;
+    color: #303030;
+}
+
+.addressDetail{
+    font-size: 16px !important;
+    font-weight: 300 !important;
+}
+
+.closeBtn{
+    color: #ED3545 !important;
+    border-color: #ED3545 !important;
+    border-radius: 12px !important;
+}
+
+.closeBtn:hover{
+    color: white !important;
+    background-color: #ED3545 !important;
+}
+
+
+.modalRestaurantName{
+    color: #ED3545 !important;
+}
+
+.reservDetails textarea{
+    border: none !important;
+    background-color: #F5F5F5 !important;
+    border-radius: 12px !important;
+}
+
+.submitReview{
+    color: white !important;
+    background-color: #ED3545 !important;
+    border-radius: 12px!important;
+}
+
+.submitReview:hover{
+    color: white !important;
+    background-color: #b9000f !important;
+}
+
+.cancleBtn:hover{
+    color: #ED3545 !important;
+    background-color: #e6e4e4 !important;
+}
+
+.notAvailable{
+    font-size: 16px !important;
+    color: #303030 !important;
+}
+
+.maxTime{
+    font-size: 16px;
+    color: #ED3545;
+}
+
+input[type="radio"] {
+    display: none;
+}
+.star {
+    cursor: pointer;
+    font-size: 2rem;
+    margin: 5px;
+}
+
+.noReview{
+    font-size: 22px;
+    color: #303030;
+}
+
+.reviewErr{
+    font-size: 14px;
+    color: #ED3545;
+}
+
+@media (max-width:1200px) and (min-width :992px){
+    .time-checkbox{
+        width: 137px !important;
+    }
+
+    .time-checkbox label {
+        width: 137px !important;
+    }
+    
+    .table-reserve{
+        margin-top: 100px !important;
+    }
+}
+
+@media (min-width:1400px){
+    .time-checkbox{
+        width: 142px !important;
+    }
+
+    .time-checkbox label {
+        width: 142px !important;
+    }
+}
