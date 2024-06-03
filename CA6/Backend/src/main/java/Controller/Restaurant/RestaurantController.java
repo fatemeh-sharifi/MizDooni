@@ -8,10 +8,6 @@ import Repository.Feedback.FeedbackRepository;
 import Repository.Restaurant.RestaurantRepository;
 import Repository.User.ClientRepository;
 import Service.Restaurant.RestaurantService;
-import co.elastic.apm.api.ElasticApm;
-import co.elastic.apm.api.Scope;
-import co.elastic.apm.api.Span;
-import co.elastic.apm.api.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,53 +40,12 @@ public class RestaurantController {
             @RequestParam ( required = false ) String country ,
             @RequestParam ( required = false ) String name
     ) {
-//        try {
-//            List < RestaurantEntity > filteredRestaurants = restaurantRepository.findRestaurants ( type , city , country , name );
-//            List < Restaurant > restaurants = restaurantService.getAllRestaurantsWithFeedbacks ( filteredRestaurants );
-//            return ResponseEntity.ok ( ).body ( restaurants );
-//        } catch ( Exception e ) {
-//            return ResponseEntity.badRequest ( ).body ( null );
-//        }
-        Transaction transaction = ElasticApm.startTransaction();
-        try (Scope txScope = transaction.activate()) {
-            transaction.setName("HTTP GET /restaurants");
-            transaction.setType(Transaction.TYPE_REQUEST);
-
-            // Track the database call
-            Span dbSpan = transaction.startSpan("db", "query", "findRestaurants");
-            try (Scope dbScope = dbSpan.activate()) {
-                dbSpan.setName("Find Restaurants DB Call");
-
-                // Perform the database call
-                List<RestaurantEntity> filteredRestaurants = restaurantRepository.findRestaurants(type, city, country, name);
-                dbSpan.end();
-
-                // Track the business logic execution
-                Span businessLogicSpan = transaction.startSpan("business", "logic", "getAllRestaurantsWithFeedbacks");
-                try (Scope businessLogicScope = businessLogicSpan.activate()) {
-                    businessLogicSpan.setName("Get All Restaurants With Feedbacks");
-
-                    // Perform the business logic
-                    List<Restaurant> restaurants = restaurantService.getAllRestaurantsWithFeedbacks(filteredRestaurants);
-                    businessLogicSpan.end();
-
-                    // Return the response
-                    return ResponseEntity.ok().body(restaurants);
-                } catch (Exception e) {
-                    businessLogicSpan.captureException(e);
-                    businessLogicSpan.end();
-                    throw e;
-                }
-            } catch (Exception e) {
-                dbSpan.captureException(e);
-                dbSpan.end();
-                throw e;
-            }
-        } catch (Exception e) {
-            transaction.captureException(e);
-            return ResponseEntity.badRequest().body(null);
-        } finally {
-            transaction.end();
+        try {
+            List < RestaurantEntity > filteredRestaurants = restaurantRepository.findRestaurants ( type , city , country , name );
+            List < Restaurant > restaurants = restaurantService.getAllRestaurantsWithFeedbacks ( filteredRestaurants );
+            return ResponseEntity.ok ( ).body ( restaurants );
+        } catch ( Exception e ) {
+            return ResponseEntity.badRequest ( ).body ( null );
         }
     }
 
