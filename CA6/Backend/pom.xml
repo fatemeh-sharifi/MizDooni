@@ -17,7 +17,7 @@
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <!-- <testSourceDirectory>src/test/java</testSourceDirectory> -->
-        <plugins>
+        <!-- <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -30,7 +30,49 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
-        </plugins>
+        </plugins> -->
+        <plugins>
+                <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+            <configuration>
+                <source>19</source>
+                <target>19</target>
+                <compilerArgs>
+                    <arg>-parameters</arg>
+                </compilerArgs>
+            </configuration>
+        </plugin>
+	<plugin>
+		<!-- Build an executable JAR -->
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-jar-plugin</artifactId>
+		<version>3.1.0</version>
+		<configuration>
+			<archive>
+				<manifest>
+					<addClasspath>true</addClasspath>
+					<!-- here we specify that we want to use the main method within the App class -->
+					<mainClass>Application.MizDooniApplication</mainClass>
+				</manifest>
+			</archive>
+		</configuration>
+	</plugin>
+            <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.2.4</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+</plugins>
     </build>
 
     <dependencies>

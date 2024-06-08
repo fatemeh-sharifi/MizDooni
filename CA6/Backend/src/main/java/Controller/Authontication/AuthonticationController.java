@@ -63,6 +63,7 @@ public class AuthonticationController {
                 .header("Authorization", "Bearer " + accessToken)
                 .build();
 
+        String jwtToken ="";
         HttpResponse<String> userInfoResponse = client.send(userInfoRequest, HttpResponse.BodyHandlers.ofString());
         Map<String, Object> userInfo = mapper.readValue(userInfoResponse.body(), Map.class);
         System.out.println ( userInfo);
@@ -73,15 +74,18 @@ public class AuthonticationController {
             String usernameSubstring = email.substring(0, email.indexOf('@'));
             userRepository.findByEmail ( email ).setUsername (usernameSubstring);
             System.out.println ("here is user is not null  - " + email);
+            // jwtToken = JwtUtil.generateToken(user.getEmail());
         } else {
             String usernameSubstring = email.substring(0, email.indexOf('@'));
             AddressUserEntity addressUser = new AddressUserEntity ( "", "" );
             UserEntity userEntity = new UserEntity ( usernameSubstring, email, "", "client", addressUser);
             userRepository.save ( userEntity );
             System.out.println ("here is user is null - " + email );
+            // jwtToken = JwtUtil.generateToken(userEntity.getEmail());
+            user = userEntity;
         }
 //        if (user != null && new BCryptPasswordEncoder ().matches(password, user.getPassword())) {
-        String jwtToken = JwtUtil.generateToken(user.getEmail());
+        jwtToken = JwtUtil.generateToken(user.getEmail());
 
         LoginResponse loginResponse = new LoginResponse ( jwtToken, user );
 
