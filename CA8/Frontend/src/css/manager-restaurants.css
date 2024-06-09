@@ -1,0 +1,108 @@
+body{
+    font-family: "Spline Sans", sans-serif;
+}
+
+.sticky{
+    position: fixed;
+    background-color: white;
+    top: 0;
+    box-shadow: 0px 0px 1px 0px #303030 !important;
+    z-index: 1;
+}
+
+.logo{
+    width: 103px;
+    margin: 8px 0px 8px 53px;
+}
+
+
+.headTitle{
+    color: #ED3545;
+    font-size: 22px;
+    line-height: 26px;
+    margin-top: 37px;
+}
+
+.reserveBtn{
+    background-color: #ED3545;
+    font-size: 16px;
+    border-radius: 12px;
+    height: 45px;
+    width: 150px;
+    border: none;
+    margin: 28px 40px 28px 0;
+}
+
+.reserveBtn a{
+    all: unset;
+}
+
+.welcome{
+    margin-bottom: 0;
+}
+
+.my-restaurants{
+    margin-top: 160px;
+    width: 600px;
+    vertical-align: middle;
+}
+
+.title-part{
+    height: 60px;
+}
+
+.my-restaurants hr{
+    color: #959494;
+    border-width: 1px;
+    margin: 0;
+}
+
+.title{
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #303030 !important;
+}
+
+.add{
+    background-color: #ED3545;
+    border: none;
+    border-radius: 12px;
+    width: 90px;
+    height: 35px;
+}
+
+.restaurant{
+    height: 60px;
+}
+
+.restaurant p{
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: 400;
+    color: #303030 !important;
+}
+
+.manage{
+    background-color: #ED3545;
+    border: none;
+    border-radius: 12px;
+    width: 109px;
+    height: 40px;
+}
+
+.manage a{
+    all: unset;
+}
+
+.footer-part{
+    background-color: #ED3545;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 400px;
+}
+
+.footer-text{
+    padding: 14px;
+    margin: 0;
+}

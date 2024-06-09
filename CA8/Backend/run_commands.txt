@@ -1,0 +1,24 @@
+mvn clean package
+java -jar target/Mizdooni-1.0-SNAPSHOT.jar
+-----------------------------------
+docker images #should be empty first
+docker build -t mizdooni .
+docker images #it is not empty anymore
+docker run -p 8000:8080
+--------------------------------------
+docker run --name mysql -e MYSQL_ROOT_PASSWORD=root -d mysql
+docker ps
+docker exec -it mysql bash
+mysql -u root -p
+CREATE DATABASE Mizdooni;
+USE Mizdooni;
+SHOW TABLES;
+# DROP DATABASE Mizdooni;
+# EXIT;
+# quit;
+# docker stop mysql
+---------------------------------------
+docker ps -a
+docker stop c3537207f62b
+docker rm c3537207f62b
+netstat -ano | findstr :3306
