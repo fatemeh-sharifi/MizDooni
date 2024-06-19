@@ -1,0 +1,87 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: mizdooni-springboot
+#   # namespace: vivaldi
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: mizdooni-springboot
+#   template:
+#     metadata:
+#       labels:
+#         app: mizdooni-springboot
+#     spec:
+#       containers:
+#       - name: springboot
+#         image: sapidgirl/mizdooni_springboot
+#         ports:
+#         - containerPort: 8080
+#         env:
+#         - name: SPRING_DATASOURCE_URL
+#           value: "jdbc:mysql://mysql:3306/Mizdooni" 
+#         - name: SPRING_DATASOURCE_USERNAME
+#           value: "root"
+#         - name: SPRING_DATASOURCE_PASSWORD
+#           value: "AVoMGCPDL*PHM2Pe"
+
+# #service
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: springboot-svc
+#   labels:
+#     app: mizdooni-springboot
+# spec:
+#   type: NodePort
+#   selector:
+#     app: mizdooni-springboot
+#   ports:
+#     - name: http
+#       port: 8080
+#       targetPort: 8080
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mizdooni-springboot
+  # namespace: vivaldi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mizdooni-springboot
+  template:
+    metadata:
+      labels:
+        app: mizdooni-springboot
+    spec:
+      containers:
+        - name: springboot
+          image: sapidgirl/mizdooni_springboot:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql:3306/Mizdooni"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "AVoMGCPDL*PHM2Pe"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-svc
+  labels:
+    app: mizdooni-springboot
+spec:
+  type: NodePort
+  selector:
+    app: mizdooni-springboot
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080

@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mizdooni_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: AVoMGCPDL*PHM2Pe
+      MYSQL_DATABASE: Mizdooni
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  springboot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mizdooni_springboot
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/Mizdooni
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: AVoMGCPDL*PHM2Pe
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:
